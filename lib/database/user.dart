@@ -18,6 +18,7 @@
 // private/public
 
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'dart:io';
 
 void new_user_helper(var username) async {
   var profile = ParseObject('User');
@@ -27,35 +28,35 @@ void new_user_helper(var username) async {
   profile.set('is_private', 1);
 
   await profile.save();
+  stderr.writeln('print me');
 }
 
 void new_user() {
   new_user_helper("Han Solo");
 }
 
-void user_set_username(){}
-void user_set_password(){}
-void user_set_email(){}
-void user_set_fname(){}
-void user_set_lname(){}
-void user_set_dob(){} // date of birth
-void user_set_bio(){}
-void user_set_followers(){}
-void user_set_following(){}
-void user_set_post(){}
-void user_set_chat(){}
-void user_set_private(){}
+void user_set_username() {}
+void user_set_password() {}
+void user_set_email() {}
+void user_set_fname() {}
+void user_set_lname() {}
+void user_set_dob() {} // date of birth
+void user_set_bio() {}
+void user_set_followers() {}
+void user_set_following() {}
+void user_set_post() {}
+void user_set_chat() {}
+void user_set_private() {}
 
-
-void user_get_username(String id){}
-void user_get_password(){}
-void user_get_email(){}
-void user_get_fname(){}
-void user_get_lname(){}
-void user_get_dob(){} // date of birth
-void user_get_bio(){}
-void user_get_followers(){}
-void user_get_following(){}
-void user_get_post(){}
-void user_get_chat(){}
-void user_get_private(){}
+void user_get_username(String id) {}
+void user_get_password() {}
+void user_get_email() {}
+void user_get_fname() {}
+void user_get_lname() {}
+void user_get_dob() {} // date of birth
+void user_get_bio() {}
+void user_get_followers() {}
+void user_get_following() {}
+void user_get_post() {}
+void user_get_chat() {}
+void user_get_private() {}
