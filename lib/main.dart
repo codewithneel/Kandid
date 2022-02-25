@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'database/user.dart';
 
+// format [ <keyApplicationId> , <keyClientId> ]
+final EDEL_DB = ['H0TQYPBtcCqOL9NLbfJoQRmrbie4hLwbLzHv5oF8', 'qUlu6Qcxl4cmx535TFyIrQqHMnhplrro1vFynCu9'];
+final NEEL_DB = ['KEY_APPLICATION_ID', 'KEY_CLIENT_ID'];
+
 void main() async {
+
+  // This determines which database is used. You must first declare the IDs above
+  final db_ids = EDEL_DB;
 
   // Database Connection
   WidgetsFlutterBinding.ensureInitialized();
-  final keyApplicationId = 'H0TQYPBtcCqOL9NLbfJoQRmrbie4hLwbLzHv5oF8';
-  final keyClientKey = 'qUlu6Qcxl4cmx535TFyIrQqHMnhplrro1vFynCu9';
+  final keyApplicationId = db_ids[0];
+  final keyClientKey = db_ids[1];
   final keyParseServerUrl = 'https://parseapi.back4app.com';
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
