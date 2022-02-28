@@ -1,0 +1,15 @@
+USER ENTITY ATTRIBUTES
+
+user_id
+>>username
+>>password
+>>email
+>>fname
+>>lname
+followers
+following
+post_ids
+chat_ids
+>>bio
+>>date of birth
+>>private/public

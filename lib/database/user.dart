@@ -2,53 +2,53 @@
 // This file contains all user related functions using the back4app database
 // Examples of functions include: user data creation/editing/retrieval
 
-// USER ENTITY ATTRIBUTES
-// User_id
-// username
-// password
-// email
-// fname
-// lname
-// followers
-// following
-// posts
-// chats
-// bio
-// date of birth
-// private/public
-
+import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'dart:io';
 
-void new_user_helper(var username) async {
-  var profile = ParseObject('User');
-  profile.set('username', username);
-  profile.set('birthDay', DateTime.parse('1966-09-09'));
-  profile.set('favoriteFoods', ['Lobster', 'Bread']);
-  profile.set('is_private', 1);
+import '../general_tools/alerts.dart';
+import '../my_tests/query_tests.dart';
 
-  await profile.save();
-  stderr.writeln('print me');
+
+void newUser(BuildContext context, String username, String email, String password) async {
+
+  test();
+  return;
+
+  if (username == '' || email == '' || password == '') {
+    showError(context, "Missing one or more fields");
+    return;
+  }
+
+  username  = username.trim();
+  email     = email.trim();
+  password  = password.trim();
+
+  final user = ParseUser.createUser(username, password, email);
+
+  var response = await user.signUp();
+
+  if (response.success) {
+    showSuccess(context);
+  } else {
+    showError(context, response.error!.message);
+  }
 }
 
-void new_user() {
-  new_user_helper("Han Solo");
-}
+void userSetUsername() {}
+void userSetPassword() {}
+void userSetEmail() {}
+void userSetFname() {}
+void userSetLname() {}
+void userSetDob() {} // date of birth
+void userSetBio() {}
+void userSetFollowers() {} // user_ids that are following user
+void userSetFollowing() {} //
+void userSetPost() {}
+void userSetChat() {}
+void userSetPrivate() {}
+void userSetImage() {}
 
-void user_set_username() {}
-void user_set_password() {}
-void user_set_email() {}
-void user_set_fname() {}
-void user_set_lname() {}
-void user_set_dob() {} // date of birth
-void user_set_bio() {}
-void user_set_followers() {}
-void user_set_following() {}
-void user_set_post() {}
-void user_set_chat() {}
-void user_set_private() {}
-
-void user_get_username(String id) {}
+void userGetUsername(String id) {}
 void user_get_password() {}
 void user_get_email() {}
 void user_get_fname() {}
@@ -60,3 +60,6 @@ void user_get_following() {}
 void user_get_post() {}
 void user_get_chat() {}
 void user_get_private() {}
+void userGetImage() {}
+
+bool verifyLogin(String str/*username or email*/, String password){ return false;}
