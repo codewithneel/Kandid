@@ -15,8 +15,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text('username'),
+        backgroundColor: Colors.black,
+        title: Text('Ibraaa'),
         centerTitle: false,
       ),
       body: ListView(
@@ -42,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              buildStatColumn(20, "posts"),
+
                               buildStatColumn(30, "followers"),
                               buildStatColumn(20, "following"),
                             ],
@@ -51,9 +51,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               FollowButton(
-                                text: 'Sign Out',
-                                backgroundColor: Colors.black,
-                                textColor: Colors.red,
+                                text: 'Follow',
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
                                 borderColor: Colors.grey,
                                 function: () {},
                               )
@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     top: 15,
                   ),
                   child: Text(
-                    'username',
+                    'ibraa',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
