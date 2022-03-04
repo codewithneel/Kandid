@@ -3,15 +3,22 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'templates/registration.dart';
 import 'templates/login.dart';
+import 'templates/my_profile.dart';
+import 'my_tests/tester.dart';
 
 
-bool debug = false;
+
+/// Here you can set the template you want rendered (don't delete the TestTemplate) ///
+//const TEMPLATE = Registration();
+const TEMPLATE = TestTemplate();
+
 
 
 // format [ <keyApplicationId> , <keyClientId> ]
-final _DB_KEYS = ['H0TQYPBtcCqOL9NLbfJoQRmrbie4hLwbLzHv5oF8', 'qUlu6Qcxl4cmx535TFyIrQqHMnhplrro1vFynCu9'];
+final _DB_KEYS = ['zV6NcYkI8BZQ6KPHDGvNPQvdnNvfjZ3JUnmIwNJr', 'Us8Z0sIW27BlGAwBVoAWuiXJzKbYBj0AWXxVA0DJ'];
 
 void main() async {
+
 
   // Database Connection
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +31,6 @@ void main() async {
   runApp(const MyApp());
 }
 
-
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -37,7 +42,7 @@ class MyApp extends StatelessWidget {
   theme: ThemeData(
   primarySwatch: Colors.green,
   ),
-  home: const Login(),
+  home: TEMPLATE,
   );
   }
 }

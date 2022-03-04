@@ -25,6 +25,7 @@ class RegistrationPage extends StatefulWidget {
   @override
   State<RegistrationPage> createState() => _RegistrationPageState();
 }
+
 class _RegistrationPageState extends State<RegistrationPage> {
   final controllerUsername = TextEditingController();
   final controllerPassword = TextEditingController();
@@ -49,7 +50,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 const Center(
                   child: Text('User Registration',
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(
                   height: 16,
@@ -105,12 +106,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   height: 50,
                   child: TextButton(
                     child: const Text('Sign Up'),
-                    onPressed: () => newUser(
-                        context,
-                        controllerUsername.text,
-                        controllerEmail.text,
-                        controllerPassword.text
-                    ),
+                    onPressed: () => newUser(context, controllerUsername.text,
+                        controllerEmail.text, controllerPassword.text, '','', DateTime.now(), true),
                   ),
                 )
               ],
