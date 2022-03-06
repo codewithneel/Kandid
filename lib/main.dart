@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:kandid/templates/my_profile.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'templates/feed.dart';
 
 import 'templates/registration.dart';
 import 'templates/login.dart';
 import 'templates/my_profile.dart';
 import 'my_tests/tester.dart';
+import 'package:kandid/responsive/mobile_screen_layout.dart';
+import 'package:kandid/responsive/responsive_layout_screen.dart';
+import 'package:kandid/templates/login_screen.dart';
+import 'package:kandid/templates/signup_screen.dart';
+import 'package:kandid/utils/colors.dart';
 
 /// Here you can set the template you want rendered (don't delete the TestTemplate) ///
-//const TEMPLATE = Registration();
-const TEMPLATE = testTemplate();
+const TEMPLATE = SignupScreen();
+//const TEMPLATE = testTemplate();
 bool isLoggedIn = false;
 
 // format [ <keyApplicationId> , <keyClientId> ]
-final _DB_KEYS = ['zV6NcYkI8BZQ6KPHDGvNPQvdnNvfjZ3JUnmIwNJr', 'Us8Z0sIW27BlGAwBVoAWuiXJzKbYBj0AWXxVA0DJ'];
+final _DB_KEYS = ['zV6NcYkI8BZQ6KPHDGvNPQvdnNvfjZ3JUnmIwNJr',
+  'Us8Z0sIW27BlGAwBVoAWuiXJzKbYBj0AWXxVA0DJ'];
+
+
 
 void main() async {
   // Database Connection
@@ -34,8 +43,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Kandid Construct',
-      theme: ThemeData.light(),
+      debugShowCheckedModeBanner: false,
+      title: 'Kandid',
+      theme: ThemeData.light().copyWith(
+        scaffoldBackgroundColor: mobileBackgroundColor,
+      ),
       home: TEMPLATE,
     );
   }
