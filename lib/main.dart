@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:kandid/templates/my_profile.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-import 'templates/feed.dart';
 
-import 'templates/registration.dart';
-import 'templates/login.dart';
-import 'templates/my_profile.dart';
 import 'my_tests/tester.dart';
-import 'package:kandid/responsive/mobile_screen_layout.dart';
-import 'package:kandid/responsive/responsive_layout_screen.dart';
 import 'package:kandid/templates/login_screen.dart';
-import 'package:kandid/templates/signup_screen.dart';
 import 'package:kandid/utils/colors.dart';
 
 /// Here you can set the template you want rendered (don't delete the TestTemplate) ///
-const TEMPLATE = SignupScreen();
+const TEMPLATE = LoginScreen();
 //const TEMPLATE = testTemplate();
 bool isLoggedIn = false;
 
