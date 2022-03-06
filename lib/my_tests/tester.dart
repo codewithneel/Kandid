@@ -100,7 +100,8 @@ class _TestPageState extends State<TestPage> {
                     onPressed: () =>
                         emailLogin(
                             "eeb24@njit.edu",
-                            "password"),
+                            "password"
+                        ),
                   ),
                 ),
                 Container(

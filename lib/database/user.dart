@@ -12,12 +12,12 @@ Future<String> getCurrentUser() async {
   return current["objectId"];
 }
 
-void newUser(String username, String email, String password,
+Future<bool> newUser(String username, String email, String password,
     String fname, String lname, DateTime date_of_birth, bool is_private) async {
 
   if (username == '' || email == '' || password == '') {
+    return false;
     throw Exception("Missing one or more fields");
-    return;
   }
   final user = ParseUser.createUser(username.trim(), password.trim(), email.trim());
   var response = await user.signUp();
@@ -30,13 +30,13 @@ void newUser(String username, String email, String password,
     user.set("is_private", is_private);
     user.save();
     debugPrint("Registered Successfully");
+    return true;
   }
-  else {
-    throw Exception("Parse call failed: ${response.error!.message}");
-  }
+  //throw Exception("Parse call failed: ${response.error!.message}");
+  return false;
 }
 
-Future<String> emailLogin(String email, String password,) async {
+Future<bool> emailLogin(String email, String password,) async {
   if (email == '' || password == '') {
     throw Exception("Missing one or more fields");
   }
@@ -50,20 +50,21 @@ Future<String> emailLogin(String email, String password,) async {
       username = user["username"];
     }
   }
-  else { username = " "; } // email does not exist
+  else { return false; } // email does not exist
 
-  final user = ParseUser(username, password, null);
+  dynamic user = ParseUser(username, password, null);
+  if (user == null){
+    debugPrint("Could not create ParseUser");
+    return false;
+  }
+
   var response = await user.login();
-
-  ParseUser current = await ParseUser.currentUser();
   if (response.success) {
     debugPrint("Log In Successful for id ${user.get("objectId").toString()}");
+    return true;
   }
-  else {
-    throw Exception("Parse call failed: ${response.error!.message}");
-  }
-
-  return user.get("objectId");
+  debugPrint("Parse call failed: ${response.error!.message}");
+  return false;
 }
 
 void logout() async {

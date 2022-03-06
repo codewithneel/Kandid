@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import '../database/user.dart';
+import '../templates/login_screen.dart';
 import 'tester.dart';
 
 /// Enter your test function here ///
@@ -91,7 +92,7 @@ class _TestProfilePageState extends State<TestProfilePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder:
-                            (context) => testTemplate()
+                            (context) => const LoginScreen()
                         ),
                       ),
                     },

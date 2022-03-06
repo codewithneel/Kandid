@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:kandid/database/user.dart';
+import 'package:kandid/my_tests/test_profile_page.dart';
 import 'package:kandid/templates/login_screen.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/text_field_input.dart';
+import '../widgets/alerts.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -100,10 +104,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 24,
               ),
               InkWell(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const LoginScreen(),
-                  ),
+                onTap: () => tryRegister(
+                  context,
+                  _useranameController.text,
+                  _emailController.text,
+                  _passwordController.text,
+                  _bioController.text,
                 ),
                 child: Container(
                   child: const Text(
@@ -163,4 +169,21 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
   }
+}
+
+
+void tryRegister(BuildContext context, String username, String email, String password, String bio) async {
+
+  if (await newUser(username, email, password, "", "", DateTime.now(), false)){
+    emailLogin(email, password);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const testProfile(),
+      ),
+    );
+  }
+  else{
+    showError(context, "Error risen while creating an account");
+  }
+
 }

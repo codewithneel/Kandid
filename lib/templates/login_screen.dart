@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:kandid/widgets/alerts.dart';
+import 'package:kandid/my_tests/test_profile_page.dart';
 import 'package:kandid/templates/signup_screen.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/text_field_input.dart';
+import '../database/user.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -59,7 +63,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 24,
               ),
               InkWell(
-                onTap: () {},
+                onTap: () => {
+                  tryLogin(
+                      context,
+                      _emailController.text,
+                      _passwordController.text
+                  ),
+                },
                 child: Container(
                   child: const Text(
                     "Log in",
@@ -123,4 +133,20 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+
+
+void tryLogin(BuildContext context,String email, String password) async{
+
+  if (await emailLogin(email, password)){
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const testProfile(),
+      ),
+    );
+  }
+  else{
+    showError(context, "Something went wrong\nlease fill all fields\nand check for typos");
+  }
+
 }
