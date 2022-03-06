@@ -105,9 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                   height: 50,
                   child: TextButton(
                     child: const Text('Sign Up'),
-                    onPressed: () => login(
-                        context,
-                        controllerUsername.text,
+                    onPressed: () => emailLogin(
                         controllerEmail.text,
                         controllerPassword.text
                     ),

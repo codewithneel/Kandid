@@ -106,8 +106,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   height: 50,
                   child: TextButton(
                     child: const Text('Sign Up'),
-                    onPressed: () => newUser(context, controllerUsername.text,
-                        controllerEmail.text, controllerPassword.text, '','', DateTime.now(), true),
+                    onPressed: () => newUser(
+                        controllerUsername.text,
+                        controllerEmail.text,
+                        controllerPassword.text,
+                        '',
+                        '',
+                        DateTime.now(),
+                        true),
                   ),
                 )
               ],

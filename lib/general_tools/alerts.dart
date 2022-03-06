@@ -1,13 +1,13 @@
 
 import 'package:flutter/material.dart';
 
-void showSuccess(BuildContext context) {
+void showSuccess(BuildContext context, String message) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text("Success!"),
-        content: const Text("User was successfully created!"),
+        content: Text(message),
         actions: <Widget>[
           FlatButton(
             child: const Text("OK"),

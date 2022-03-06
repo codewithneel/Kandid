@@ -9,7 +9,8 @@ import 'my_tests/tester.dart';
 
 /// Here you can set the template you want rendered (don't delete the TestTemplate) ///
 //const TEMPLATE = Registration();
-const TEMPLATE = TestTemplate();
+const TEMPLATE = testTemplate();
+bool isLoggedIn = false;
 
 // format [ <keyApplicationId> , <keyClientId> ]
 final _DB_KEYS = ['zV6NcYkI8BZQ6KPHDGvNPQvdnNvfjZ3JUnmIwNJr', 'Us8Z0sIW27BlGAwBVoAWuiXJzKbYBj0AWXxVA0DJ'];
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kandid Construct',
       theme: ThemeData.light(),
-      home: const ProfileScreen(),
+      home: TEMPLATE,
     );
   }
 }
