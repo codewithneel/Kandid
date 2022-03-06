@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: Text("Don't have an account? "),
+                    child: const Text("Don't have an account? "),
                     padding: const EdgeInsets.symmetric(
                       vertical: 8,
                     ),
@@ -109,11 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Container(
                       //to make it clickable
-                      child: Text(
+                      child: const Text(
                         "Sign Up",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: TextStyle( fontWeight: FontWeight.bold ),
                       ),
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
@@ -146,7 +144,10 @@ void tryLogin(BuildContext context,String email, String password) async{
     );
   }
   else{
-    showError(context, "Something went wrong\nlease fill all fields\nand check for typos");
+    showError(context,
+        "Something went wrong\n"
+        "Please fill all fields\n"
+            "and check for typos");
   }
 
 }

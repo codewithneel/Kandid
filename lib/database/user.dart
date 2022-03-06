@@ -38,6 +38,7 @@ Future<bool> newUser(String username, String email, String password,
 
 Future<bool> emailLogin(String email, String password,) async {
   if (email == '' || password == '') {
+    return false;
     throw Exception("Missing one or more fields");
   }
 
