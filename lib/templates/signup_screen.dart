@@ -104,13 +104,15 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 24,
               ),
               InkWell(
-                onTap: () => tryRegister(
-                  context,
-                  _useranameController.text,
-                  _emailController.text,
-                  _passwordController.text,
-                  _bioController.text,
-                ),
+                onTap: () => userSetImage
+                //tryRegister(
+                //context,
+                //_useranameController.text,
+                //_emailController.text,
+                //_passwordController.text,
+                //_bioController.text,
+                //),
+                ,
                 child: Container(
                   child: const Text(
                     "Sign Up",
@@ -171,19 +173,16 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 }
 
-
-void tryRegister(BuildContext context, String username, String email, String password, String bio) async {
-
-  if (await newUser(username, email, password, "", "", DateTime.now(), false)){
+void tryRegister(BuildContext context, String username, String email,
+    String password, String bio) async {
+  if (await newUser(username, email, password, "", "", DateTime.now(), false)) {
     emailLogin(email, password);
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const testProfile(),
       ),
     );
-  }
-  else{
+  } else {
     showError(context, "Error risen while creating an account");
   }
-
 }

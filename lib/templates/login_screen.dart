@@ -64,11 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               InkWell(
                 onTap: () => {
-                  tryLogin(
-                      context,
-                      _emailController.text,
-                      _passwordController.text
-                  ),
+                  userSetImage()
+                  //tryLogin(
+                  //    context,
+                  //    _emailController.text,
+                  //    _passwordController.text
+                  //),
                 },
                 child: Container(
                   child: const Text(
@@ -111,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //to make it clickable
                       child: const Text(
                         "Sign Up",
-                        style: TextStyle( fontWeight: FontWeight.bold ),
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
@@ -133,21 +134,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-
-void tryLogin(BuildContext context,String email, String password) async{
-
-  if (await emailLogin(email, password)){
+void tryLogin(BuildContext context, String email, String password) async {
+  if (await emailLogin(email, password)) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const testProfile(),
       ),
     );
-  }
-  else{
-    showError(context,
+  } else {
+    showError(
+        context,
         "Something went wrong\n"
         "Please fill all fields\n"
-            "and check for typos");
+        "and check for typos");
   }
-
 }
