@@ -1,12 +1,11 @@
 // user database library
 // This file contains all user related functions using the back4app database
-// Examples of functions include: user data creation/editing/retrieval
 
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'follow.dart' as f;
 
-import 'follow.dart';
-
+// This is probably unnecessary but I don't care
 Future<String> getCurrentUser() async {
   ParseUser current = await ParseUser.currentUser();
   return current["objectId"];
@@ -92,6 +91,12 @@ void _userSetter(String attribute, dynamic newValue) async {
   current.set(attribute, newValue);
   current.save();
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// The functions below are probably unnecessary and _userSetter can just be
+// used instead, but this way me and anyone working doesn't have to remember
+// attribute names.
+
 void userSetUsername(String new_username) {
   _userSetter("username", new_username);
 }
@@ -116,13 +121,11 @@ void userSetPrivacyStatus(bool new_private) {
 void userSetDob(DateTime new_dob) {
   _userSetter("date_of_birth", new_dob);
 } // date of birth
-
 void userSetImage() {}
-
-void userSetFollowers() {} // user_ids that are following user
-void userSetFollowing() {}
 void userSetPost() {}
 void userSetChat() {}
+
+////////////////////////////////////////////////////////////////////////////////
 
 Future<dynamic> _userQueryExecutor(String user_id, String attribute) async {
   dynamic ret;
@@ -138,42 +141,61 @@ Future<dynamic> _userQueryExecutor(String user_id, String attribute) async {
     }
   }
   catch(e){
-    debugPrint("Failed to get $attribute from $user_id\n$e");
+    // Object does not exist in database, return null
   }
   return ret;
 }
 
-Future<String> userGetUsername(String user_id) async {
-  dynamic ret = await _userQueryExecutor(user_id, "username");
-  if (ret == null){ return ""; }
-  return ret;
+////////////////////////////////////////////////////////////////////////////////
+// The functions below are probably unnecessary and _userQueryExecutor can just
+// be used instead, but this way me and anyone working doesn't have to remember
+// attribute names.
+
+Future<String?> userGetUsername(String user_id) async {
+  return await _userQueryExecutor(user_id, "username");
 }
-Future<String> userGetPassword(String user_id) async {
+Future<String?> userGetPassword(String user_id) async {
   return await _userQueryExecutor(user_id, "password");
 }
-Future<String>  userGetEmail(String user_id) async {
+Future<String?>  userGetEmail(String user_id) async {
   return await _userQueryExecutor(user_id, "email");
 }
-Future<String> userGetFirstName(String user_id) async {
+Future<String?> userGetFirstName(String user_id) async {
   return await _userQueryExecutor(user_id, "fname");
 }
-Future<String> userGetLastName(String user_id) async {
+Future<String?> userGetLastName(String user_id) async {
   return await _userQueryExecutor(user_id, "lname");
 }
 // this may be an issue becuase it dob is a DateTime
-Future<DateTime> userGetDob(String user_id) async {
+Future<DateTime?> userGetDob(String user_id) async {
   return await _userQueryExecutor(user_id, "date_of_birth");
 }
-Future<String> userGetBio(String user_id) async {
+Future<String?> userGetBio(String user_id) async {
   return await _userQueryExecutor(user_id, "bio");
 }
-Future<String> userGetPrivacyStatus(String user_id) async {
+Future<String?> userGetPrivacyStatus(String user_id) async {
   return await _userQueryExecutor(user_id, "is_private");
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Follow Relationships are all imported by <follow.dart> but they are imported
+// here so that all user functionality is in one place with one import
 
-void userGetFollowers() {}
-void userGetFollowing() {}
+void userFollow(follower, followed){
+  f.newFollow(follower, followed);
+}
+
+void userUnfollow(follower, followed){
+  f.removeFollow(follower, followed);
+}
+
+Future<List<String>?> userGetFollowers(String user_id) async {
+  return await f.getFollowers(user_id);
+}
+Future<List<String>?> userGetFollowing(String user_id) async {
+  return await f.getFollowing(user_id);
+}
+
 void userGetPost() {}
 void userGetChat() {}
 void userGetImage() {}

@@ -10,6 +10,7 @@ import 'package:kandid/utils/colors.dart';
 
 /// Here you can set the template you want rendered (don't delete the TestTemplate) ///
 const TEMPLATE = MobileScreenLayout();
+//const TEMPLATE = LoginScreen();
 //const TEMPLATE = testTemplate();
 bool isLoggedIn = false;
 

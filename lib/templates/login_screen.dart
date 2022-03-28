@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kandid/responsive/mobile_screen_layout.dart';
 
@@ -147,8 +146,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-void tryLogin(BuildContext context, String email, String password) async {
-  if (await emailLogin(email, password)) {
+void tryLogin(BuildContext context,String email, String password) async{
+
+  if (await emailLogin(email, password)){
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const MobileScreenLayout(),

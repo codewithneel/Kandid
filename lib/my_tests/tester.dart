@@ -4,41 +4,14 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import '../database/user.dart';
 import 'test_profile_page.dart';
 
-
 /// Enter your test function here ///
 void testfunc1() async {
-  dynamic user = await ParseUser.currentUser();
-  if (user == null) {
-    debugPrint("No User Logged In");
-  }
-  else{
-    debugPrint(user["username"]);
-  }
+  userUnfollow("xv8IPDTc38", await getCurrentUser());
+  debugPrint("Clicked");
 }
 
 void testfunc2() async {
-  String id = "";
-
-  dynamic user = await ParseUser.currentUser();
-  if (user == null){ debugPrint("no user logged in"); return; }
-
-  id = user["objectId"];
-
-  String str = await userGetLastName(id);
-  debugPrint(str);
-  userSetLastName("miller");
-  str = await userGetLastName(id);
-  debugPrint(str);
-
-  // newUser(
-  //     context,
-  //     "edelb",
-  //     "eeb24@njit.edu",
-  //     "password",
-  //     "tom",
-  //     "smith",
-  //     DateTime.now(),
-  //     true),
+  userUnfollow(await getCurrentUser(), "xv8IPDTc38");
 }
 
 

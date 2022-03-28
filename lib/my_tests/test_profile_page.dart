@@ -18,14 +18,12 @@ void funcReturn() async {
 }
 
 Future<String> displayUsername() async{
-  try {
-    String user_id = await getCurrentUser();
-    return await userGetUsername(user_id);
+  String user_id = await getCurrentUser();
+  dynamic ret = await userGetUsername(user_id);
+  if (ret != null){
+    return ret;
   }
-  catch(e){
-    return "No User";
-  }
-
+  return "No User";
 }
 
 class testProfile extends StatelessWidget {
