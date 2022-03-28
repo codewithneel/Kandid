@@ -45,7 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 80,
               ),
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Get Started,",

@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kandid/my_tests/tester.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/templates/feed_screen.dart';
+
+import '../my_tests/test_profile_page.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -41,12 +44,12 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: [
+        children: const [
           FeedScreen(),
           Text("search"),
-          Text("add post"),
+          testTemplate(),
           Text("notifications"),
-          Text("profile"),
+          testProfile(),
         ],
         physics:
             NeverScrollableScrollPhysics(), //if removed, you can swipe between the nav bar taps like cards
