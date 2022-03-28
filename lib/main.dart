@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kandid/responsive/mobile_screen_layout.dart';
+import 'package:kandid/templates/feed_screen.dart';
 import 'package:kandid/templates/signup_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 

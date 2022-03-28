@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kandid/utils/colors.dart';
+import 'package:kandid/templates/feed_screen.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     return Scaffold(
       body: PageView(
         children: [
-          Text("Feed"),
+          FeedScreen(),
           Text("search"),
           Text("add post"),
           Text("notifications"),
