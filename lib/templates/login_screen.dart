@@ -64,12 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               InkWell(
                 onTap: () => {
-                  userSetImage()
-                  //tryLogin(
-                  //    context,
-                  //    _emailController.text,
-                  //    _passwordController.text
-                  //),
+                  tryLogin(
+                      context, _emailController.text, _passwordController.text),
                 },
                 child: Container(
                   child: const Text(

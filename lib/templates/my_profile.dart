@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../widgets/follow_button.dart';
 
-
-
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 

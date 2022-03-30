@@ -104,15 +104,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 24,
               ),
               InkWell(
-                onTap: () => userSetImage
-                //tryRegister(
-                //context,
-                //_useranameController.text,
-                //_emailController.text,
-                //_passwordController.text,
-                //_bioController.text,
-                //),
-                ,
+                onTap: () => //userSetImage
+                    tryRegister(
+                  context,
+                  _useranameController.text,
+                  _emailController.text,
+                  _passwordController.text,
+                  _bioController.text,
+                ),
                 child: Container(
                   child: const Text(
                     "Sign Up",

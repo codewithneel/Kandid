@@ -1,6 +1,9 @@
 // user database library
 // This file contains all user related functions using the back4app database
 // Examples of functions include: user data creation/editing/retrieval
+//import 'dart:html';
+
+import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
@@ -129,15 +132,22 @@ void userSetDob(DateTime new_dob) {
   _userSetter("date_of_birth", new_dob);
 } // date of birth
 
-void userSetImage() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final cameras = await availableCameras();
-  print(cameras);
-}
+void userSetImage() {}
 
 void userSetFollowers() {} // user_ids that are following user
 void userSetFollowing() {}
-void userSetPost() {}
+
+Future<void> userSetPost(ParseFileBase image, String caption) async {
+  dynamic user = await ParseUser.currentUser();
+  //String userID = user.get('objectID');
+  final todo = ParseObject('Posts')
+    ..set('userID', '1')
+    //..set('userID', '2')
+    ..set('caption', caption)
+    ..set('image', image);
+  await todo.save();
+}
+
 void userSetChat() {}
 
 Future<dynamic> _userQueryExecutor(String user_id, String attribute) async {
@@ -197,6 +207,23 @@ Future<String> userGetPrivacyStatus(String user_id) async {
 
 void userGetFollowers() {}
 void userGetFollowing() {}
-void userGetPost() {}
+Future<List> userGetPost() async {
+  try {
+    var query = QueryBuilder<ParseUser>(ParseUser.forQuery());
+    query.whereEqualTo("userID", '1');
+    final ParseResponse apiResponse = await query.query();
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseUser user in apiResponse.results!) {
+        //return [user['imagePath'], user['caption'], user['createdAt']];
+        return await [user['image'], user['caption'], user['createdAt']];
+      }
+    }
+  } catch (e) {
+    debugPrint("Failed to get post");
+  }
+  return [];
+}
+
 void userGetChat() {}
 void userGetImage() {}
