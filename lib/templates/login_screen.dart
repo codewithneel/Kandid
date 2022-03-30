@@ -128,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text(
                         "Sign Up",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -146,16 +146,19 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-void tryLogin(BuildContext context,String email, String password) async{
+void tryLogin(BuildContext context, String email, String password) async {
+  if (await emailLogin(email, password)) {
 
-  if (await emailLogin(email, password)){
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const MobileScreenLayout(),
       ),
     );
   } else {
-    showError(context,
-        "Something went wrong\nlease fill all fields\nand check for typos");
+    showError(
+        context,
+        "Something went wrong\n"
+        "Please fill all fields\n"
+        "and check for typos");
   }
 }

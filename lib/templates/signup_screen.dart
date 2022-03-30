@@ -101,7 +101,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 24,
               ),
               GestureDetector(
-                onTap: () => tryRegister(
+                onTap: () => tryRegister( //userSetImage also?
                   context,
                   _useranameController.text,
                   _emailController.text,
