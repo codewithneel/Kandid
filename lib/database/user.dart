@@ -1,6 +1,11 @@
 // user database library
 // This file contains all user related functions using the back4app database
+// Examples of functions include: user data creation/editing/retrieval
 
+//import 'dart:html';
+import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'follow.dart' as f;
@@ -13,12 +18,12 @@ Future<String> getCurrentUser() async {
 
 Future<bool> newUser(String username, String email, String password,
     String fname, String lname, DateTime date_of_birth, bool is_private) async {
-
   if (username == '' || email == '' || password == '') {
     return false;
     throw Exception("Missing one or more fields");
   }
-  final user = ParseUser.createUser(username.trim(), password.trim(), email.trim());
+  final user =
+      ParseUser.createUser(username.trim(), password.trim(), email.trim());
   var response = await user.signUp();
 
   if (response.success) {
@@ -35,7 +40,10 @@ Future<bool> newUser(String username, String email, String password,
   return false;
 }
 
-Future<bool> emailLogin(String email, String password,) async {
+Future<bool> emailLogin(
+  String email,
+  String password,
+) async {
   if (email == '' || password == '') {
     return false;
     throw Exception("Missing one or more fields");
@@ -49,11 +57,12 @@ Future<bool> emailLogin(String email, String password,) async {
     for (ParseUser user in apiResponse.results!) {
       username = user["username"];
     }
-  }
-  else { return false; } // email does not exist
+  } else {
+    return false;
+  } // email does not exist
 
   dynamic user = ParseUser(username, password, null);
-  if (user == null){
+  if (user == null) {
     debugPrint("Could not create ParseUser");
     return false;
   }
@@ -69,22 +78,21 @@ Future<bool> emailLogin(String email, String password,) async {
 
 void logout() async {
   dynamic user = await ParseUser.currentUser();
-  if (user == null){
+  if (user == null) {
     debugPrint("Tried logging out when not logged in");
     return;
   }
   var response = await user.logout();
   if (response.success) {
     debugPrint("User was successfully logout!");
-  }
-  else {
+  } else {
     throw Exception("Failed parse call: ${response.error!.message}");
   }
 }
 
 void _userSetter(String attribute, dynamic newValue) async {
   dynamic current = await ParseUser.currentUser();
-  if (current == null){
+  if (current == null) {
     debugPrint("Try to set when no one is logged in");
     return;
   }
@@ -100,29 +108,50 @@ void _userSetter(String attribute, dynamic newValue) async {
 void userSetUsername(String new_username) {
   _userSetter("username", new_username);
 }
+
 void userSetPassword(String new_password) {
   _userSetter("password", new_password);
 }
+
 void userSetEmail(String new_email) {
   _userSetter("email", new_email);
 }
+
 void userSetFirstName(String new_fname) {
   _userSetter("fname", new_fname);
 }
+
 void userSetLastName(String new_lname) {
   _userSetter("lname", new_lname);
 }
+
 void userSetBio(String new_bio) {
   _userSetter("bio", new_bio);
 }
+
 void userSetPrivacyStatus(bool new_private) {
   _userSetter("is_private", new_private);
 }
+
 void userSetDob(DateTime new_dob) {
   _userSetter("date_of_birth", new_dob);
 } // date of birth
 void userSetImage() {}
-void userSetPost() {}
+
+void userSetFollowers() {} // user_ids that are following user
+void userSetFollowing() {}
+
+Future<void> userSetPost(ParseFileBase image, String caption) async {
+  dynamic user = await ParseUser.currentUser();
+  //String userID = user.get('objectID');
+  final todo = ParseObject('Posts')
+    ..set('userID', '1')
+    //..set('userID', '2')
+    ..set('caption', caption)
+    ..set('image', image);
+  await todo.save();
+}
+
 void userSetChat() {}
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -139,9 +168,9 @@ Future<dynamic> _userQueryExecutor(String user_id, String attribute) async {
         ret = user[attribute];
       }
     }
-  }
-  catch(e){
-    // Object does not exist in database, return null
+  } 
+  catch (e) {
+    debugPrint("Failed to get $attribute from $user_id\n$e");
   }
   return ret;
 }
@@ -166,10 +195,30 @@ Future<String?> userGetFirstName(String user_id) async {
 Future<String?> userGetLastName(String user_id) async {
   return await _userQueryExecutor(user_id, "lname");
 }
+
 // this may be an issue becuase it dob is a DateTime
 Future<DateTime?> userGetDob(String user_id) async {
   return await _userQueryExecutor(user_id, "date_of_birth");
 }
+
+Future<List> userGetPost() async {
+  try {
+    var query = QueryBuilder<ParseUser>(ParseUser.forQuery());
+    query.whereEqualTo("userID", '1');
+    final ParseResponse apiResponse = await query.query();
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseUser user in apiResponse.results!) {
+        //return [user['imagePath'], user['caption'], user['createdAt']];
+        return await [user['image'], user['caption'], user['createdAt']];
+      }
+    }
+  } catch (e) {
+    debugPrint("Failed to get post");
+  }
+  return [];
+}
+
 Future<String?> userGetBio(String user_id) async {
   return await _userQueryExecutor(user_id, "bio");
 }
@@ -196,6 +245,5 @@ Future<List<String>?> userGetFollowing(String user_id) async {
   return await f.getFollowing(user_id);
 }
 
-void userGetPost() {}
 void userGetChat() {}
 void userGetImage() {}

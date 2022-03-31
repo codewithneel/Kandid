@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:kandid/database/user.dart';
@@ -34,7 +35,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -45,7 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 80,
               ),
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Get Started,",
@@ -64,26 +65,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 64,
               ),
               //title
-              Stack(
-                children: [
-                  const CircleAvatar(
-                    radius: 64,
-                    backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1582152629442-4a864303fb96?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'),
-                  ),
-                  Positioned(
-                    bottom: -15,
-                    left: 90,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.add_a_photo,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 64),
+
+              const SizedBox(height: 32),
               TextFieldInput(
                 textEditingController: _useranameController,
                 hintText: 'Enter your username',
@@ -117,8 +100,8 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 24,
               ),
-              InkWell(
-                onTap: () => tryRegister(
+              GestureDetector(
+                onTap: () => tryRegister( //userSetImage also?
                   context,
                   _useranameController.text,
                   _emailController.text,
@@ -153,7 +136,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: const Text("Already have an account? "),
+                    child: Text("Already have an account? "),
                     padding: const EdgeInsets.symmetric(vertical: 8),
                   ),
                   GestureDetector(
@@ -164,7 +147,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     child: Container(
                       //to make it clickable
-                      child: const Text(
+                      child: Text(
                         "Sign In",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -185,10 +168,9 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 }
 
-
 void tryRegister(BuildContext context, String username, String email,
-  String password, String bio) async {
-  if (await newUser(username, email, password, "", "", DateTime.now(), false)){
+    String password, String bio) async {
+  if (await newUser(username, email, password, "", "", DateTime.now(), false)) {
     emailLogin(email, password);
     Navigator.of(context).push(
       MaterialPageRoute(
