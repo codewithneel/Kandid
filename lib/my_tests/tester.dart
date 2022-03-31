@@ -1,26 +1,39 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import '../database/user.dart';
 import 'test_profile_page.dart';
-
+import '../templates/camera_screen.dart';
+import 'package:camera/camera.dart';
 
 /// Enter your test function here ///
-void testfunc1() async {
-  dynamic user = await ParseUser.currentUser();
-  if (user == null) {
-    debugPrint("No User Logged In");
-  }
-  else{
-    debugPrint(user["username"]);
-  }
+void testfunc1(BuildContext context) async {
+  // Ensure that plugin services are initialized so that `availableCameras()`
+  // can be called before `runApp()`
+  //WidgetsFlutterBinding.ensureInitialized();
+
+  // Obtain a list of the available cameras on the device.
+  final cameras = await availableCameras();
+
+  // Get a specific camera from the list of available cameras.
+  final firstCamera = cameras.first;
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => TakePictureScreen(camera: firstCamera),
+    ),
+  );
 }
 
 void testfunc2() async {
   String id = "";
 
   dynamic user = await ParseUser.currentUser();
-  if (user == null){ debugPrint("no user logged in"); return; }
+  if (user == null) {
+    debugPrint("no user logged in");
+    return;
+  }
 
   id = user["objectId"];
 
@@ -39,8 +52,16 @@ void testfunc2() async {
   //     "smith",
   //     DateTime.now(),
   //     true),
+
+/// Enter your test function here ///
+void testfunc3() async {
+  userUnfollow("xv8IPDTc38", await getCurrentUser());
+  debugPrint("Clicked");
 }
 
+void testfunc4() async {
+  userUnfollow(await getCurrentUser(), "xv8IPDTc38");
+}
 
 class testTemplate extends StatelessWidget {
   const testTemplate({Key? key}) : super(key: key);
@@ -69,8 +90,11 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
   final controllerUsername = TextEditingController();
 
+  var n;
+
   @override
   Widget build(BuildContext context) {
+    Future<String> posts;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Kandid Tester'),
@@ -97,18 +121,14 @@ class _TestPageState extends State<TestPage> {
                   height: 50,
                   child: TextButton(
                     child: const Text('Login'),
-                    onPressed: () =>
-                        emailLogin(
-                            "eeb24@njit.edu",
-                            "password"
-                        ),
+                    onPressed: () => emailLogin("eeb24@njit.edu", "password"),
                   ),
                 ),
                 Container(
                   height: 50,
                   child: TextButton(
                     child: const Text('testfunc1'),
-                    onPressed: () => testfunc1(),
+                    onPressed: () => testfunc1(context),
                   ),
                 ),
                 Container(
@@ -121,9 +141,7 @@ class _TestPageState extends State<TestPage> {
                 Container(
                   height: 50,
                   child: TextButton(
-                    child: const Text('Logout'),
-                    onPressed: () => logout(),
-                  ),
+                      child: const Text('View Post'), onPressed: () => {}),
                 ),
                 Container(
                   height: 50,
@@ -132,9 +150,7 @@ class _TestPageState extends State<TestPage> {
                     onPressed: () => {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder:
-                            (context) => testProfile()
-                        ),
+                        MaterialPageRoute(builder: (context) => testProfile()),
                       ),
                     },
                   ),

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:kandid/database/user.dart';
 import 'package:kandid/my_tests/test_profile_page.dart';
+import 'package:kandid/responsive/mobile_screen_layout.dart';
 import 'package:kandid/templates/login_screen.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/text_field_input.dart';
@@ -34,6 +35,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -41,35 +43,30 @@ class _SignupScreenState extends State<SignupScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Flexible(child: Container(), flex: 1),
+              const SizedBox(
+                height: 80,
+              ),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Get Started,",
+                  style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(
+                height: 100,
+              ),
               SvgPicture.asset(
                 'assets/kandidLogo.svg',
                 color: primaryColor,
                 height: 64,
               ),
               //title
-              const SizedBox(height: 24),
 
-              Stack(
-                children: [
-                  CircleAvatar(
-                    radius: 64,
-                    backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1582152629442-4a864303fb96?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'),
-                  ),
-                  Positioned(
-                    bottom: -15,
-                    left: 90,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.add_a_photo,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 64),
+              const SizedBox(height: 32),
               TextFieldInput(
                 textEditingController: _useranameController,
                 hintText: 'Enter your username',
@@ -103,16 +100,15 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 24,
               ),
-              InkWell(
-                onTap: () => userSetImage
-                //tryRegister(
-                //context,
-                //_useranameController.text,
-                //_emailController.text,
-                //_passwordController.text,
-                //_bioController.text,
-                //),
-                ,
+              GestureDetector(
+                onTap: () => tryRegister(
+                  //userSetImage also?
+                  context,
+                  _useranameController.text,
+                  _emailController.text,
+                  _passwordController.text,
+                  _bioController.text,
+                ),
                 child: Container(
                   child: const Text(
                     "Sign Up",
@@ -179,7 +175,7 @@ void tryRegister(BuildContext context, String username, String email,
     emailLogin(email, password);
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const testProfile(),
+        builder: (context) => const MobileScreenLayout(),
       ),
     );
   } else {

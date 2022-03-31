@@ -11,21 +11,18 @@ void funcReturn() async {
 
   if (user["username"] == null) {
     debugPrint("No User Logged In");
-  }
-  else{
+  } else {
     debugPrint(user["username"]);
   }
 }
 
-Future<String> displayUsername() async{
-  try {
-    String user_id = await getCurrentUser();
-    return await userGetUsername(user_id);
+Future<String> displayUsername() async {
+  String user_id = await getCurrentUser();
+  dynamic ret = await userGetUsername(user_id);
+  if (ret != null) {
+    return ret;
   }
-  catch(e){
-    return "No User";
-  }
-
+  return "No User";
 }
 
 class testProfile extends StatelessWidget {
@@ -69,7 +66,7 @@ class _TestProfilePageState extends State<TestProfilePage> {
                 FutureBuilder(
                     future: displayUsername(),
                     builder: (context, snapshot) {
-                      switch (snapshot.connectionState){
+                      switch (snapshot.connectionState) {
                         case ConnectionState.active:
                         case ConnectionState.waiting:
                           return const Text('Loading...');
@@ -78,8 +75,7 @@ class _TestProfilePageState extends State<TestProfilePage> {
                         default:
                           return const Text('default?');
                       }
-                    }
-                ),
+                    }),
                 TextField(),
                 const SizedBox(
                   height: 8,
@@ -89,11 +85,10 @@ class _TestProfilePageState extends State<TestProfilePage> {
                   child: TextButton(
                     child: const Text('Return'),
                     onPressed: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder:
-                            (context) => const LoginScreen()
-                        ),
+                      Navigator.of(context, rootNavigator: true)
+                          .pushReplacement(
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
                       ),
                     },
                   ),
