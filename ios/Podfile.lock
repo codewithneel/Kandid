@@ -1,9 +1,6 @@
 PODS:
-<<<<<<< HEAD
-=======
   - camera (0.0.1):
     - Flutter
->>>>>>> 75d4044dc52b55861a63f3c3ee3aca6d1f16f71c
   - connectivity_plus (0.0.1):
     - Flutter
     - Reachability
@@ -17,10 +14,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-<<<<<<< HEAD
-=======
   - camera (from `.symlinks/plugins/camera/ios`)
->>>>>>> 75d4044dc52b55861a63f3c3ee3aca6d1f16f71c
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -32,11 +26,8 @@ SPEC REPOS:
     - Reachability
 
 EXTERNAL SOURCES:
-<<<<<<< HEAD
-=======
   camera:
     :path: ".symlinks/plugins/camera/ios"
->>>>>>> 75d4044dc52b55861a63f3c3ee3aca6d1f16f71c
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
@@ -49,10 +40,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences/ios"
 
 SPEC CHECKSUMS:
-<<<<<<< HEAD
-=======
   camera: 9993f92f2c793e87b65e35f3a23c70582afb05b1
->>>>>>> 75d4044dc52b55861a63f3c3ee3aca6d1f16f71c
   connectivity_plus: 5f0eb61093bec56935f21a1699dd2758bc895587
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
@@ -62,8 +50,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-<<<<<<< HEAD
 COCOAPODS: 1.10.0
-=======
-COCOAPODS: 1.11.2
->>>>>>> 75d4044dc52b55861a63f3c3ee3aca6d1f16f71c
