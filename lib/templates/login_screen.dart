@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 80,
               ),
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Welcome Back,",
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: Text("Don't have an account? "),
+                    child: const Text("Don't have an account? "),
                     padding: const EdgeInsets.symmetric(
                       vertical: 8,
                     ),
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Container(
                       //to make it clickable
-                      child: Text(
+                      child: const Text(
                         "Sign Up",
                         style: TextStyle(
                           fontWeight: FontWeight.bold

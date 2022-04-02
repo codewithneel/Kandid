@@ -1,5 +1,5 @@
-import 'dart:io';
 
+//import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -7,6 +7,9 @@ import '../database/user.dart';
 import 'test_profile_page.dart';
 import '../templates/camera_screen.dart';
 import 'package:camera/camera.dart';
+import '../database/chat.dart';
+import '../database/message.dart';
+import '../database/post.dart';
 
 /// Enter your test function here ///
 void testfunc1(BuildContext context) async {

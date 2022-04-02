@@ -3,12 +3,14 @@
 // Examples of functions include: user data creation/editing/retrieval
 
 //import 'dart:html';
-import 'dart:io';
-
-import 'package:camera/camera.dart';
+//import 'dart:io';
+//import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'follow.dart' as f;
+
+/// This comment blocks an undesirable naming convention warning from showing up
+// ignore_for_file: non_constant_identifier_names
 
 // This is probably unnecessary but I don't care
 Future<String> getCurrentUser() async {
@@ -16,11 +18,11 @@ Future<String> getCurrentUser() async {
   return current["objectId"];
 }
 
-Future<bool> newUser(String username, String email, String password,
+Future<bool> userNew(String username, String email, String password,
     String fname, String lname, DateTime date_of_birth, bool is_private) async {
   if (username == '' || email == '' || password == '') {
     return false;
-    throw Exception("Missing one or more fields");
+    // TODO : throw Exception("Missing one or more fields");
   }
   final user =
       ParseUser.createUser(username.trim(), password.trim(), email.trim());
@@ -36,7 +38,7 @@ Future<bool> newUser(String username, String email, String password,
     debugPrint("Registered Successfully");
     return true;
   }
-  //throw Exception("Parse call failed: ${response.error!.message}");
+  // TODO: throw Exception("Parse call failed: ${response.error!.message}");
   return false;
 }
 
@@ -46,7 +48,7 @@ Future<bool> emailLogin(
 ) async {
   if (email == '' || password == '') {
     return false;
-    throw Exception("Missing one or more fields");
+    // TODO: throw Exception("Missing one or more fields");
   }
 
   String username = "";
@@ -138,15 +140,14 @@ void userSetDob(DateTime new_dob) {
 } // date of birth
 void userSetImage() {}
 
+// TODO
 void userSetFollowers() {} // user_ids that are following user
 void userSetFollowing() {}
 
 Future<void> userSetPost(ParseFileBase image, String caption) async {
-  dynamic user = await ParseUser.currentUser();
-  //String userID = user.get('objectID');
+  String user_id = await getCurrentUser();
   final todo = ParseObject('Posts')
-    ..set('userID', '1')
-    //..set('userID', '2')
+    ..set('userId', user_id)
     ..set('caption', caption)
     ..set('image', image);
   await todo.save();
@@ -175,10 +176,53 @@ Future<dynamic> _userQueryExecutor(String user_id, String attribute) async {
   return ret;
 }
 
+Future<String?> userGetId(String username) async{
+  String? ret;
+
+  try {
+    var query = QueryBuilder<ParseUser>(ParseUser.forQuery());
+    query.whereEqualTo("username", username);
+    final ParseResponse apiResponse = await query.query();
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseUser user in apiResponse.results!) {
+        ret = user["objectId"];
+      }
+    }
+  }
+  catch (e) {
+    debugPrint("Failed to get ID for $username\n$e");
+  }
+  return ret;
+}
+
+Future<List?> userGetPost(String user_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Post"));
+    query.whereEqualTo("userId", user_id);
+    final ParseResponse apiResponse = await query.query();
+
+    // TODO : this query is going to return multiple objects but only the first is being returned
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        //return [user['imagePath'], user['caption'], user['createdAt']];
+        return [
+          obj['image'],
+          obj['caption'],
+          obj['createdAt']
+        ];
+      }
+    }
+  } catch (e) {
+    debugPrint("Failed to get post");
+  }
+  return null;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
-// The functions below are probably unnecessary and _userQueryExecutor can just
+// The functions below are probably unnecessary and _userQueryExecutor can
 // be used instead, but this way me and anyone working doesn't have to remember
-// attribute names.
+// attribute names in the database
 
 Future<String?> userGetUsername(String user_id) async {
   return await _userQueryExecutor(user_id, "username");
@@ -196,28 +240,12 @@ Future<String?> userGetLastName(String user_id) async {
   return await _userQueryExecutor(user_id, "lname");
 }
 
-// this may be an issue becuase it dob is a DateTime
+// this may be an issue because dob is a DateTime
 Future<DateTime?> userGetDob(String user_id) async {
   return await _userQueryExecutor(user_id, "date_of_birth");
 }
 
-Future<List> userGetPost() async {
-  try {
-    var query = QueryBuilder<ParseUser>(ParseUser.forQuery());
-    query.whereEqualTo("userID", '1');
-    final ParseResponse apiResponse = await query.query();
 
-    if (apiResponse.success && apiResponse.results != null) {
-      for (ParseUser user in apiResponse.results!) {
-        //return [user['imagePath'], user['caption'], user['createdAt']];
-        return await [user['image'], user['caption'], user['createdAt']];
-      }
-    }
-  } catch (e) {
-    debugPrint("Failed to get post");
-  }
-  return [];
-}
 
 Future<String?> userGetBio(String user_id) async {
   return await _userQueryExecutor(user_id, "bio");
