@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kandid/responsive/mobile_screen_layout.dart';
 
 import 'package:kandid/widgets/alerts.dart';
-import 'package:kandid/my_tests/test_profile_page.dart';
 import 'package:kandid/templates/signup_screen.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/text_field_input.dart';
@@ -40,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 80,
               ),
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Welcome Back,",
@@ -112,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: Text("Don't have an account? "),
+                    child: const Text("Don't have an account? "),
                     padding: const EdgeInsets.symmetric(
                       vertical: 8,
                     ),
@@ -125,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Container(
                       //to make it clickable
-                      child: Text(
+                      child: const Text(
                         "Sign Up",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),

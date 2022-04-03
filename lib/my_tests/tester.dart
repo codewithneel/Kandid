@@ -1,5 +1,5 @@
-import 'dart:io';
 
+//import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
@@ -7,9 +7,23 @@ import '../database/user.dart';
 import 'test_profile_page.dart';
 import '../templates/camera_screen.dart';
 import 'package:camera/camera.dart';
+import '../database/chat.dart';
+import '../database/message.dart';
+import '../database/post.dart';
 
 /// Enter your test function here ///
 void testfunc1(BuildContext context) async {
+   chatNew("xv8IPDTc38", await getCurrentUser());
+}
+
+void testfunc2() async {
+  String current_id = await getCurrentUser();
+  String? chat_id = await chatGetIdWithIds("xv8IPDTc38", current_id);
+  if(chat_id == null) { debugPrint("No chat id found"); return; }
+  messageNew(current_id, chat_id, "Hello World");
+}
+
+void testfunc3(BuildContext context) async {
   // Ensure that plugin services are initialized so that `availableCameras()`
   // can be called before `runApp()`
   //WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +40,7 @@ void testfunc1(BuildContext context) async {
   );
 }
 
-void testfunc2() async {
+void testfunc4() async {
   String id = "";
 
   dynamic user = await ParseUser.currentUser();
@@ -37,7 +51,7 @@ void testfunc2() async {
 
   id = user["objectId"];
 
-  String str = await userGetLastName(id);
+  String? str = await userGetLastName(id);
   debugPrint(str);
   userSetLastName("miller");
   str = await userGetLastName(id);
@@ -52,19 +66,11 @@ void testfunc2() async {
   //     "smith",
   //     DateTime.now(),
   //     true),
-
-/// Enter your test function here ///
-void testfunc3() async {
-  userUnfollow("xv8IPDTc38", await getCurrentUser());
-  debugPrint("Clicked");
 }
 
-void testfunc4() async {
-  userUnfollow(await getCurrentUser(), "xv8IPDTc38");
-}
 
-class testTemplate extends StatelessWidget {
-  const testTemplate({Key? key}) : super(key: key);
+class TestTemplate extends StatelessWidget {
+  const TestTemplate({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -90,11 +96,9 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
   final controllerUsername = TextEditingController();
 
-  var n;
-
   @override
   Widget build(BuildContext context) {
-    Future<String> posts;
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Kandid Tester'),

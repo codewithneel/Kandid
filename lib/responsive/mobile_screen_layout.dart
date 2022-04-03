@@ -47,7 +47,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         children: const [
           FeedScreen(),
           Text("search"),
-          testTemplate(),
+          TestTemplate(),
           Text("notifications"),
           testProfile(),
         ],

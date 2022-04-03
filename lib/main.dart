@@ -13,11 +13,14 @@ import 'package:kandid/templates/login_screen.dart';
 import 'package:kandid/templates/camera_screen.dart';
 import 'package:kandid/utils/colors.dart';
 
-/// Here you can set the template you want rendered (don't delete the TestTemplate) ///
-const TEMPLATE = LoginScreen();
+/// These comments block a warning for an undesirable naming convention
+// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: constant_identifier_names
+
+/// Here, set the template you want rendered (don't delete the TestTemplate) ///
 //const TEMPLATE = LoginScreen();
 //const TEMPLATE = PersonalInfo();
-//const TEMPLATE = testTemplate();
+const TEMPLATE = TestTemplate();
 bool isLoggedIn = false;
 
 // format [ <keyApplicationId> , <keyClientId> ]
@@ -31,7 +34,7 @@ Future<void> main() async {
   // Database Connection
   final keyApplicationId = _DB_KEYS[0];
   final keyClientKey = _DB_KEYS[1];
-  final keyParseServerUrl = 'https://parseapi.back4app.com';
+  const keyParseServerUrl = 'https://parseapi.back4app.com';
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
 

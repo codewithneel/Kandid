@@ -5,25 +5,26 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-/// ( follower_id, followed_id )
-Future<void> newFollow(String follower, String followed) async {
+/// This comment blocks an undesirable naming convention warning from showing up
+// ignore_for_file: non_constant_identifier_names
 
-  // CHECK IF FOLLOW IS ALREADY IN DATABASE
+
+Future<void> newFollow(String follower_id, String followed_id) async {
+
+  //TODO: CHECK IF FOLLOW IS ALREADY IN DATABASE (we don't want duplicate follows)
 
   final follow = ParseObject('Follow')
-    ..set('follower', follower)
-    ..set('followed', followed);
-
+    ..set('follower', follower_id)
+    ..set('followed', followed_id);
   await follow.save();
 
   debugPrint(follow.toString());
 }
 
-/// ( follower_id, followed_id )
-void removeFollow(String follower, String followed) async {
+void removeFollow(String follower_id, String followed_id) async {
   final parseQuery = QueryBuilder<ParseObject>(ParseObject('Follow'));
-  parseQuery.whereContains('followed', followed);
-  parseQuery.whereContains('follower', follower);
+  parseQuery.whereContains('followed', followed_id);
+  parseQuery.whereContains('follower', follower_id);
 
   final ParseResponse apiResponse = await parseQuery.query();
   if (apiResponse.success && apiResponse.results != null) {
@@ -33,7 +34,7 @@ void removeFollow(String follower, String followed) async {
   }
 }
 
-// THE BELOW FUNCTIONS need to return streams in the future
+// TODO: THE BELOW FUNCTIONS need to return streams not futures
 
 /// This returns everyone following the inputted user_id
 Future<List<String>?> getFollowers(String user_id) async {
@@ -44,7 +45,7 @@ Future<List<String>?> getFollowers(String user_id) async {
   final ParseResponse apiResponse = await parseQuery.query();
   if (apiResponse.success && apiResponse.results != null) {
     for( ParseObject o in apiResponse.results!) {
-      ret.add(o["follower"]); // ERROR CHECK is probably necessary here
+      ret.add(o["follower"]); // TODO: ERROR CHECK is probably necessary here
     }
     return ret;
   }
@@ -60,7 +61,7 @@ Future<List<String>?> getFollowing(String user_id) async {
   final ParseResponse apiResponse = await parseQuery.query();
   if (apiResponse.success && apiResponse.results != null) {
     for( ParseObject o in apiResponse.results!) {
-      ret.add(o["followed"]); // ERROR CHECK is probably necessary here
+      ret.add(o["followed"]); // TODO: ERROR CHECK is probably necessary here
     }
     return ret;
   }
