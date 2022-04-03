@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kandid/responsive/mobile_screen_layout.dart';
 
 import 'package:kandid/widgets/alerts.dart';
-import 'package:kandid/my_tests/test_profile_page.dart';
 import 'package:kandid/templates/signup_screen.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/text_field_input.dart';

@@ -8,16 +8,19 @@
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'follow.dart' as f;
+import 'chat.dart' as c;
 
-/// This comment blocks an undesirable naming convention warning from showing up
+/// This comment blocks a warning for an undesirable naming convention
 // ignore_for_file: non_constant_identifier_names
 
 // This is probably unnecessary but I don't care
+/// Returns the objectId of the current logged in user
 Future<String> getCurrentUser() async {
   ParseUser current = await ParseUser.currentUser();
   return current["objectId"];
 }
 
+/// Creates a new instance of User in the database
 Future<bool> userNew(String username, String email, String password,
     String fname, String lname, DateTime date_of_birth, bool is_private) async {
   if (username == '' || email == '' || password == '') {
@@ -41,6 +44,7 @@ Future<bool> userNew(String username, String email, String password,
   // TODO: throw Exception("Parse call failed: ${response.error!.message}");
   return false;
 }
+
 
 Future<bool> emailLogin(
   String email,
@@ -152,8 +156,6 @@ Future<void> userSetPost(ParseFileBase image, String caption) async {
     ..set('image', image);
   await todo.save();
 }
-
-void userSetChat() {}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -273,5 +275,8 @@ Future<List<String>?> userGetFollowing(String user_id) async {
   return await f.getFollowing(user_id);
 }
 
-void userGetChat() {}
+Future<List<String>?>  userGetChats(String user_id) async {
+  return await c.getChats(user_id);
+}
+
 void userGetImage() {}
