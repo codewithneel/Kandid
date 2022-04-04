@@ -22,9 +22,9 @@ import 'package:kandid/utils/colors.dart';
 /// Here, set the template you want rendered (don't delete the TestTemplate) ///
 //const TEMPLATE = LoginScreen();
 //const TEMPLATE = PersonalInfo();
-//const TEMPLATE = TestTemplate();
+const TEMPLATE = TestTemplate();
 //const TEMPLATE = SettingsScreen();
-const TEMPLATE = ProfileScreen();
+//const TEMPLATE = ProfileScreen();
 
 bool isLoggedIn = false;
 

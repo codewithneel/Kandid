@@ -1,10 +1,11 @@
 // user database library
 // This file contains all user related functions using the back4app database
 // Examples of functions include: user data creation/editing/retrieval
-
 //import 'dart:html';
-//import 'dart:io';
-//import 'package:camera/camera.dart';
+
+import 'dart:io';
+import 'package:camera/camera.dart';
+
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'follow.dart' as f;
@@ -44,7 +45,6 @@ Future<bool> userNew(String username, String email, String password,
   // TODO: throw Exception("Parse call failed: ${response.error!.message}");
   return false;
 }
-
 
 Future<bool> emailLogin(
   String email,

@@ -147,7 +147,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
 void tryLogin(BuildContext context, String email, String password) async {
   if (await emailLogin(email, password)) {
-
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const MobileScreenLayout(),

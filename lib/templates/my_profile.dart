@@ -1,6 +1,7 @@
 // This file is responsible for rendering the template_my_user found in the Figma File
 
 import 'package:flutter/material.dart';
+import '../widgets/follow_button.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:kandid/utils/colors.dart';
 

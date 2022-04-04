@@ -1,5 +1,4 @@
-
-//import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -12,11 +11,21 @@ import '../database/chat.dart';
 import '../database/message.dart';
 import '../database/post.dart';
 
+
 /// Enter your test function here ///
 void testfunc1(BuildContext context) async {
+  // Ensure that plugin services are initialized so that `availableCameras()`
+  // can be called before `runApp()`
+  //WidgetsFlutterBinding.ensureInitialized();
+
+  // Obtain a list of the available cameras on the device.
+  final cameras = await availableCameras();
+
+  // Get a specific camera from the list of available cameras.
+  final firstCamera = cameras.first;
   Navigator.of(context).push(
     MaterialPageRoute(
-      builder: (context) => const SettingsScreen(),
+      builder: (context) => TakePictureScreen(camera: firstCamera),
     ),
   );
 }
@@ -73,10 +82,9 @@ void testfunc4() async {
   //     true),
 }
 
-
 class TestTemplate extends StatelessWidget {
   const TestTemplate({Key? key}) : super(key: key);
-
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -101,9 +109,13 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
   final controllerUsername = TextEditingController();
 
+  var n;
+
   @override
   Widget build(BuildContext context) {
-
+    
+    Future<String> posts;
+    
     return Scaffold(
         appBar: AppBar(
           title: const Text('Kandid Tester'),
