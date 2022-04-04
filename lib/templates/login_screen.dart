@@ -157,7 +157,7 @@ void tryLogin(BuildContext context, String email, String password) async {
     showError(
         context,
         "Something went wrong\n"
-        "Please fill all fields\n"
-        "and check for typos");
+        "Please fill in all fields\n"
+            "and check for typos");
   }
 }

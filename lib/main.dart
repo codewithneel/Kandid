@@ -6,6 +6,8 @@ import 'package:kandid/templates/my_profile.dart';
 import 'package:kandid/templates/personal_info.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:kandid/templates/signup_screen.dart';
+import 'package:kandid/templates/settings_screen.dart';
+import 'package:kandid/templates/my_profile.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'my_tests/tester.dart';
@@ -20,7 +22,10 @@ import 'package:kandid/utils/colors.dart';
 /// Here, set the template you want rendered (don't delete the TestTemplate) ///
 //const TEMPLATE = LoginScreen();
 //const TEMPLATE = PersonalInfo();
-const TEMPLATE = TestTemplate();
+//const TEMPLATE = TestTemplate();
+//const TEMPLATE = SettingsScreen();
+const TEMPLATE = ProfileScreen();
+
 bool isLoggedIn = false;
 
 // format [ <keyApplicationId> , <keyClientId> ]

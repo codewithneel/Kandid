@@ -1,6 +1,7 @@
 
 //import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:kandid/templates/settings_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import '../database/user.dart';
@@ -13,7 +14,11 @@ import '../database/post.dart';
 
 /// Enter your test function here ///
 void testfunc1(BuildContext context) async {
-   chatNew("xv8IPDTc38", await getCurrentUser());
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => const SettingsScreen(),
+    ),
+  );
 }
 
 void testfunc2() async {
