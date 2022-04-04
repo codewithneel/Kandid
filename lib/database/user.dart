@@ -4,10 +4,6 @@
 
 //import 'dart:html';
 //import 'dart:io';
-<<<<<<< HEAD
-
-=======
->>>>>>> 913c436dbb29b5095417fca5f6ec105746ad90c4
 //import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -48,7 +44,6 @@ Future<bool> userNew(String username, String email, String password,
   // TODO: throw Exception("Parse call failed: ${response.error!.message}");
   return false;
 }
-
 
 Future<bool> emailLogin(
   String email,
@@ -162,6 +157,17 @@ Future<void> userSetPost(ParseFileBase image, String caption) async {
   await todo.save();
 }
 
+Future<void> userSetComment(
+    String post_id, String comment, String parent_id) async {
+  String user_id = await getCurrentUser();
+  final todo = ParseObject('Comments')
+    ..set('userId', user_id)
+    ..set('postId', post_id)
+    ..set('comment', comment)
+    ..set('parentId', parent_id);
+  await todo.save();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 Future<dynamic> _userQueryExecutor(String user_id, String attribute) async {
@@ -182,7 +188,7 @@ Future<dynamic> _userQueryExecutor(String user_id, String attribute) async {
   return ret;
 }
 
-Future<String?> userGetId(String username) async{
+Future<String?> userGetId(String username) async {
   String? ret;
 
   try {
@@ -195,29 +201,24 @@ Future<String?> userGetId(String username) async{
         ret = user["objectId"];
       }
     }
-  }
-  catch (e) {
+  } catch (e) {
     debugPrint("Failed to get ID for $username\n$e");
   }
   return ret;
 }
 
-Future<List?> userGetPost(String user_id) async {
+Future<List?> userGetPosts(String user_id) async {
   try {
     var query = QueryBuilder<ParseObject>(ParseObject("Post"));
     query.whereEqualTo("userId", user_id);
     final ParseResponse apiResponse = await query.query();
+    List post_Ids = [];
 
-    // TODO : this query is going to return multiple objects but only the first is being returned
     if (apiResponse.success && apiResponse.results != null) {
       for (ParseObject obj in apiResponse.results!) {
-        //return [user['imagePath'], user['caption'], user['createdAt']];
-        return [
-          obj['image'],
-          obj['caption'],
-          obj['createdAt']
-        ];
+        post_Ids.add(obj['objectID']);
       }
+      return post_Ids;
     }
   } catch (e) {
     debugPrint("Failed to get post");
@@ -255,22 +256,6 @@ Future<DateTime?> userGetDob(String user_id) async {
   return await _userQueryExecutor(user_id, "date_of_birth");
 }
 
-
-<<<<<<< HEAD
-    if (apiResponse.success && apiResponse.results != null) {
-      for (ParseUser user in apiResponse.results!) {
-        //return [user['imagePath'], user['caption'], user['createdAt']];
-        return [user['image'], user['caption'], user['createdAt']];
-      }
-    }
-  } catch (e) {
-    debugPrint("Failed to get post");
-  }
-  return [];
-}
-=======
->>>>>>> 913c436dbb29b5095417fca5f6ec105746ad90c4
-
 Future<String?> userGetBio(String user_id) async {
   return await _userQueryExecutor(user_id, "bio");
 }
@@ -299,8 +284,48 @@ Future<List<String>?> userGetFollowing(String user_id) async {
   return await f.getFollowing(user_id);
 }
 
-Future<List<String>?>  userGetChats(String user_id) async {
+Future<List<String>?> userGetChats(String user_id) async {
   return await c.getChats(user_id);
+}
+
+Future<List?> userGetCommentIds(String post_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Comments"));
+    query
+      ..whereEqualTo("postId", post_id)
+      ..whereEqualTo("parentId", null);
+    final ParseResponse apiResponse = await query.query();
+    List comment_Ids = [];
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        comment_Ids.add(obj['objectId']);
+      }
+      return comment_Ids;
+    }
+  } catch (e) {
+    debugPrint("Failed to get comments");
+  }
+  return null;
+}
+
+Future<List?> userGetComment(String comment_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Comments"));
+    query.whereEqualTo("objectId", comment_id);
+    final ParseResponse apiResponse = await query.query();
+    List comments = [];
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        comments.add(obj['comment']);
+      }
+      return comments;
+    }
+  } catch (e) {
+    debugPrint("Failed to get comments");
+  }
+  return null;
 }
 
 void userGetImage() {}
