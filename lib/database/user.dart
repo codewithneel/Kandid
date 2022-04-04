@@ -4,23 +4,29 @@
 //import 'dart:html';
 
 import 'dart:io';
-
 import 'package:camera/camera.dart';
+
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'follow.dart' as f;
+import 'chat.dart' as c;
 
-import 'follow.dart';
+/// This comment blocks a warning for an undesirable naming convention
+// ignore_for_file: non_constant_identifier_names
 
+// This is probably unnecessary but I don't care
+/// Returns the objectId of the current logged in user
 Future<String> getCurrentUser() async {
   ParseUser current = await ParseUser.currentUser();
   return current["objectId"];
 }
 
-Future<bool> newUser(String username, String email, String password,
+/// Creates a new instance of User in the database
+Future<bool> userNew(String username, String email, String password,
     String fname, String lname, DateTime date_of_birth, bool is_private) async {
   if (username == '' || email == '' || password == '') {
     return false;
-    throw Exception("Missing one or more fields");
+    // TODO : throw Exception("Missing one or more fields");
   }
   final user =
       ParseUser.createUser(username.trim(), password.trim(), email.trim());
@@ -36,7 +42,7 @@ Future<bool> newUser(String username, String email, String password,
     debugPrint("Registered Successfully");
     return true;
   }
-  //throw Exception("Parse call failed: ${response.error!.message}");
+  // TODO: throw Exception("Parse call failed: ${response.error!.message}");
   return false;
 }
 
@@ -46,7 +52,7 @@ Future<bool> emailLogin(
 ) async {
   if (email == '' || password == '') {
     return false;
-    throw Exception("Missing one or more fields");
+    // TODO: throw Exception("Missing one or more fields");
   }
 
   String username = "";
@@ -100,6 +106,11 @@ void _userSetter(String attribute, dynamic newValue) async {
   current.save();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// The functions below are probably unnecessary and _userSetter can just be
+// used instead, but this way me and anyone working doesn't have to remember
+// attribute names.
+
 void userSetUsername(String new_username) {
   _userSetter("username", new_username);
 }
@@ -131,24 +142,22 @@ void userSetPrivacyStatus(bool new_private) {
 void userSetDob(DateTime new_dob) {
   _userSetter("date_of_birth", new_dob);
 } // date of birth
-
 void userSetImage() {}
 
+// TODO
 void userSetFollowers() {} // user_ids that are following user
 void userSetFollowing() {}
 
 Future<void> userSetPost(ParseFileBase image, String caption) async {
-  dynamic user = await ParseUser.currentUser();
-  //String userID = user.get('objectID');
+  String user_id = await getCurrentUser();
   final todo = ParseObject('Posts')
-    ..set('userID', '1')
-    //..set('userID', '2')
+    ..set('userId', user_id)
     ..set('caption', caption)
     ..set('image', image);
   await todo.save();
 }
 
-void userSetChat() {}
+////////////////////////////////////////////////////////////////////////////////
 
 Future<dynamic> _userQueryExecutor(String user_id, String attribute) async {
   dynamic ret;
@@ -162,68 +171,112 @@ Future<dynamic> _userQueryExecutor(String user_id, String attribute) async {
         ret = user[attribute];
       }
     }
-  } catch (e) {
+  } 
+  catch (e) {
     debugPrint("Failed to get $attribute from $user_id\n$e");
   }
   return ret;
 }
 
-Future<String> userGetUsername(String user_id) async {
-  dynamic ret = await _userQueryExecutor(user_id, "username");
-  if (ret == null) {
-    return "";
-  }
-  return ret;
-}
+Future<String?> userGetId(String username) async{
+  String? ret;
 
-Future<String> userGetPassword(String user_id) async {
-  return await _userQueryExecutor(user_id, "password");
-}
-
-Future<String> userGetEmail(String user_id) async {
-  return await _userQueryExecutor(user_id, "email");
-}
-
-Future<String> userGetFirstName(String user_id) async {
-  return await _userQueryExecutor(user_id, "fname");
-}
-
-Future<String> userGetLastName(String user_id) async {
-  return await _userQueryExecutor(user_id, "lname");
-}
-
-// this may be an issue becuase it dob is a DateTime
-Future<DateTime> userGetDob(String user_id) async {
-  return await _userQueryExecutor(user_id, "date_of_birth");
-}
-
-Future<String> userGetBio(String user_id) async {
-  return await _userQueryExecutor(user_id, "bio");
-}
-
-Future<String> userGetPrivacyStatus(String user_id) async {
-  return await _userQueryExecutor(user_id, "is_private");
-}
-
-void userGetFollowers() {}
-void userGetFollowing() {}
-Future<List> userGetPost() async {
   try {
     var query = QueryBuilder<ParseUser>(ParseUser.forQuery());
-    query.whereEqualTo("userID", '1');
+    query.whereEqualTo("username", username);
     final ParseResponse apiResponse = await query.query();
 
     if (apiResponse.success && apiResponse.results != null) {
       for (ParseUser user in apiResponse.results!) {
+        ret = user["objectId"];
+      }
+    }
+  }
+  catch (e) {
+    debugPrint("Failed to get ID for $username\n$e");
+  }
+  return ret;
+}
+
+Future<List?> userGetPost(String user_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Post"));
+    query.whereEqualTo("userId", user_id);
+    final ParseResponse apiResponse = await query.query();
+
+    // TODO : this query is going to return multiple objects but only the first is being returned
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
         //return [user['imagePath'], user['caption'], user['createdAt']];
-        return await [user['image'], user['caption'], user['createdAt']];
+        return [
+          obj['image'],
+          obj['caption'],
+          obj['createdAt']
+        ];
       }
     }
   } catch (e) {
     debugPrint("Failed to get post");
   }
-  return [];
+  return null;
 }
 
-void userGetChat() {}
+////////////////////////////////////////////////////////////////////////////////
+// The functions below are probably unnecessary and _userQueryExecutor can
+// be used instead, but this way me and anyone working doesn't have to remember
+// attribute names in the database
+
+Future<String?> userGetUsername(String user_id) async {
+  return await _userQueryExecutor(user_id, "username");
+}
+Future<String?> userGetPassword(String user_id) async {
+  return await _userQueryExecutor(user_id, "password");
+}
+Future<String?>  userGetEmail(String user_id) async {
+  return await _userQueryExecutor(user_id, "email");
+}
+Future<String?> userGetFirstName(String user_id) async {
+  return await _userQueryExecutor(user_id, "fname");
+}
+Future<String?> userGetLastName(String user_id) async {
+  return await _userQueryExecutor(user_id, "lname");
+}
+
+// this may be an issue because dob is a DateTime
+Future<DateTime?> userGetDob(String user_id) async {
+  return await _userQueryExecutor(user_id, "date_of_birth");
+}
+
+
+
+Future<String?> userGetBio(String user_id) async {
+  return await _userQueryExecutor(user_id, "bio");
+}
+Future<String?> userGetPrivacyStatus(String user_id) async {
+  return await _userQueryExecutor(user_id, "is_private");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Follow Relationships are all imported by <follow.dart> but they are imported
+// here so that all user functionality is in one place with one import
+
+void userFollow(follower, followed){
+  f.newFollow(follower, followed);
+}
+
+void userUnfollow(follower, followed){
+  f.removeFollow(follower, followed);
+}
+
+Future<List<String>?> userGetFollowers(String user_id) async {
+  return await f.getFollowers(user_id);
+}
+Future<List<String>?> userGetFollowing(String user_id) async {
+  return await f.getFollowing(user_id);
+}
+
+Future<List<String>?>  userGetChats(String user_id) async {
+  return await c.getChats(user_id);
+}
+
 void userGetImage() {}

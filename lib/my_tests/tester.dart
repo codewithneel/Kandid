@@ -1,12 +1,16 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:kandid/templates/settings_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import '../database/user.dart';
 import 'test_profile_page.dart';
 import '../templates/camera_screen.dart';
 import 'package:camera/camera.dart';
+import '../database/chat.dart';
+import '../database/message.dart';
+import '../database/post.dart';
+
 
 /// Enter your test function here ///
 void testfunc1(BuildContext context) async {
@@ -27,6 +31,30 @@ void testfunc1(BuildContext context) async {
 }
 
 void testfunc2() async {
+  String current_id = await getCurrentUser();
+  String? chat_id = await chatGetIdWithIds("xv8IPDTc38", current_id);
+  if(chat_id == null) { debugPrint("No chat id found"); return; }
+  messageNew(current_id, chat_id, "Hello World");
+}
+
+void testfunc3(BuildContext context) async {
+  // Ensure that plugin services are initialized so that `availableCameras()`
+  // can be called before `runApp()`
+  //WidgetsFlutterBinding.ensureInitialized();
+
+  // Obtain a list of the available cameras on the device.
+  final cameras = await availableCameras();
+
+  // Get a specific camera from the list of available cameras.
+  final firstCamera = cameras.first;
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => TakePictureScreen(camera: firstCamera),
+    ),
+  );
+}
+
+void testfunc4() async {
   String id = "";
 
   dynamic user = await ParseUser.currentUser();
@@ -37,7 +65,7 @@ void testfunc2() async {
 
   id = user["objectId"];
 
-  String str = await userGetLastName(id);
+  String? str = await userGetLastName(id);
   debugPrint(str);
   userSetLastName("miller");
   str = await userGetLastName(id);
@@ -54,9 +82,9 @@ void testfunc2() async {
   //     true),
 }
 
-class testTemplate extends StatelessWidget {
-  const testTemplate({Key? key}) : super(key: key);
-
+class TestTemplate extends StatelessWidget {
+  const TestTemplate({Key? key}) : super(key: key);
+  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -85,7 +113,9 @@ class _TestPageState extends State<TestPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     Future<String> posts;
+    
     return Scaffold(
         appBar: AppBar(
           title: const Text('Kandid Tester'),

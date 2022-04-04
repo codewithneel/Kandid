@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kandid/responsive/mobile_screen_layout.dart';
 
 import 'package:kandid/widgets/alerts.dart';
-import 'package:kandid/my_tests/test_profile_page.dart';
 import 'package:kandid/templates/signup_screen.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/text_field_input.dart';
@@ -37,14 +36,33 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Flexible(child: Container(), flex: 1),
+              const SizedBox(
+                height: 80,
+              ),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Welcome Back,",
+                  style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(
+                height: 100,
+              ),
               SvgPicture.asset(
                 'assets/kandidLogo.svg',
                 color: primaryColor,
                 height: 64,
               ),
               //title
-              const SizedBox(height: 64),
+              Text(
+                "Login to see what's new!",
+                style: TextStyle(fontSize: 15, color: Colors.grey[700]),
+              ),
+              const SizedBox(height: 30),
               TextFieldInput(
                 textEditingController: _emailController,
                 hintText: 'enter your email',
@@ -69,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: Container(
                   child: const Text(
-                    "Log in",
+                    "Login",
                     style: TextStyle(color: mobileBackgroundColor),
                   ),
                   width: double.infinity,
@@ -108,7 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       //to make it clickable
                       child: const Text(
                         "Sign Up",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold
+                        ),
                       ),
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
@@ -117,11 +137,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   )
                 ],
               )
-
-              //text for email
-              //text for password
-              //button for login
-              //transition to sign up
             ],
           ),
         ),
@@ -134,14 +149,14 @@ void tryLogin(BuildContext context, String email, String password) async {
   if (await emailLogin(email, password)) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const testProfile(),
+        builder: (context) => const MobileScreenLayout(),
       ),
     );
   } else {
     showError(
         context,
         "Something went wrong\n"
-        "Please fill all fields\n"
-        "and check for typos");
+        "Please fill in all fields\n"
+            "and check for typos");
   }
 }
