@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kandid/my_tests/tester.dart';
 import 'package:kandid/templates/personal_info.dart';
@@ -73,7 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 onTap: () {
                   _navigatetoEditProfile(context);
-                    print('Edit Profile tapped');
+                    debugPrint('Edit Profile tapped');
                   },
                 ),
               ),

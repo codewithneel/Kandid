@@ -23,7 +23,7 @@ Future<String> getCurrentUser() async {
 
 /// Creates a new instance of User in the database
 Future<bool> userNew(String username, String email, String password,
-    String fname, String lname, DateTime date_of_birth, bool is_private) async {
+    String fname, String lname, DateTime date_of_birth, bool is_private, bio) async {
   if (username == '' || email == '' || password == '') {
     return false;
     // TODO : throw Exception("Missing one or more fields");
@@ -36,7 +36,7 @@ Future<bool> userNew(String username, String email, String password,
     user.set("fname", fname.trim());
     user.set("lname", lname.trim());
     user.set("date_of_birth", date_of_birth.toString());
-    user.set("bio", "");
+    user.set("bio", bio);
     user.set("is_private", is_private);
     user.save();
     debugPrint("Registered Successfully");
@@ -144,13 +144,9 @@ void userSetDob(DateTime new_dob) {
 } // date of birth
 void userSetImage() {}
 
-// TODO
-void userSetFollowers() {} // user_ids that are following user
-void userSetFollowing() {}
-
 Future<void> userSetPost(ParseFileBase image, String caption) async {
   String user_id = await getCurrentUser();
-  final todo = ParseObject('Posts')
+  final todo = ParseObject('Post')
     ..set('userId', user_id)
     ..set('caption', caption)
     ..set('image', image);
@@ -256,17 +252,22 @@ Future<String?> userGetPrivacyStatus(String user_id) async {
   return await _userQueryExecutor(user_id, "is_private");
 }
 
+void userGetProfileImage() {}
+
 ////////////////////////////////////////////////////////////////////////////////
-// Follow Relationships are all imported by <follow.dart> but they are imported
-// here so that all user functionality is in one place with one import
+// Follow Relationships are all imported by <follow.dart> & <chat.dart> but they
+// are imported here so that all user functionality is in one place
 
-void userFollow(follower, followed){
-  f.newFollow(follower, followed);
+void userFollow(follower_id, followed_id){
+  f.newFollow(follower_id, followed_id);
 }
 
-void userUnfollow(follower, followed){
-  f.removeFollow(follower, followed);
+void userUnfollow(follower_id, followed_id){
+  f.removeFollow(follower_id, followed_id);
 }
+
+
+
 
 Future<List<String>?> userGetFollowers(String user_id) async {
   return await f.getFollowers(user_id);
@@ -275,8 +276,18 @@ Future<List<String>?> userGetFollowing(String user_id) async {
   return await f.getFollowing(user_id);
 }
 
+Future<int?> userGetFollowerCount(String user_id) async {
+  dynamic list = await f.getFollowers(user_id);
+  if(list == null) return null;
+  return list.length;
+}
+
+Future<int?> userGetFollowingCount(String user_id) async {
+  dynamic list = await f.getFollowing(user_id);
+  if(list == null) return null;
+  return list.length;
+}
+
 Future<List<String>?>  userGetChats(String user_id) async {
   return await c.getChats(user_id);
 }
-
-void userGetImage() {}

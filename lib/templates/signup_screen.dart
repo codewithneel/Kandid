@@ -46,7 +46,7 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 80,
               ),
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Get Started,",
@@ -147,7 +147,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     child: Container(
                       //to make it clickable
-                      child: Text(
+                      child: const Text(
                         "Sign In",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -168,9 +168,9 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 }
 
-void tryRegister(BuildContext context, String username, String email,
-    String password, String bio) async {
-  if (await userNew(username, email, password, "", "", DateTime.now(), false)) {
+void tryRegister(BuildContext context,
+    String username, String email, String password, String bio) async {
+  if (await userNew(username, email, password, "", "", DateTime.now(), false, bio)) {
     emailLogin(email, password);
     Navigator.of(context).push(
       MaterialPageRoute(

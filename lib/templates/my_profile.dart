@@ -1,9 +1,13 @@
 // This file is responsible for rendering the template_my_user found in the Figma File
 
 import 'package:flutter/material.dart';
+import '../database/user.dart';
 import '../widgets/follow_button.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:kandid/utils/colors.dart';
+
+/// This comment blocks a warning for an undesirable naming convention
+// ignore_for_file: non_constant_identifier_names
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -13,8 +17,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  //Get these from the DB, values are demos only.
-  String UserName = "UserName";
+
   String Bio = "Humanitarian | BJJ | NJIT Alum";
 
   var followers = 14;
@@ -26,12 +29,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         centerTitle: false,
         backgroundColor: Colors.white,
-        title: Text(
-            UserName,
-            style: const TextStyle(color: primaryColor)
-        ),
-        titleSpacing: 24.0,
-        elevation: 0.0,
+        title: FutureBuilder(
+            future: displayUsername(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.active:
+                case ConnectionState.waiting:
+                  return const Text('Loading...', style: TextStyle(color: primaryColor));
+                case ConnectionState.done:
+                  return Text(snapshot.data.toString(), style: const TextStyle(color: primaryColor));
+                default:
+                  return const Text('default?', style: TextStyle(color: primaryColor));
+              }
+            }),
+
+        titleSpacing: -30.0,
+        elevation: 0,
         actions: [
           Padding(
           padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
@@ -47,6 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           ),
         ],
+
       ),
       body: ListView(
         children: [
@@ -73,7 +87,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(45.0, 0.0, 0.0, 0.0),
-                                  child: Text("$UserName\n$Bio\n"),
+                                  child: FutureBuilder(
+                                      future: myProfileGetBio(),
+                                      builder: (context, snapshot) {
+                                        switch (snapshot.connectionState) {
+                                          case ConnectionState.active:
+                                          case ConnectionState.waiting:
+                                            return const Text('Loading...', style: TextStyle(color: primaryColor));
+                                          case ConnectionState.done:
+                                            return Text(snapshot.data.toString(), style: const TextStyle(color: primaryColor));
+                                          default:
+                                            return const Text('default?', style: TextStyle(color: primaryColor));
+                                        }
+                                      }),
                                 ),
                               ),
                             ],
@@ -82,8 +108,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              buildStatColumn(followers, "followers"),
-                              buildStatColumn(following, "following"),
+                              FutureBuilder(
+                                  future: myProfileGetFollowerCount(),
+                                  builder: (context, snapshot) {
+                                    switch (snapshot.connectionState) {
+                                      case ConnectionState.active:
+                                      case ConnectionState.waiting:
+                                        return buildStatColumn(0, "loading...");
+                                      case ConnectionState.done:
+                                        return buildStatColumn(int.parse(snapshot.data.toString()), "followers");
+                                      default:
+                                        return buildStatColumn(-2, "default?");
+                                    }
+                                  }),
+                              FutureBuilder(
+                                  future: myProfileGetFollowingCount(),
+                                  builder: (context, snapshot) {
+                                    switch (snapshot.connectionState) {
+                                      case ConnectionState.active:
+                                      case ConnectionState.waiting:
+                                        return buildStatColumn(0, "loading...");
+                                      case ConnectionState.done:
+                                        return buildStatColumn(int.parse(snapshot.data.toString()), "following");
+                                      default:
+                                        return buildStatColumn(-2, "default?");
+                                    }
+                                  })
                             ],
                           ),
                           Row(
@@ -129,4 +179,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
     );
   }
+}
+
+
+
+
+Future<String> displayUsername() async {
+  String user_id = await getCurrentUser();
+  dynamic ret = await userGetUsername(user_id);
+  if (ret != null) {
+    return ret;
+  }
+  return "No User";
+}
+
+Future<String> myProfileGetBio() async{
+  String user_id = await getCurrentUser();
+  dynamic ret = await userGetBio(user_id);
+  if (ret != null) {
+    return ret;
+  }
+  return "No Bio Found";
+}
+
+Future<int> myProfileGetFollowerCount() async{
+  String user_id = await getCurrentUser();
+  int? ret = await userGetFollowerCount(user_id);
+  if (ret == null) { return -1; }
+  return ret;
+}
+
+Future<int> myProfileGetFollowingCount() async{
+  String user_id = await getCurrentUser();
+  int? ret = await userGetFollowingCount(user_id);
+  if (ret == null) { return -1; }
+  return ret;
 }

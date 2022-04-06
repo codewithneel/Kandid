@@ -5,6 +5,7 @@ import 'package:kandid/utils/colors.dart';
 import 'package:kandid/templates/feed_screen.dart';
 
 import '../my_tests/test_profile_page.dart';
+import '../templates/my_profile.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -49,7 +50,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           Text("search"),
           TestTemplate(),
           Text("notifications"),
-          testProfile(),
+          ProfileScreen(),
         ],
         physics:
             NeverScrollableScrollPhysics(), //if removed, you can swipe between the nav bar taps like cards
