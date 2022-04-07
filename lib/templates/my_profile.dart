@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import '../database/user.dart';
-import '../widgets/follow_button.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:kandid/utils/colors.dart';
 
@@ -30,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: false,
         backgroundColor: Colors.white,
         title: FutureBuilder(
-            future: displayUsername(),
+            future: myProfileGetUsername(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
@@ -184,13 +183,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
 
-Future<String> displayUsername() async {
+Future<String> myProfileGetUsername() async {
   String user_id = await getCurrentUser();
   dynamic ret = await userGetUsername(user_id);
   if (ret != null) {
     return ret;
   }
-  return "No User";
+  return "<No Username>";
 }
 
 Future<String> myProfileGetBio() async{
@@ -199,7 +198,7 @@ Future<String> myProfileGetBio() async{
   if (ret != null) {
     return ret;
   }
-  return "No Bio Found";
+  return "<No Bio Found>";
 }
 
 Future<int> myProfileGetFollowerCount() async{

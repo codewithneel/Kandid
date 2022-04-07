@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:kandid/my_tests/tester.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/templates/feed_screen.dart';
-
-import '../my_tests/test_profile_page.dart';
 import '../templates/my_profile.dart';
 
 class MobileScreenLayout extends StatefulWidget {
@@ -53,7 +51,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           ProfileScreen(),
         ],
         physics:
-            NeverScrollableScrollPhysics(), //if removed, you can swipe between the nav bar taps like cards
+            const NeverScrollableScrollPhysics(), //if removed, you can swipe between the nav bar taps like cards
         controller: pageController,
         onPageChanged: onPageChanged,
       ),
