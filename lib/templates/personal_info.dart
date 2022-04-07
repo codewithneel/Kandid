@@ -51,7 +51,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
             child: const Icon(Icons.arrow_back_ios_new, color: primaryColor),
           ),
         ),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
