@@ -179,6 +179,6 @@ void tryRegister(BuildContext context,
       ),
     );
   } else {
-    showError(context, "Error risen while creating an account");
+    showError(context, "An error occurred while creating your account.");
   }
 }

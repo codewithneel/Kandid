@@ -18,14 +18,12 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
 
   @override
   void dispose() {
   super.dispose();
-  _fullNameController.dispose();
   _userNameController.dispose();
   _bioController.dispose();
   }
@@ -38,16 +36,16 @@ class _EditProfileState extends State<EditProfile> {
           title: const Text('Edit Profile', style: TextStyle(color: primaryColor)),
           elevation: 0.0,
           leading: GestureDetector(
-            onTap: () => trySave(
-              context,
-              _fullNameController.text,
-              _userNameController.text,
-              _bioController.text,
-            ),
+              onTap: () =>
+                  Navigator.of(context).pop(
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
+              ),
             child: Icon(Icons.arrow_back_ios_new, color: primaryColor),
           ),
         ),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
@@ -60,25 +58,6 @@ class _EditProfileState extends State<EditProfile> {
                   'https://images.unsplash.com/photo-1646112918482-2763d6e12320?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
                 ),
                 radius: 40,
-              ),
-              const SizedBox(height: 24),
-              Container(
-                //padding: const EdgeInsets.symmetric(horizontal: 24),
-                child:
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Full Name:',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              const SizedBox(height: 10),
-              TextFieldInput(
-                textEditingController: _fullNameController,
-                hintText: 'Edit your name', // replace with stored full name from DB
-                textInputType: TextInputType.text,
               ),
               const SizedBox(height: 24),
               Container(
@@ -119,6 +98,29 @@ class _EditProfileState extends State<EditProfile> {
                 textInputType: TextInputType.multiline,
               ),
               const SizedBox(height: 24),
+              InkWell(
+                  onTap: () => trySave(
+                    context,
+                    _userNameController.text,
+                    _bioController.text,
+                  ),
+                child: Container(
+                  child: const Text(
+                    "Save Changes",
+                    style: TextStyle(fontWeight: FontWeight.bold, color: mobileBackgroundColor),
+                  ),
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: const ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
+                      ),
+                      color: greenColor),
+                ),
+              ),
           ],
         ),
       ),
@@ -126,14 +128,13 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  void trySave(BuildContext context, String fullName, String username, String bio,) async {
+  void trySave(BuildContext context, String username, String bio,) async {
     print('Saved and returned to Settings');
-    print('Full name: ${fullName} Email: ${username}, Phone: ${bio}');
+    print('Username: ${username}, Phone: ${bio}');
     Navigator.of(context).pop(
         MaterialPageRoute(
           builder: (context) => const SettingsScreen(),
         ),
     );
   } // this function needs to save the entered fields into the DB.
-
 }
