@@ -20,9 +20,9 @@ import 'package:kandid/utils/colors.dart';
 // ignore_for_file: constant_identifier_names
 
 /// Here, set the template you want rendered (don't delete the TestTemplate) ///
-//const TEMPLATE = LoginScreen();
+const TEMPLATE = LoginScreen();
 //const TEMPLATE = PersonalInfo();
-const TEMPLATE = TestTemplate();
+//const TEMPLATE = TestTemplate();
 //const TEMPLATE = SettingsScreen();
 //const TEMPLATE = ProfileScreen();
 

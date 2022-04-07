@@ -54,7 +54,7 @@ class _EditProfileState extends State<EditProfile> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget> [
               const SizedBox(height: 24),
-              CircleAvatar(
+              const CircleAvatar(
                 backgroundColor: Colors.grey,
                 backgroundImage: NetworkImage(
                   'https://images.unsplash.com/photo-1646112918482-2763d6e12320?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
@@ -65,12 +65,12 @@ class _EditProfileState extends State<EditProfile> {
               Container(
                 //padding: const EdgeInsets.symmetric(horizontal: 24),
                 child:
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
-                    child: const Text(
+                    child: Text(
                       'Full Name:',
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -84,12 +84,12 @@ class _EditProfileState extends State<EditProfile> {
               Container(
                 //padding: const EdgeInsets.symmetric(horizontal: 24),
                 child:
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
-                  child: const Text(
+                  child: Text(
                     'User Name:',
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -103,12 +103,12 @@ class _EditProfileState extends State<EditProfile> {
               Container(
                 //padding: const EdgeInsets.symmetric(horizontal: 24),
                 child:
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
-                  child: const Text(
+                  child: Text(
                     'Bio:',
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
