@@ -205,13 +205,13 @@ Future<String> myProfileGetBio() async{
 Future<int> myProfileGetFollowerCount() async{
   String user_id = await getCurrentUser();
   int? ret = await userGetFollowerCount(user_id);
-  if (ret == null) { return -1; }
+  if (ret == null) { return 0; }
   return ret;
 }
 
 Future<int> myProfileGetFollowingCount() async{
   String user_id = await getCurrentUser();
   int? ret = await userGetFollowingCount(user_id);
-  if (ret == null) { return -1; }
+  if (ret == null) { return 0; }
   return ret;
 }
