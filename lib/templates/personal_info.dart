@@ -18,7 +18,8 @@ class PersonalInfo extends StatefulWidget {
 }
 
 class _PersonalInfoState extends State<PersonalInfo> {
-  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _birthdayController = TextEditingController();
@@ -27,7 +28,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
   @override
   void dispose() {
   super.dispose();
-  _fullNameController.dispose();
+  _firstNameController.dispose();
+  _lastNameController.dispose();
   _emailController.dispose();
   _phoneController.dispose();
   _birthdayController.dispose();
@@ -41,12 +43,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
           title: const Text('Personal Information', style: TextStyle(color: primaryColor)),
           elevation: 0.0,
           leading: GestureDetector(
-            onTap: () => trySave(
-              context,
-              _fullNameController.text,
-              _emailController.text,
-              _phoneController.text,
-              selectedDate,
+            onTap: () =>  Navigator.of(context).pop(
+              MaterialPageRoute(
+                builder: (context) => const SettingsScreen(),
+              ),
             ),
             child: const Icon(Icons.arrow_back_ios_new, color: primaryColor),
           ),
@@ -61,19 +61,38 @@ class _PersonalInfoState extends State<PersonalInfo> {
               Container(
                 //padding: const EdgeInsets.symmetric(horizontal: 24),
                 child:
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Full Name:',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'First Name:',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
+              ),
               const SizedBox(height: 10),
               TextFieldInput(
-                textEditingController: _fullNameController,
-                hintText: 'Edit your name', // replace with stored full name from DB
+                textEditingController: _firstNameController,
+                hintText: 'Edit your first name', // replace with stored full name from DB
+                textInputType: TextInputType.text,
+              ),
+              const SizedBox(height: 24),
+              Container(
+                //padding: const EdgeInsets.symmetric(horizontal: 24),
+                child:
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Last Name:',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextFieldInput(
+                textEditingController: _lastNameController,
+                hintText: 'Edit your last name', // replace with stored full name from DB
                 textInputType: TextInputType.text,
               ),
               const SizedBox(height: 24),
@@ -132,6 +151,32 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 },
               ),
               const SizedBox(height: 24),
+              InkWell(
+                onTap: () => trySave(
+                  context,
+                  _firstNameController.text,
+                  _lastNameController.text,
+                  _emailController.text,
+                  _phoneController.text,
+                  selectedDate,
+                ),
+                child: Container(
+                  child: const Text(
+                    "Save Changes",
+                    style: TextStyle(fontWeight: FontWeight.bold, color: mobileBackgroundColor),
+                  ),
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: const ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
+                      ),
+                      color: greenColor),
+                ),
+              ),
           ],
         ),
       ),
@@ -139,13 +184,13 @@ class _PersonalInfoState extends State<PersonalInfo> {
     );
   }
 
-  void trySave(BuildContext context, String fullName, String email, String phone, DateTime selectedDate) async {
-    debugPrint('Saved and returned to Settings');
-    debugPrint('Full name: $fullName Email: $email, Phone: $phone, Birthday: $selectedDate');
+  void trySave(BuildContext context, String firstName, String lastName, String email, String phone, DateTime selectedDate) async {
+    print('Saved and returned to Settings');
+    debugPrint('Full name: $firstName, Last Name: $lastName, Email: $email, Phone: $phone, Birthday: $selectedDate');
     Navigator.of(context).pop(
-        MaterialPageRoute(
-          builder: (context) => const SettingsScreen(),
-        ),
+      MaterialPageRoute(
+        builder: (context) => const SettingsScreen(),
+      ),
     );
   } // this function needs to save the entered fields into the DB.
 
