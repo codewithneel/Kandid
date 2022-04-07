@@ -1,9 +1,35 @@
+/// This comment blocks a warning for an undesirable naming convention
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
+import 'package:kandid/database/user.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/templates/comments_screen.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:path/path.dart';
+
+Future<String?> displayUsername() async {
+  String? username = await userGetPostUsername("x0CZfPCfxw");
+  return username;
+}
+
+Future<String?> displayCaption() async {
+  String? caption = await userGetCaption("x0CZfPCfxw");
+  return caption;
+}
+
+Future<ParseFileBase?> displayImage() async {
+  ParseFileBase? image =
+      (await userGetPostImage("x0CZfPCfxw")) as ParseFileBase?;
+  if (image == null) {
+    return null;
+  }
+  return image;
+}
 
 class PostCard extends StatelessWidget {
-  const PostCard({Key? key}) : super(key: key);
+  PostCard({Key? key}) : super(key: key);
+  var image_file;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +56,19 @@ class PostCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'username',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        FutureBuilder(
+                            future: displayUsername(),
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.active:
+                                case ConnectionState.waiting:
+                                  return const Text('Loading...');
+                                case ConnectionState.done:
+                                  return Text(snapshot.data.toString());
+                                default:
+                                  return const Text('default?');
+                              }
+                            }),
                       ],
                     ),
                   ),
@@ -48,10 +81,23 @@ class PostCard extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
-            child: Image.network(
-              'https://images.unsplash.com/photo-1648405679817-325c7da58074?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-              fit: BoxFit.cover,
-            ),
+            child: FutureBuilder(
+                future: displayImage(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.active:
+                    case ConnectionState.waiting:
+                      return Text("loading...");
+                    case ConnectionState.done:
+                      if (snapshot.data == null) {
+                        return Text("No image found");
+                      }
+                      image_file = snapshot.data as ParseFileBase;
+                      return Image.network(image_file.url.toString());
+                    default:
+                      return const Text('default?');
+                  }
+                }),
           ),
 
           //Like and comments section
@@ -91,6 +137,32 @@ class PostCard extends StatelessWidget {
                   '20 Likes',
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
+                FutureBuilder(
+                    future: displayUsername(),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
+                          return const Text('Loading...');
+                        case ConnectionState.done:
+                          return Text(snapshot.data.toString());
+                        default:
+                          return const Text('default?');
+                      }
+                    }),
+                FutureBuilder(
+                    future: displayCaption(),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
+                          return const Text('Loading...');
+                        case ConnectionState.done:
+                          return Text(snapshot.data.toString());
+                        default:
+                          return const Text('default?');
+                      }
+                    }),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.only(
@@ -100,12 +172,6 @@ class PostCard extends StatelessWidget {
                     text: TextSpan(
                       style: const TextStyle(color: primaryColor),
                       children: [
-                        TextSpan(
-                          text: 'username',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                         TextSpan(
                           text: ' This is where the description is placed',
                         ),

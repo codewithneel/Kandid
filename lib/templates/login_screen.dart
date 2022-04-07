@@ -126,9 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       //to make it clickable
                       child: const Text(
                         "Sign Up",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold
-                        ),
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,

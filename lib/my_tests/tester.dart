@@ -1,4 +1,4 @@
-import 'dart:io';
+//import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
@@ -14,26 +14,16 @@ import '../database/post.dart';
 
 /// Enter your test function here ///
 void testfunc1(BuildContext context) async {
-  // Ensure that plugin services are initialized so that `availableCameras()`
-  // can be called before `runApp()`
-  //WidgetsFlutterBinding.ensureInitialized();
-
-  // Obtain a list of the available cameras on the device.
-  final cameras = await availableCameras();
-
-  // Get a specific camera from the list of available cameras.
-  final firstCamera = cameras.first;
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => TakePictureScreen(camera: firstCamera),
-    ),
-  );
+  chatNew("xv8IPDTc38", await getCurrentUser());
 }
 
 void testfunc2() async {
   String current_id = await getCurrentUser();
   String? chat_id = await chatGetIdWithIds("xv8IPDTc38", current_id);
-  if(chat_id == null) { debugPrint("No chat id found"); return; }
+  if (chat_id == null) {
+    debugPrint("No chat id found");
+    return;
+  }
   messageNew(current_id, chat_id, "Hello World");
 }
 
@@ -43,14 +33,14 @@ void testfunc3(BuildContext context) async {
   //WidgetsFlutterBinding.ensureInitialized();
 
   // Obtain a list of the available cameras on the device.
-  final cameras = await availableCameras();
+  //final cameras = await availableCameras();
 
   // Get a specific camera from the list of available cameras.
-  final firstCamera = cameras.first;
+  //final firstCamera = cameras.first;
   Navigator.of(context).push(
     MaterialPageRoute(
-      builder: (context) => TakePictureScreen(camera: firstCamera),
-    ),
+        //builder: (context) => TakePictureScreen(camera: firstCamera),
+        builder: (context) => TakePictureScreen()),
   );
 }
 
@@ -113,9 +103,6 @@ class _TestPageState extends State<TestPage> {
 
   @override
   Widget build(BuildContext context) {
-    
-    Future<String> posts;
-    
     return Scaffold(
         appBar: AppBar(
           title: const Text('Kandid Tester'),
@@ -162,7 +149,8 @@ class _TestPageState extends State<TestPage> {
                 Container(
                   height: 50,
                   child: TextButton(
-                      child: const Text('View Post'), onPressed: () => {}),
+                      child: const Text('testfunc3'),
+                      onPressed: () => testfunc3(context)),
                 ),
                 Container(
                   height: 50,

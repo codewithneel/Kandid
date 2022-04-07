@@ -34,6 +34,8 @@ final _DB_KEYS = [
   'Us8Z0sIW27BlGAwBVoAWuiXJzKbYBj0AWXxVA0DJ'
 ];
 
+List<CameraDescription> cameras = [];
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Database Connection
@@ -42,6 +44,8 @@ Future<void> main() async {
   const keyParseServerUrl = 'https://parseapi.back4app.com';
   await Parse().initialize(keyApplicationId, keyParseServerUrl,
       clientKey: keyClientKey, autoSendSessionId: true);
+
+  cameras = await availableCameras();
 
   runApp(const MyApp());
 }
