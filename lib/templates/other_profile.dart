@@ -9,20 +9,14 @@ import 'package:kandid/utils/colors.dart';
 /// This comment blocks a warning for an undesirable naming convention
 // ignore_for_file: non_constant_identifier_names
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class OtherProfileScreen extends StatefulWidget {
+  const OtherProfileScreen({Key? key}) : super(key: key);
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _OtherProfileScreenState createState() => _OtherProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-
-  String Bio = "Humanitarian | BJJ | NJIT Alum";
-
-  var followers = 14;
-  var following = 43;
-
+class _OtherProfileScreenState extends State<OtherProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,30 +41,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         elevation: 0,
         actions: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
-            child: GestureDetector(
-              onTap: () {
-                // Eventually, go to the Messages template.
-                //Navigator.of(context).push(
-                //  MaterialPageRoute(
-                //    builder: (context) => const SettingsScreen(),
-                //  ),
-                // );
-              },
-              child: const Icon(Icons.message_outlined, color: Colors.black),
-            ),
-          ),
-          Padding(
           padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const SettingsScreen(),
-                ),
-              );
+              // Eventually, go to the Messages template.
+              //Navigator.of(context).push(
+              //  MaterialPageRoute(
+              //    builder: (context) => const SettingsScreen(),
+              //  ),
+              // );
             },
-            child: const Icon(Icons.settings, color: Colors.black),
+            child: const Icon(Icons.message_outlined, color: Colors.black),
           ),
           ),
         ],
@@ -162,6 +143,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
+          InkWell(
+            onTap: () {
+              // Eventually, go to the Messages template.
+            },
+              child: Container(
+              child: const Text(
+                "Send Message",
+                style: TextStyle(fontWeight: FontWeight.bold, color: mobileBackgroundColor),
+              ),
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: const ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(4),
+                ),
+              ),
+              color: greenColor),
+              ),
+            ),
         ],
       ),
     );

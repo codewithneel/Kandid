@@ -6,6 +6,7 @@ import 'package:kandid/templates/feed_screen.dart';
 
 import '../my_tests/test_profile_page.dart';
 import '../templates/my_profile.dart';
+import '../templates/other_profile.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -49,7 +50,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           FeedScreen(),
           Text("search"),
           TestTemplate(),
-          Text("notifications"),
+          OtherProfileScreen(),
           ProfileScreen(),
         ],
         physics:
