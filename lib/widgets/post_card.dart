@@ -27,6 +27,13 @@ Future<ParseFileBase?> displayImage() async {
   return image;
 }
 
+Future<int?> displayNumberOfComments() async {
+  int? comment = await getNumberOfComments("x0CZfPCfxw");
+  return comment;
+}
+
+Future<int?> displayNumber() async {}
+
 class PostCard extends StatelessWidget {
   PostCard({Key? key}) : super(key: key);
   var image_file;
@@ -183,11 +190,23 @@ class PostCard extends StatelessWidget {
                   onTap: () {},
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Text(
-                      'view all 20 comments',
-                      style:
-                          const TextStyle(fontSize: 16, color: secondaryColor),
-                    ),
+                    child: FutureBuilder(
+                        future: displayNumberOfComments(),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.active:
+                            case ConnectionState.waiting:
+                              return const Text('Loading...');
+                            case ConnectionState.done:
+                              return Text(snapshot.data.toString());
+                            default:
+                              return const Text('default?');
+                          }
+                        }), //Text(
+                    //'view all 20 comments',
+                    //style:
+                    //    const TextStyle(fontSize: 16, color: secondaryColor),
+                    //),
                   ),
                 ),
               ],

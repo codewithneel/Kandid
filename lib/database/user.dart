@@ -18,8 +18,15 @@ Future<String> getCurrentUser() async {
 }
 
 /// Creates a new instance of User in the database
-Future<bool> userNew(String username, String email, String password,
-    String fname, String lname, DateTime date_of_birth, bool is_private, bio) async {
+Future<bool> userNew(
+    String username,
+    String email,
+    String password,
+    String fname,
+    String lname,
+    DateTime date_of_birth,
+    bool is_private,
+    bio) async {
   if (username == '' || email == '' || password == '') {
     return false;
     // TODO : throw Exception("Missing one or more fields");
@@ -152,14 +159,12 @@ Future<void> userSetPost(ParseFileBase image, String caption) async {
   await todo.save();
 }
 
-Future<void> userSetComment(
-    String post_id, String comment, String parent_id) async {
+Future<void> userSetComment(String post_id, String comment) async {
   String user_id = await getCurrentUser();
   final todo = ParseObject('Comments')
     ..set('userId', user_id)
     ..set('postId', post_id)
-    ..set('comment', comment)
-    ..set('parentId', parent_id);
+    ..set('comment', comment);
   await todo.save();
 }
 
@@ -322,16 +327,13 @@ void userGetProfileImage() {}
 // Follow Relationships are all imported by <follow.dart> & <chat.dart> but they
 // are imported here so that all user functionality is in one place
 
-void userFollow(follower_id, followed_id){
+void userFollow(follower_id, followed_id) {
   f.newFollow(follower_id, followed_id);
 }
 
-void userUnfollow(follower_id, followed_id){
+void userUnfollow(follower_id, followed_id) {
   f.removeFollow(follower_id, followed_id);
 }
-
-
-
 
 Future<List<String>?> userGetFollowers(String user_id) async {
   return await f.getFollowers(user_id);
@@ -343,13 +345,13 @@ Future<List<String>?> userGetFollowing(String user_id) async {
 
 Future<int?> userGetFollowerCount(String user_id) async {
   dynamic list = await f.getFollowers(user_id);
-  if(list == null) return null;
+  if (list == null) return null;
   return list.length;
 }
 
 Future<int?> userGetFollowingCount(String user_id) async {
   dynamic list = await f.getFollowing(user_id);
-  if(list == null) return null;
+  if (list == null) return null;
   return list.length;
 }
 
@@ -360,17 +362,15 @@ Future<List<String>?> userGetChats(String user_id) async {
 Future<List?> userGetCommentIds(String post_id) async {
   try {
     var query = QueryBuilder<ParseObject>(ParseObject("Comments"));
-    query
-      ..whereEqualTo("postId", post_id)
-      ..whereEqualTo("parentId", null);
+    query.whereEqualTo("postId", post_id);
     final ParseResponse apiResponse = await query.query();
-    List comment_Ids = [];
+    List commentIds = [];
 
     if (apiResponse.success && apiResponse.results != null) {
       for (ParseObject obj in apiResponse.results!) {
-        comment_Ids.add(obj['objectId']);
+        commentIds.add(obj['objectId']);
       }
-      return comment_Ids;
+      return commentIds;
     }
   } catch (e) {
     debugPrint("Failed to get comments");
@@ -397,6 +397,21 @@ Future<List?> userGetComment(String comment_id) async {
   return null;
 }
 
+Future<int?> getNumberOfComments(String post_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Comments"));
+    query.whereEqualTo("postId", post_id);
+    final ParseResponse apiResponse = await query.query();
+    int count;
+
+    if (apiResponse.success && apiResponse.results != null) {
+      count = apiResponse.count;
+      return count;
+    }
+  } catch (e) {
+    debugPrint("Failed to get comments");
+  }
+  return null;
+}
+
 void userGetImage() {}
-
-
