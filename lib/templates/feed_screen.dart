@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kandid/templates/message_screen.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/post_card.dart';
 
@@ -19,7 +20,8 @@ class FeedScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => MessageScreen())),
             icon: const Icon(
               //messenger icon in homepage
               Icons.messenger_outline,
