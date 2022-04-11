@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:kandid/database/user.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/comment_card.dart';
+import 'package:kandid/widgets/text_field_input.dart';
+
 
 class CommentsScreen extends StatefulWidget {
-  const CommentsScreen({Key? key}) : super(key: key);
+  final post_Id;
+  const CommentsScreen({Key? key, required this.post_Id}) : super(key: key);
 
   @override
   _CommentsScreenState createState() => _CommentsScreenState();
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
+  final TextEditingController _commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,16 +45,16 @@ class _CommentsScreenState extends State<CommentsScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 16, right: 8.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Share your thoughts...',
-                    border: InputBorder.none,
-                  ),
+                child: TextFieldInput(
+                  textEditingController: _commentController,
+                  hintText: 'Share your thoughts...',
+                  textInputType: TextInputType.text,
                 ),
               ),
             ),
             InkWell(
-              onTap: () {},
+              onTap: () =>
+                  userSetComment("x0CZfPCfxw", _commentController.text),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                 child: const Text(
