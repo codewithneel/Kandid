@@ -216,8 +216,9 @@ Future<List?> userGetPosts(String user_id) async {
 
     if (apiResponse.success && apiResponse.results != null) {
       for (ParseObject obj in apiResponse.results!) {
-        postIds.add(obj['objectID']);
+        postIds.add(obj['objectId']);
       }
+      //debugPrint("hi");
       return postIds;
     }
   } catch (e) {

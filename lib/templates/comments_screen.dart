@@ -5,7 +5,8 @@ import 'package:kandid/widgets/comment_card.dart';
 import 'package:kandid/widgets/text_field_input.dart';
 
 class CommentsScreen extends StatefulWidget {
-  const CommentsScreen({Key? key}) : super(key: key);
+  final post_Id;
+  const CommentsScreen({Key? key, required this.post_Id}) : super(key: key);
 
   @override
   _CommentsScreenState createState() => _CommentsScreenState();
