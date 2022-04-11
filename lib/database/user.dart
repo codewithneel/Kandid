@@ -344,7 +344,7 @@ Future<List<String>?> userGetFollowing(String user_id) async {
 Future<int?> userGetFollowerCount(String user_id) async {
   dynamic list = await f.getFollowers(user_id);
   if(list == null) return null;
-  return list.length;
+  return list.length; //TODO : having a variable is probably better than this
 }
 
 Future<int?> userGetFollowingCount(String user_id) async {

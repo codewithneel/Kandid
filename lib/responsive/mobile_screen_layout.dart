@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kandid/my_tests/tester.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/templates/feed_screen.dart';
+import '../templates/chat_screen.dart';
+import '../templates/message_screen.dart';
 import '../templates/my_profile.dart';
 import '../templates/other_profile.dart';
 
@@ -46,7 +48,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       body: PageView(
         children: const [
           FeedScreen(),
-          Text("search"),
+          MessageScreen(),
           TestTemplate(),
           OtherProfileScreen(),
           ProfileScreen(),
