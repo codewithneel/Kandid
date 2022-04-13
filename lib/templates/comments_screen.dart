@@ -21,7 +21,29 @@ class CommentsScreen extends StatelessWidget {
         ),
         centerTitle: false,
       ),
-      body: CommentCard(),
+      //body: CommentCard(),
+      body: FutureBuilder<List<dynamic>?>(
+          future: userGetCommentIds(post_Id),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.active:
+              case ConnectionState.waiting:
+                return const Text("loading...");
+              case ConnectionState.done:
+                if (snapshot.data?[0] == null) {
+                  return Text("No Comments");
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (ctx, index) => Container(
+                    child: CommentCard(
+                        commentId: snapshot.data![index].toString()),
+                  ),
+                );
+              default:
+                return const Text('default?');
+            }
+          }),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kToolbarHeight,
