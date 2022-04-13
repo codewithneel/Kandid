@@ -437,23 +437,24 @@ Future<List?> userGetCommentIds(String post_id) async {
   return null;
 }
 
-Future<List?> userGetComment(String comment_id) async {
+Future<String> userGetComment(String comment_id) async {
   try {
     var query = QueryBuilder<ParseObject>(ParseObject("Comments"));
     query.whereEqualTo("objectId", comment_id);
     final ParseResponse apiResponse = await query.query();
-    List comments = [];
+    String comment;
 
     if (apiResponse.success && apiResponse.results != null) {
       for (ParseObject obj in apiResponse.results!) {
-        comments.add(obj['comment']);
+        comment = obj['comment'];
+        return comment;
       }
-      return comments;
+      //debugPrint(comments[1]);
     }
   } catch (e) {
     debugPrint("Failed to get comments");
   }
-  return null;
+  return '';
 }
 
 Future<int?> getNumberOfComments(String post_id) async {
@@ -469,6 +470,29 @@ Future<int?> getNumberOfComments(String post_id) async {
     }
   } catch (e) {
     debugPrint("Failed to get comments");
+  }
+  return null;
+}
+
+Future<String?> userGetCommentUsername(String comment_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Comments"));
+    query.whereEqualTo("objectId", comment_id);
+    final ParseResponse apiResponse = await query.query();
+    String? userId;
+    String username;
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        userId = obj['userId'];
+        break;
+      }
+
+      username = (await userGetUsername(userId!))!;
+      return username;
+    }
+  } catch (e) {
+    debugPrint("Failed to get username");
   }
   return null;
 }

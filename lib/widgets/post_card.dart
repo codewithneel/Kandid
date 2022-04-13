@@ -143,7 +143,12 @@ class PostCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(24.0),
                         ),
                       ),
-                      onPressed: () => {},
+                      onPressed: () => {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CommentsScreen(
+                                  post_Id: postId,
+                                ))),
+                      },
                       icon: Icon(
                         Icons.comment_outlined,
                         color: Colors.black,
