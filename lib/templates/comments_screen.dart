@@ -4,16 +4,10 @@ import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/comment_card.dart';
 import 'package:kandid/widgets/text_field_input.dart';
 
-
-class CommentsScreen extends StatefulWidget {
+class CommentsScreen extends StatelessWidget {
   final post_Id;
-  const CommentsScreen({Key? key, required this.post_Id}) : super(key: key);
+  CommentsScreen({Key? key, required this.post_Id}) : super(key: key);
 
-  @override
-  _CommentsScreenState createState() => _CommentsScreenState();
-}
-
-class _CommentsScreenState extends State<CommentsScreen> {
   final TextEditingController _commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -53,8 +47,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
               ),
             ),
             InkWell(
-              onTap: () =>
-                  userSetComment("x0CZfPCfxw", _commentController.text),
+              onTap: () => userSetComment(post_Id, _commentController.text),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                 child: const Text(
