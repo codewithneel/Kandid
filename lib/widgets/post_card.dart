@@ -23,7 +23,7 @@ class PostCard extends StatelessWidget {
                 .copyWith(right: 0),
             child: Row(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(
                     'https://images.unsplash.com/photo-1648405679817-325c7da58074?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
@@ -44,7 +44,13 @@ class PostCard extends StatelessWidget {
                                 case ConnectionState.waiting:
                                   return const Text('Loading...');
                                 case ConnectionState.done:
-                                  return Text(snapshot.data.toString());
+                                  return SelectableText.rich(
+                                    TextSpan(
+                                        text: snapshot.data.toString(),
+                                        style: const TextStyle(
+                                            color: primaryColor,
+                                            fontWeight: FontWeight.bold)),
+                                  );
                                 default:
                                   return const Text('default?');
                               }
@@ -58,6 +64,7 @@ class PostCard extends StatelessWidget {
           ),
 
           //image section
+
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
@@ -158,7 +165,7 @@ class PostCard extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Text(
                   '20 Likes',
                   style: Theme.of(context).textTheme.bodyText2,

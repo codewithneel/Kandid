@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Welcome Back,",
+                  "Welcome!",
                   style: TextStyle(
                       fontSize: 30,
                       color: Colors.black,
@@ -153,8 +153,8 @@ void tryLogin(BuildContext context, String email, String password) async {
   } else {
     showError(
         context,
-        "Something went wrong\n"
-        "Please fill in all fields\n"
-            "and check for typos");
+        "Something went wrong.\n"
+        "Please fill in all the fields\n"
+            "and check for typos.");
   }
 }
