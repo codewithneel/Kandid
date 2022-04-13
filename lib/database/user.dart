@@ -168,6 +168,27 @@ Future<void> userSetComment(String post_id, String comment) async {
   await todo.save();
 }
 
+Future<void> userLike(String post_id) async {
+  try {
+    String user_id = await getCurrentUser();
+    var query = QueryBuilder<ParseObject>(ParseObject("Likes"));
+    query
+      ..whereEqualTo("postId", post_id)
+      ..whereEqualTo('userId', user_id);
+    final ParseResponse apiResponse = await query.query();
+
+    if (apiResponse.success && apiResponse.results == null) {
+      String user_id = await getCurrentUser();
+      final todo = ParseObject('Likes')
+        ..set('userId', user_id)
+        ..set('postId', post_id);
+      await todo.save();
+    }
+  } catch (e) {
+    debugPrint("Failed to like post");
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 Future<dynamic> _userQueryExecutor(String user_id, String attribute) async {
@@ -207,10 +228,46 @@ Future<String?> userGetId(String username) async {
   return ret;
 }
 
-Future<List?> userGetPosts(String user_id) async {
+Future<List?> userGetPostsFeed() async {
+  dynamic user = await ParseUser.currentUser();
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Follow"));
+    query.whereEqualTo("follower", user['objectId']);
+    final ParseResponse apiResponse = await query.query();
+    List<String> followId = [];
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        followId.add(obj['followed']);
+      }
+    }
+
+    List postId = [];
+
+    var query2 = QueryBuilder<ParseObject>(ParseObject("Posts"));
+    query2
+      ..whereContainedIn('userId', followId)
+      ..orderByDescending('createdAt');
+
+    final ParseResponse apiResponse2 = await query2.query();
+
+    if (apiResponse2.success && apiResponse2.results != null) {
+      for (ParseObject obj in apiResponse2.results!) {
+        postId.add(obj['objectId']);
+      }
+      return postId;
+    }
+  } catch (e) {
+    debugPrint("Failed to get post");
+  }
+  return null;
+}
+
+Future<List?> userGetPostsProfile() async {
+  dynamic user = await ParseUser.currentUser();
   try {
     var query = QueryBuilder<ParseObject>(ParseObject("Posts"));
-    query.whereEqualTo("userId", user_id);
+    query.whereEqualTo("userId", user['objectId']);
     final ParseResponse apiResponse = await query.query();
     List postIds = [];
 
@@ -364,6 +421,7 @@ Future<List?> userGetCommentIds(String post_id) async {
   try {
     var query = QueryBuilder<ParseObject>(ParseObject("Comments"));
     query.whereEqualTo("postId", post_id);
+    query.orderByAscending('createdAt');
     final ParseResponse apiResponse = await query.query();
     List commentIds = [];
 

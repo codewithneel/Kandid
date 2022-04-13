@@ -81,30 +81,76 @@ class PostCard extends StatelessWidget {
           ),
 
           //Like and comments section
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //   children: [
+          //     IconButton(
+          //       onPressed: () {},
+          //       icon: const Icon(
+          //         Icons.favorite,
+          //         color: Colors.red,
+          //       ),
+          //     ),
+          //     IconButton(
+          //       onPressed: () => Navigator.of(context).push(
+          //         MaterialPageRoute(
+          //           builder: (context) => CommentsScreen(post_Id: postId),
+          //         ),
+          //       ),
+          //       icon: const Icon(
+          //         Icons.comment_outlined,
+          //         color: primaryColor,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          //Descriptions and view commnets
+
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
-                ),
-              ),
-              IconButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => CommentsScreen(post_Id: postId),
-                  ),
-                ),
-                icon: const Icon(
-                  Icons.comment_outlined,
-                  color: primaryColor,
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton.icon(
+                      style: TextButton.styleFrom(
+                        textStyle: TextStyle(color: Colors.black),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                        ),
+                      ),
+                      onPressed: () => {userLike(postId)},
+                      icon: Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      ),
+                      label: const Text(
+                        'Likes',
+                        style: TextStyle(color: primaryColor),
+                      ),
+                    ),
+                    TextButton.icon(
+                      style: TextButton.styleFrom(
+                        textStyle: TextStyle(color: Colors.black),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24.0),
+                        ),
+                      ),
+                      onPressed: () => {},
+                      icon: Icon(
+                        Icons.comment_outlined,
+                        color: Colors.black,
+                      ),
+                      label: const Text(
+                        'Comments',
+                        style: TextStyle(color: primaryColor),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          //Descriptions and view commnets
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
@@ -117,48 +163,47 @@ class PostCard extends StatelessWidget {
                   '20 Likes',
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
-                FutureBuilder(
-                    future: userGetPostUsername(postId),
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.active:
-                        case ConnectionState.waiting:
-                          return const Text('Loading...');
-                        case ConnectionState.done:
-                          return Text(snapshot.data.toString());
-                        default:
-                          return const Text('default?');
-                      }
-                    }),
-                FutureBuilder(
-                    //future: displayCaption(),
-                    future: userGetCaption(postId),
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.active:
-                        case ConnectionState.waiting:
-                          return const Text('Loading...');
-                        case ConnectionState.done:
-                          return Text(snapshot.data.toString());
-                        default:
-                          return const Text('default?');
-                      }
-                    }),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(
-                    top: 8,
-                  ),
-                  child: RichText(
-                    text: TextSpan(
-                      style: const TextStyle(color: primaryColor),
-                      children: [
-                        TextSpan(
-                          text: ' This is where the description is placed',
-                        ),
-                      ],
-                    ),
-                  ),
+                Row(
+                  children: [
+                    FutureBuilder(
+                        future: userGetPostUsername(postId),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.active:
+                            case ConnectionState.waiting:
+                              return const Text('Loading...');
+                            case ConnectionState.done:
+                              return SelectableText.rich(
+                                TextSpan(
+                                    text: snapshot.data.toString(),
+                                    style: const TextStyle(
+                                        color: primaryColor,
+                                        fontWeight: FontWeight.bold)),
+                              );
+                            default:
+                              return const Text('default?');
+                          }
+                        }),
+                    const SizedBox(width: 5),
+                    FutureBuilder(
+                        //future: displayCaption(),
+                        future: userGetCaption(postId),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.active:
+                            case ConnectionState.waiting:
+                              return const Text('Loading...');
+                            case ConnectionState.done:
+                              return SelectableText.rich(
+                                TextSpan(
+                                  text: snapshot.data.toString(),
+                                ),
+                              );
+                            default:
+                              return const Text('default?');
+                          }
+                        }),
+                  ],
                 ),
                 InkWell(
                   onTap: () {},
