@@ -17,7 +17,7 @@ void testfunc1(BuildContext context) async {
   chatNew("xv8IPDTc38", await getCurrentUser());
 }
 
-// void testfunc2() async {
+void testfunc2(BuildContext context) async {
 //   String current_id = await getCurrentUser();
 //   String? chat_id = await chatGetIdWithIds("xv8IPDTc38", current_id);
 //   if (chat_id == null) {
@@ -25,7 +25,7 @@ void testfunc1(BuildContext context) async {
 //     return;
 //   }
 //   messageNew(current_id, chat_id, "Hello World");
-// }
+}
 
 void testfunc3(BuildContext context) async {
 
