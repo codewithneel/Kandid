@@ -13,7 +13,6 @@ import '../database/post.dart';
 import '../database/notification.dart';
 import 'package:kandid/main.dart';
 
-
 /// Enter your test function here ///
 void testfunc1(BuildContext context) async {
   chatNew("xv8IPDTc38", await getCurrentUser());

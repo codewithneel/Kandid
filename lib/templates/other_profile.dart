@@ -141,12 +141,12 @@ class OtherProfileScreen extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {
-              // Eventually, go to the Messages template.
+            onTap: () async {
+              userFollow(await getCurrentUser(), user_id);
             },
               child: Container(
               child: const Text(
-                "Send Message",
+                "Follow",
                 style: TextStyle(fontWeight: FontWeight.bold, color: mobileBackgroundColor),
               ),
               width: double.infinity,
@@ -161,6 +161,27 @@ class OtherProfileScreen extends StatelessWidget {
               color: greenColor),
               ),
             ),
+          InkWell(
+            onTap: () {
+              // TODO: Go to the chat or make new chat
+            },
+            child: Container(
+              child: const Text(
+                "Send Message",
+                style: TextStyle(fontWeight: FontWeight.bold, color: mobileBackgroundColor),
+              ),
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: const ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(4),
+                    ),
+                  ),
+                  color: greenColor),
+            ),
+          ),
         ],
       ),
     );

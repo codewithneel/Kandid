@@ -397,6 +397,22 @@ Future<int> userGetPrivacyStatus(String user_id) async {
 
 void userGetProfileImage() {}
 
+Future<bool> userIsFollowing(String user_id) async {
+  try {
+    var query = QueryBuilder<ParseUser>(ParseUser.forQuery());
+    query.whereEqualTo("follower", await getCurrentUser());
+    query.whereEqualTo("following", user_id);
+
+    final ParseResponse apiResponse = await query.query();
+    if (apiResponse.success && apiResponse.results != null) {
+      return true;
+    }
+  } catch (e) {
+    debugPrint("Failed check if Follow exists\n$e");
+  }
+  return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // Follow Relationships are all imported by <follow.dart> & <chat.dart> but they
 // are imported here so that all user functionality is in one place
@@ -504,7 +520,7 @@ Future<String?> userGetCommentUsername(String comment_id) async {
         break;
       }
 
-      username = (await userGetUsername(userId!))!;
+      username = (await userGetUsername(userId!));
       return username;
     }
   } catch (e) {
