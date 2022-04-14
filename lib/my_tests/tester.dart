@@ -40,6 +40,9 @@ void testfunc3(BuildContext context) async {
 }
 
 void testfunc4(BuildContext context) async {
+  Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => TakePictureScreen())
+  );
   return;
 }
 
