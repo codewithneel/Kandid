@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:kandid/templates/my_profile.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import 'my_tests/tester.dart';
@@ -16,7 +17,7 @@ const TEMPLATE = LoginScreen();
 
 bool isLoggedIn = false;
 
-// format [ <keyApplicationId> , <keyClientId> ]
+// format: [ <keyApplicationId> , <keyClientId> ]
 final _DB_KEYS = [
   'zV6NcYkI8BZQ6KPHDGvNPQvdnNvfjZ3JUnmIwNJr',
   'Us8Z0sIW27BlGAwBVoAWuiXJzKbYBj0AWXxVA0DJ'
@@ -24,8 +25,9 @@ final _DB_KEYS = [
 
 List<CameraDescription> cameras = [];
 
-Future<void> main() async {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   // Database Connection
   final keyApplicationId = _DB_KEYS[0];
   final keyClientKey = _DB_KEYS[1];
@@ -39,11 +41,9 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({
-    Key? key,
-  }) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  // This widget is the root of the application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

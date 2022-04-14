@@ -74,10 +74,10 @@ class PostCard extends StatelessWidget {
                   switch (snapshot.connectionState) {
                     case ConnectionState.active:
                     case ConnectionState.waiting:
-                      return Text("loading...");
+                      return const Text("loading...");
                     case ConnectionState.done:
                       if (snapshot.data == null) {
-                        return Text("No image found");
+                        return const Text("No image found");
                       }
                       image_file = snapshot.data as ParseFileBase;
                       return Image.network(image_file.url.toString());

@@ -346,40 +346,72 @@ Future<ParseFileBase?> userGetPostImage(String post_id) async {
 // be used instead, but this way me and anyone working doesn't have to remember
 // attribute names in the database
 
-Future<String?> userGetUsername(String user_id) async {
-  return await _userQueryExecutor(user_id, "username");
+Future<String> userGetUsername(String user_id) async {
+  String? ret = await _userQueryExecutor(user_id, "username");
+  if(ret == null) return "<No Username>";
+  return ret;
 }
 
-Future<String?> userGetPassword(String user_id) async {
-  return await _userQueryExecutor(user_id, "password");
+Future<String> userGetPassword(String user_id) async {
+  String? ret = await _userQueryExecutor(user_id, "password");
+  if(ret == null) return "<No Password>";
+  return ret;
 }
 
-Future<String?> userGetEmail(String user_id) async {
-  return await _userQueryExecutor(user_id, "email");
+Future<String> userGetEmail(String user_id) async {
+  String? ret = await _userQueryExecutor(user_id, "email");
+  if(ret == null) return "<No Email>";
+  return ret;
 }
 
-Future<String?> userGetFirstName(String user_id) async {
-  return await _userQueryExecutor(user_id, "fname");
+Future<String> userGetFirstName(String user_id) async {
+  String? ret = await _userQueryExecutor(user_id, "fname");
+  if(ret == null) return "<No First Name>";
+  return ret;
 }
 
-Future<String?> userGetLastName(String user_id) async {
-  return await _userQueryExecutor(user_id, "lname");
+Future<String> userGetLastName(String user_id) async {
+  String? ret = await _userQueryExecutor(user_id, "lname");
+  if(ret == null) return "<No Last Name>";
+  return ret;
 }
 
 // this may be an issue because dob is a DateTime
-Future<DateTime?> userGetDob(String user_id) async {
-  return await _userQueryExecutor(user_id, "date_of_birth");
+Future<DateTime> userGetDob(String user_id) async {
+  DateTime? ret = await _userQueryExecutor(user_id, "date_of_birth");
+  if(ret == null) return DateTime(0,0,0);
+  return ret;
 }
 
-Future<String?> userGetBio(String user_id) async {
-  return await _userQueryExecutor(user_id, "bio");
+Future<String> userGetBio(String user_id) async {
+  String? ret = await _userQueryExecutor(user_id, "bio");
+  if(ret == null) return "<No Bio>";
+  return ret;
 }
 
-Future<String?> userGetPrivacyStatus(String user_id) async {
-  return await _userQueryExecutor(user_id, "is_private");
+Future<int> userGetPrivacyStatus(String user_id) async {
+  int? ret = await _userQueryExecutor(user_id, "is_private");
+  if(ret == null) return 0;
+  return ret;
 }
 
 void userGetProfileImage() {}
+
+Future<bool> userIsFollowing(String user_id) async {
+  try {
+    var query = QueryBuilder<ParseUser>(ParseUser.forQuery());
+    query.whereEqualTo("follower", await getCurrentUser());
+    query.whereEqualTo("following", user_id);
+
+    final ParseResponse apiResponse = await query.query();
+    if (apiResponse.success && apiResponse.results != null) {
+      return true;
+    }
+  } catch (e) {
+    debugPrint("Failed check if Follow exists\n$e");
+  }
+  return false;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Follow Relationships are all imported by <follow.dart> & <chat.dart> but they
@@ -401,15 +433,15 @@ Future<List<String>?> userGetFollowing(String user_id) async {
   return await f.getFollowing(user_id);
 }
 
-Future<int?> userGetFollowerCount(String user_id) async {
+Future<int> userGetFollowerCount(String user_id) async {
   dynamic list = await f.getFollowers(user_id);
-  if (list == null) return null;
-  return list.length;
+  if (list == null) return 0;
+  return list.length; //TODO : having a variable is probably better than this
 }
 
-Future<int?> userGetFollowingCount(String user_id) async {
+Future<int> userGetFollowingCount(String user_id) async {
   dynamic list = await f.getFollowing(user_id);
-  if (list == null) return null;
+  if (list == null) return 0;
   return list.length;
 }
 
@@ -488,7 +520,7 @@ Future<String?> userGetCommentUsername(String comment_id) async {
         break;
       }
 
-      username = (await userGetUsername(userId!))!;
+      username = (await userGetUsername(userId!));
       return username;
     }
   } catch (e) {

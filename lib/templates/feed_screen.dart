@@ -41,19 +41,17 @@ class FeedScreen extends StatelessWidget {
                   return const Text("loading...");
                 case ConnectionState.done:
                   if (snapshot.data?[0] == null) {
-                    return Text("Follow users for posts");
+                    return const Text("Follow users for posts");
                   }
                   return ListView.builder(
                     itemCount: snapshot.data?.length,
-                    itemBuilder: (ctx, index) => Container(
-                      child: PostCard(postId: snapshot.data![index].toString()),
-                    ),
+                    itemBuilder: (ctx, index) => PostCard(postId: snapshot.data![index].toString()),
                   );
                 default:
                   return const Text('default?');
               }
             })
-        //body: PostCard(),
-        );
+      //body: PostCard(),
+    );
   }
 }
