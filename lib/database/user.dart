@@ -445,8 +445,8 @@ Future<int> userGetFollowingCount(String user_id) async {
   return list.length;
 }
 
-Future<List<String>?> userGetChats(String user_id) async {
-  return await c.getChats(user_id);
+Future<List<String>?> userGetChats() async {
+  return await c.getChats();
 }
 
 Future<List?> userGetCommentIds(String post_id) async {

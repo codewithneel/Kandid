@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:kandid/database/user.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// This comment blocks a warning for an undesirable naming convention
 // ignore_for_file: non_constant_identifier_names
@@ -64,12 +65,13 @@ Future<List<dynamic>?> chatGetMessages(String chat_id) async {
   return ret;
 }
 
-Future<List<String>?> getChats(String user_id) async {
+Future<List<String>?> getChats() async {
   List<String>? ret = [];
+  dynamic user = await getCurrentUser();
 
   try {
     var query = QueryBuilder<ParseObject>(ParseObject('Chat'));
-    query.whereArrayContainsAll("listUserIds", [user_id]);
+    query.whereArrayContainsAll("listUserIds", [user]);
     final ParseResponse apiResponse = await query.query();
     if (apiResponse.success && apiResponse.results != null) {
       for (ParseObject obj in apiResponse.results!) {
@@ -78,7 +80,149 @@ Future<List<String>?> getChats(String user_id) async {
       return ret;
     }
   } catch (e) {
-    debugPrint("Failed to get ID for Chats for user_id $user_id\n$e");
+    debugPrint("Failed to get ID for Chats for user_id $user\n$e");
   }
   return null;
+}
+
+Future<String?> getUsername(String chat_id) async {
+  try {
+    dynamic user = await getCurrentUser();
+    var query = QueryBuilder<ParseObject>(ParseObject("Chat"));
+    query.whereEqualTo("objectId", chat_id);
+    final ParseResponse apiResponse = await query.query();
+    List list = [];
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        list = obj['listUserIds'];
+        break;
+      }
+
+      if (list[0] != user) {
+        return await userGetUsername(list[0]);
+      } else {
+        return await userGetUsername(list[1]);
+      }
+    }
+  } catch (e) {
+    debugPrint("Failed to get username");
+  }
+  return null;
+}
+
+Future<List?> recentMessage(String chat_id) async {
+  try {
+    dynamic user = await getCurrentUser();
+    var query = QueryBuilder<ParseObject>(ParseObject("Message"));
+    query
+      ..whereEqualTo("chatId", chat_id)
+      ..orderByDescending("createdAt");
+    final ParseResponse apiResponse = await query.query();
+    List recentMessage = [];
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        if (user == obj['senderId']) {
+          return recentMessage = [obj['text'], 'You'];
+        } else {
+          return recentMessage = [
+            obj['text'],
+            await userGetUsername(obj['senderId'])
+          ];
+        }
+      }
+    }
+  } catch (e) {
+    debugPrint("Failed to get most recent message");
+  }
+  return null;
+}
+
+Future<List<String?>> getName(String chat_id) async {
+  try {
+    dynamic user = await getCurrentUser();
+    var query = QueryBuilder<ParseObject>(ParseObject("Chat"));
+    query.whereEqualTo("objectId", chat_id);
+    final ParseResponse apiResponse = await query.query();
+    List list = [];
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        list = obj['listUserIds'];
+        break;
+      }
+
+      if (list[0] != user) {
+        String? first = await userGetFirstName(list[0]);
+        String? last = await userGetLastName(list[0]);
+        return [first, last];
+      } else {
+        String? first = await userGetFirstName(list[1]);
+        String? last = await userGetLastName(list[1]);
+        return [first, last];
+      }
+    }
+  } catch (e) {
+    debugPrint("Failed to get most recent message");
+  }
+  return [];
+}
+
+Future<List> getMessageId(String chat_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Message"));
+    query
+      ..whereEqualTo("chatId", chat_id)
+      ..orderByAscending('createdAt');
+    final ParseResponse apiResponse = await query.query();
+    List list = [];
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        list.add(obj.objectId);
+      }
+      return list;
+    }
+  } catch (e) {
+    debugPrint("Failed to get chat messages");
+  }
+  return [];
+}
+
+Future<String> getMessageIdUser(String message_Id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Message"));
+    query.whereEqualTo("objectId", message_Id);
+    final ParseResponse apiResponse = await query.query();
+    String user;
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        user = (await userGetUsername(obj['senderId']))!;
+        return user;
+      }
+    }
+  } catch (e) {
+    debugPrint("Failed to get username");
+  }
+  return '';
+}
+
+Future<String> getMessage(String message_Id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Message"));
+    query.whereEqualTo("objectId", message_Id);
+    final ParseResponse apiResponse = await query.query();
+    String user;
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        return obj['text'];
+      }
+    }
+  } catch (e) {
+    debugPrint("Failed to get message");
+  }
+  return '';
 }

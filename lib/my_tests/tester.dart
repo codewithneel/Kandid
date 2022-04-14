@@ -17,15 +17,15 @@ void testfunc1(BuildContext context) async {
   chatNew("xv8IPDTc38", await getCurrentUser());
 }
 
-void testfunc2(BuildContext context) async {
-  String current_id = await getCurrentUser();
-  String? chat_id = await chatGetIdWithIds("xv8IPDTc38", current_id);
-  if (chat_id == null) {
-    debugPrint("No chat id found");
-    return;
-  }
-  messageNew(current_id, chat_id, "Hello World");
-}
+// void testfunc2() async {
+//   String current_id = await getCurrentUser();
+//   String? chat_id = await chatGetIdWithIds("xv8IPDTc38", current_id);
+//   if (chat_id == null) {
+//     debugPrint("No chat id found");
+//     return;
+//   }
+//   messageNew(current_id, chat_id, "Hello World");
+// }
 
 void testfunc3(BuildContext context) async {
 
@@ -87,6 +87,7 @@ class _TestPageState extends State<TestPage> {
                     onPressed: () => testfunc2(context),
                   ),
                 ),
+
                 Container(
                   height: 50,
                   child: TextButton(
