@@ -6,7 +6,6 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'my_tests/tester.dart';
 import 'package:kandid/templates/login_screen.dart';
 import 'package:kandid/utils/colors.dart';
-import 'database/notification.dart';
 
 /// These comments block a warning for an undesirable naming convention
 // ignore_for_file: non_constant_identifier_names
@@ -57,49 +56,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
-/*
-class NoteTest extends StatefulWidget {
-  const NoteTest({Key? key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    return _NotePageState();
-  }
-
-}
-
-class _NotePageState extends State<NoteTest> {
-  @override
-  void initState(){
-    super.initState();
-    NotificationApi.init();
-    listenNotifications();
-  }
-
-  void listenNotifications() =>
-      NotificationApi.on_notifications.stream.listen(onClickedNotification);
-
-  void onClickedNotification(String? payload) =>
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const ProfileScreen()
-      ));
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        height: 50,
-        child: TextButton(
-          child: const Text('send notification'),
-          onPressed: () => NotificationApi.notificationShow(
-              title: "Update Image",
-              body: "You have 30 min to create a new post",
-              payload: "test_payload"
-          ),
-        ),
-      );
-  }
-
-}*/

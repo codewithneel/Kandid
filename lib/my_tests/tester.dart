@@ -10,7 +10,6 @@ import 'package:camera/camera.dart';
 import '../database/chat.dart';
 import '../database/message.dart';
 import '../database/post.dart';
-import '../database/notification.dart';
 import 'package:kandid/main.dart';
 
 /// Enter your test function here ///
@@ -29,14 +28,8 @@ void testfunc2(BuildContext context) async {
 }
 
 void testfunc3(BuildContext context) async {
-  NotificationApi.notificationShow(
-    title: "Update Image",
-    body: "You have 30 min to create a new post",
-    payload: "test_payload"
-  );
 
   debugPrint("Tried Sending Notification");
-
 }
 
 void testfunc4(BuildContext context) async {
