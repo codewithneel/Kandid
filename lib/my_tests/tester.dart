@@ -28,14 +28,12 @@ void testfunc1(BuildContext context) async {
 // }
 
 void testfunc3(BuildContext context) async {
-
   debugPrint("Tried Sending Notification");
 }
 
 void testfunc4(BuildContext context) async {
-  Navigator.of(context).push(
-    MaterialPageRoute(builder: (context) => TakePictureScreen())
-  );
+  Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => TakePictureScreen()));
   return;
 }
 
@@ -80,13 +78,13 @@ class _TestPageState extends State<TestPage> {
                     onPressed: () => testfunc1(context),
                   ),
                 ),
-                Container(
-                  height: 50,
-                  child: TextButton(
-                    child: const Text('testfunc2'),
-                    onPressed: () => testfunc2(context),
-                  ),
-                ),
+                // Container(
+                //   height: 50,
+                //   child: TextButton(
+                //     child: const Text('testfunc2'),
+                //     onPressed: () => testfunc2(context),
+                //   ),
+                // ),
 
                 Container(
                   height: 50,
@@ -110,8 +108,7 @@ class _TestPageState extends State<TestPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginScreen()
-                        ),
+                            builder: (context) => const LoginScreen()),
                       ),
                     },
                   ),
