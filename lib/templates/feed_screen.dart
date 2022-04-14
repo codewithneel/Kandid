@@ -12,51 +12,40 @@ class FeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
-        centerTitle: false,
-        title: SvgPicture.asset(
-          'assets/kandidLogo.svg',
-          color: primaryColor,
-          height: 32,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => const MessageScreen())),
-            icon: const Icon(
-              //messenger icon in homepage
-              Icons.messenger_outline,
+        appBar: AppBar(
+            automaticallyImplyLeading: false,
+            backgroundColor: mobileBackgroundColor,
+            centerTitle: false,
+            title: SvgPicture.asset(
+              'assets/kandidLogo.svg',
               color: primaryColor,
+              height: 32,
             ),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                //messenger icon in homepage
-                Icons.messenger_outline,
-                color: primaryColor,
+            actions: [
+              IconButton(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const MessageScreen())),
+                icon: const Icon(
+                  //messenger icon in homepage
+                  Icons.messenger_outline,
+                  color: primaryColor,
+                ),
               ),
-            ),
-          ],
-        ),
+            ]),
         body: FutureBuilder<List<dynamic>?>(
-            future: userGetPosts("15MqJ3PpfP"),
+            future: userGetPostsFeed(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
                 case ConnectionState.waiting:
                   return const Text("loading...");
                 case ConnectionState.done:
-                  //if (snapshot.data![0] != null) {
-                  //return Text(snapshot.data.toString());
-                  //}
+                  if (snapshot.data?[0] == null) {
+                    return const Text("Follow users for posts");
+                  }
                   return ListView.builder(
                     itemCount: snapshot.data?.length,
-                    itemBuilder: (ctx, index) => Container(
-                      child: PostCard(postId: snapshot.data![index].toString()),
-                    ),
+                    itemBuilder: (ctx, index) => PostCard(postId: snapshot.data![index].toString()),
                   );
                 default:
                   return const Text('default?');

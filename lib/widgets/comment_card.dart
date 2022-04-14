@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kandid/database/user.dart';
 
-class CommentCard extends StatefulWidget {
-  const CommentCard({Key? key}) : super(key: key);
+class CommentCard extends StatelessWidget {
+  final commentId;
+  const CommentCard({Key? key, required this.commentId}) : super(key: key);
 
-  @override
-  _CommentCardState createState() => _CommentCardState();
-}
-
-class _CommentCardState extends State<CommentCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,20 +29,50 @@ class _CommentCardState extends State<CommentCard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               //mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                          text: 'username',
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold)),
-                      TextSpan(
-                          text: ' Some description to insert',
-                          style: const TextStyle(color: Colors.black)),
-                    ],
-                  ),
-                ),
+                // RichText(
+                //   text: TextSpan(
+                //     children: [
+                //       TextSpan(
+                //           text: 'username',
+                //           style: const TextStyle(
+                //               color: Colors.black,
+                //               fontWeight: FontWeight.bold)),
+                //     ],
+                //   ),
+                // ),
+                FutureBuilder(
+                    future: userGetCommentUsername(commentId),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
+                          return const Text('Loading...');
+                        case ConnectionState.done:
+                          return Text(snapshot.data.toString());
+                        default:
+                          return const Text('default?');
+                      }
+                    }),
+                FutureBuilder(
+                    future: userGetComment(commentId),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
+                          return const Text('Loading...');
+                        case ConnectionState.done:
+                          return Text(snapshot.data.toString());
+                        // return SelectableText.rich(
+                        //   TextSpan(
+                        //       text: snapshot.data.toString(),
+                        //       style: const TextStyle(
+                        //         color: Colors.black,
+                        //       )),
+                        // );
+                        default:
+                          return const Text('default?');
+                      }
+                    }),
               ],
             ),
           ),

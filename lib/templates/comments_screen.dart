@@ -4,16 +4,10 @@ import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/comment_card.dart';
 import 'package:kandid/widgets/text_field_input.dart';
 
-
-class CommentsScreen extends StatefulWidget {
+class CommentsScreen extends StatelessWidget {
   final post_Id;
-  const CommentsScreen({Key? key, required this.post_Id}) : super(key: key);
+  CommentsScreen({Key? key, required this.post_Id}) : super(key: key);
 
-  @override
-  _CommentsScreenState createState() => _CommentsScreenState();
-}
-
-class _CommentsScreenState extends State<CommentsScreen> {
   final TextEditingController _commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -27,7 +21,29 @@ class _CommentsScreenState extends State<CommentsScreen> {
         ),
         centerTitle: false,
       ),
-      body: CommentCard(),
+      //body: CommentCard(),
+      body: FutureBuilder<List<dynamic>?>(
+          future: userGetCommentIds(post_Id),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.active:
+              case ConnectionState.waiting:
+                return const Text("loading...");
+              case ConnectionState.done:
+                if (snapshot.data?[0] == null) {
+                  return Text("No Comments");
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data?.length,
+                  itemBuilder: (ctx, index) => Container(
+                    child: CommentCard(
+                        commentId: snapshot.data![index].toString()),
+                  ),
+                );
+              default:
+                return const Text('default?');
+            }
+          }),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: kToolbarHeight,
@@ -53,8 +69,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
               ),
             ),
             InkWell(
-              onTap: () =>
-                  userSetComment("x0CZfPCfxw", _commentController.text),
+              onTap: () => userSetComment(post_Id, _commentController.text),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                 child: const Text(
