@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kandid/database/chat.dart';
 import 'package:kandid/templates/chat_screen.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/message_card.dart';
@@ -7,7 +8,8 @@ import 'package:kandid/templates/chat_screen.dart';
 import '../main.dart';
 
 class ChatBody extends StatefulWidget {
-  const ChatBody({Key? key}) : super(key: key);
+  String messageId;
+  ChatBody({Key? key, required this.messageId}) : super(key: key);
 
   @override
   _ChatBodyState createState() => _ChatBodyState();
@@ -35,11 +37,42 @@ class _ChatBodyState extends State<ChatBody> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               //mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text('username',
-                    style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold)),
-                Text('Full Message', style: TextStyle(color: Colors.black)),
+              children: [
+                FutureBuilder(
+                    future: getMessageIdUser(widget.messageId),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
+                          return const Text('Loading...');
+                        case ConnectionState.done:
+                          if (snapshot.data?.toString() == null) {
+                            return const Text("No username");
+                          }
+                          return SelectableText.rich(
+                            TextSpan(
+                                text: snapshot.data.toString(),
+                                style: const TextStyle(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold)),
+                          );
+                        default:
+                          return const Text('default?');
+                      }
+                    }),
+                FutureBuilder(
+                    future: getMessage(widget.messageId),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.active:
+                        case ConnectionState.waiting:
+                          return const Text('Loading...');
+                        case ConnectionState.done:
+                          return Text(snapshot.data.toString());
+                        default:
+                          return const Text('default?');
+                      }
+                    }),
               ],
             ),
           ),

@@ -11,21 +11,20 @@ import '../database/chat.dart';
 import '../database/message.dart';
 import '../database/post.dart';
 
-
 /// Enter your test function here ///
 void testfunc1(BuildContext context) async {
   chatNew("xv8IPDTc38", await getCurrentUser());
 }
 
-void testfunc2() async {
-  String current_id = await getCurrentUser();
-  String? chat_id = await chatGetIdWithIds("xv8IPDTc38", current_id);
-  if (chat_id == null) {
-    debugPrint("No chat id found");
-    return;
-  }
-  messageNew(current_id, chat_id, "Hello World");
-}
+// void testfunc2() async {
+//   String current_id = await getCurrentUser();
+//   String? chat_id = await chatGetIdWithIds("xv8IPDTc38", current_id);
+//   if (chat_id == null) {
+//     debugPrint("No chat id found");
+//     return;
+//   }
+//   messageNew(current_id, chat_id, "Hello World");
+// }
 
 void testfunc3(BuildContext context) async {
   // Ensure that plugin services are initialized so that `availableCameras()`
@@ -74,7 +73,7 @@ void testfunc4() async {
 
 class TestTemplate extends StatelessWidget {
   const TestTemplate({Key? key}) : super(key: key);
-  
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -139,13 +138,13 @@ class _TestPageState extends State<TestPage> {
                     onPressed: () => testfunc1(context),
                   ),
                 ),
-                Container(
-                  height: 50,
-                  child: TextButton(
-                    child: const Text('testfunc2'),
-                    onPressed: () => testfunc2(),
-                  ),
-                ),
+                // Container(
+                //   height: 50,
+                //   child: TextButton(
+                //     child: const Text('testfunc2'),
+                //     onPressed: () => testfunc2(),
+                //   ),
+                // ),
                 Container(
                   height: 50,
                   child: TextButton(

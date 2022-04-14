@@ -4,11 +4,30 @@ import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/comment_card.dart';
 import 'package:kandid/widgets/text_field_input.dart';
 
-class CommentsScreen extends StatelessWidget {
+class CommentsScreen extends StatefulWidget {
   final post_Id;
   CommentsScreen({Key? key, required this.post_Id}) : super(key: key);
 
-  final TextEditingController _commentController = TextEditingController();
+  @override
+  _CommentsScreenState createState() => _CommentsScreenState();
+}
+
+class _CommentsScreenState extends State<CommentsScreen> {
+  late TextEditingController _commentController = TextEditingController();
+
+  void postComment(String uid, String comment) async {
+    userSetComment(uid, comment);
+    setState(() {
+      _commentController.text = '';
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _commentController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +42,7 @@ class CommentsScreen extends StatelessWidget {
       ),
       //body: CommentCard(),
       body: FutureBuilder<List<dynamic>?>(
-          future: userGetCommentIds(post_Id),
+          future: userGetCommentIds(widget.post_Id),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.active:
@@ -69,7 +88,7 @@ class CommentsScreen extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () => userSetComment(post_Id, _commentController.text),
+              onTap: () => postComment(widget.post_Id, _commentController.text),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                 child: const Text(
