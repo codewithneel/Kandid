@@ -196,7 +196,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
 
-
 Future<String> myProfileGetUsername() async {
   String user_id = await getCurrentUser();
   dynamic ret = await userGetUsername(user_id);
@@ -217,14 +216,10 @@ Future<String> myProfileGetBio() async{
 
 Future<int> myProfileGetFollowerCount() async{
   String user_id = await getCurrentUser();
-  int? ret = await userGetFollowerCount(user_id);
-  if (ret == null) { return 0; }
-  return ret;
+  return await userGetFollowerCount(user_id);
 }
 
 Future<int> myProfileGetFollowingCount() async{
   String user_id = await getCurrentUser();
-  int? ret = await userGetFollowingCount(user_id);
-  if (ret == null) { return 0; }
-  return ret;
+  return await userGetFollowingCount(user_id);
 }

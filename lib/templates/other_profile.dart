@@ -9,14 +9,11 @@ import 'package:kandid/utils/colors.dart';
 /// This comment blocks a warning for an undesirable naming convention
 // ignore_for_file: non_constant_identifier_names
 
-class OtherProfileScreen extends StatefulWidget {
-  const OtherProfileScreen({Key? key}) : super(key: key);
+class OtherProfileScreen extends StatelessWidget {
 
-  @override
-  _OtherProfileScreenState createState() => _OtherProfileScreenState();
-}
+  final user_id;
+  const OtherProfileScreen({Key? key, required this.user_id}) : super(key: key);
 
-class _OtherProfileScreenState extends State<OtherProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +21,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
         centerTitle: false,
         backgroundColor: Colors.white,
         title: FutureBuilder(
-            future: displayUsername(),
+            future: userGetUsername(user_id),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
@@ -83,7 +80,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(45.0, 0.0, 0.0, 0.0),
                                   child: FutureBuilder(
-                                      future: myProfileGetBio(),
+                                      future: userGetBio(user_id),
                                       builder: (context, snapshot) {
                                         switch (snapshot.connectionState) {
                                           case ConnectionState.active:
@@ -104,7 +101,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               FutureBuilder(
-                                  future: myProfileGetFollowerCount(),
+                                  future: userGetFollowerCount(user_id),
                                   builder: (context, snapshot) {
                                     switch (snapshot.connectionState) {
                                       case ConnectionState.active:
@@ -117,7 +114,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                                     }
                                   }),
                               FutureBuilder(
-                                  future: myProfileGetFollowingCount(),
+                                  future: userGetFollowingCount(user_id),
                                   builder: (context, snapshot) {
                                     switch (snapshot.connectionState) {
                                       case ConnectionState.active:
@@ -195,39 +192,4 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
       ],
     );
   }
-}
-
-
-
-
-Future<String> displayUsername() async {
-  String user_id = await getCurrentUser();
-  dynamic ret = await userGetUsername(user_id);
-  if (ret != null) {
-    return ret;
-  }
-  return "No User";
-}
-
-Future<String> myProfileGetBio() async{
-  String user_id = await getCurrentUser();
-  dynamic ret = await userGetBio(user_id);
-  if (ret != null) {
-    return ret;
-  }
-  return "No Bio Found";
-}
-
-Future<int> myProfileGetFollowerCount() async{
-  String user_id = await getCurrentUser();
-  int? ret = await userGetFollowerCount(user_id);
-  if (ret == null) { return -1; }
-  return ret;
-}
-
-Future<int> myProfileGetFollowingCount() async{
-  String user_id = await getCurrentUser();
-  int? ret = await userGetFollowingCount(user_id);
-  if (ret == null) { return -1; }
-  return ret;
 }

@@ -30,7 +30,12 @@ dependencies:
   parse_server_sdk_flutter: ^3.1.0
   flutter:
     sdk: flutter
-  camera:
+
+  flutter_local_notifications: ^9.4.0
+  rxdart: ^0.27.3
+  timezone: ^0.8.0
+
+  camera: ^0.9.4+19
   path_provider:
   path:
 

@@ -51,7 +51,7 @@ class FeedScreen extends StatelessWidget {
                   return const Text('default?');
               }
             })
-        //body: PostCard(),
-        );
+      //body: PostCard(),
+    );
   }
 }

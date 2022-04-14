@@ -1,15 +1,17 @@
-//import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import '../database/user.dart';
+import '../templates/login_screen.dart';
 import 'test_profile_page.dart';
 import '../templates/camera_screen.dart';
 import 'package:camera/camera.dart';
 import '../database/chat.dart';
 import '../database/message.dart';
 import '../database/post.dart';
+import '../database/notification.dart';
+import 'package:kandid/main.dart';
 
 
 /// Enter your test function here ///
@@ -17,7 +19,7 @@ void testfunc1(BuildContext context) async {
   chatNew("xv8IPDTc38", await getCurrentUser());
 }
 
-void testfunc2() async {
+void testfunc2(BuildContext context) async {
   String current_id = await getCurrentUser();
   String? chat_id = await chatGetIdWithIds("xv8IPDTc38", current_id);
   if (chat_id == null) {
@@ -28,69 +30,22 @@ void testfunc2() async {
 }
 
 void testfunc3(BuildContext context) async {
-  // Ensure that plugin services are initialized so that `availableCameras()`
-  // can be called before `runApp()`
-  //WidgetsFlutterBinding.ensureInitialized();
-
-  // Obtain a list of the available cameras on the device.
-  //final cameras = await availableCameras();
-
-  // Get a specific camera from the list of available cameras.
-  //final firstCamera = cameras.first;
-  Navigator.of(context).push(
-    MaterialPageRoute(
-        //builder: (context) => TakePictureScreen(camera: firstCamera),
-        builder: (context) => TakePictureScreen()),
+  NotificationApi.notificationShow(
+    title: "Update Image",
+    body: "You have 30 min to create a new post",
+    payload: "test_payload"
   );
+
+  debugPrint("Tried Sending Notification");
+
 }
 
-void testfunc4() async {
-  String id = "";
-
-  dynamic user = await ParseUser.currentUser();
-  if (user == null) {
-    debugPrint("no user logged in");
-    return;
-  }
-
-  id = user["objectId"];
-
-  String? str = await userGetLastName(id);
-  debugPrint(str);
-  userSetLastName("miller");
-  str = await userGetLastName(id);
-  debugPrint(str);
-
-  // newUser(
-  //     context,
-  //     "edelb",
-  //     "eeb24@njit.edu",
-  //     "password",
-  //     "tom",
-  //     "smith",
-  //     DateTime.now(),
-  //     true),
-}
-
-class TestTemplate extends StatelessWidget {
-  const TestTemplate({Key? key}) : super(key: key);
-  
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Tester",
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-      home: const TestPage(title: 'Test Page'),
-    );
-  }
+void testfunc4(BuildContext context) async {
+  return;
 }
 
 class TestPage extends StatefulWidget {
-  const TestPage({Key? key, required this.title}) : super(key: key);
-  final String title;
+  const TestPage({Key? key, title = "Test Page"}) : super(key: key);
 
   @override
   State<TestPage> createState() => _TestPageState();
@@ -98,8 +53,6 @@ class TestPage extends StatefulWidget {
 
 class _TestPageState extends State<TestPage> {
   final controllerUsername = TextEditingController();
-
-  var n;
 
   @override
   Widget build(BuildContext context) {
@@ -128,13 +81,6 @@ class _TestPageState extends State<TestPage> {
                 Container(
                   height: 50,
                   child: TextButton(
-                    child: const Text('Login'),
-                    onPressed: () => emailLogin("eeb24@njit.edu", "password"),
-                  ),
-                ),
-                Container(
-                  height: 50,
-                  child: TextButton(
                     child: const Text('testfunc1'),
                     onPressed: () => testfunc1(context),
                   ),
@@ -143,23 +89,33 @@ class _TestPageState extends State<TestPage> {
                   height: 50,
                   child: TextButton(
                     child: const Text('testfunc2'),
-                    onPressed: () => testfunc2(),
+                    onPressed: () => testfunc2(context),
                   ),
                 ),
                 Container(
                   height: 50,
                   child: TextButton(
-                      child: const Text('testfunc3'),
-                      onPressed: () => testfunc3(context)),
+                    child: const Text('testfunc3'),
+                    onPressed: () => testfunc3(context),
+                  ),
                 ),
                 Container(
                   height: 50,
                   child: TextButton(
-                    child: const Text('Profile'),
+                      child: const Text('testfunc4'),
+                      onPressed: () => testfunc4(context)),
+                ),
+                Container(
+                  height: 50,
+                  child: TextButton(
+                    child: const Text('Logout'),
                     onPressed: () => {
+                      logout(),
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => testProfile()),
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()
+                        ),
                       ),
                     },
                   ),
