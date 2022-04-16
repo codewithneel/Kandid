@@ -6,11 +6,12 @@ import '../widgets/follow_button.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:kandid/utils/colors.dart';
 
+import '../widgets/post_card.dart';
+
 /// This comment blocks a warning for an undesirable naming convention
 // ignore_for_file: non_constant_identifier_names
 
 class OtherProfileScreen extends StatelessWidget {
-
   final user_id;
   const OtherProfileScreen({Key? key, required this.user_id}) : super(key: key);
 
@@ -18,6 +19,7 @@ class OtherProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(color: Colors.black),
         centerTitle: false,
         backgroundColor: Colors.white,
         title: FutureBuilder(
@@ -26,33 +28,34 @@ class OtherProfileScreen extends StatelessWidget {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
                 case ConnectionState.waiting:
-                  return const Text('Loading...', style: TextStyle(color: primaryColor));
+                  return const Text('Loading...',
+                      style: TextStyle(color: primaryColor));
                 case ConnectionState.done:
-                  return Text(snapshot.data.toString(), style: const TextStyle(color: primaryColor));
+                  return Text(snapshot.data.toString(),
+                      style: const TextStyle(color: primaryColor));
                 default:
-                  return const Text('default?', style: TextStyle(color: primaryColor));
+                  return const Text('default?',
+                      style: TextStyle(color: primaryColor));
               }
             }),
-
         titleSpacing: -30.0,
         elevation: 0,
         actions: [
           Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
-          child: GestureDetector(
-            onTap: () {
-              // Eventually, go to the Messages template.
-              //Navigator.of(context).push(
-              //  MaterialPageRoute(
-              //    builder: (context) => const SettingsScreen(),
-              //  ),
-              // );
-            },
-            child: const Icon(Icons.message_outlined, color: Colors.black),
-          ),
+            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
+            child: GestureDetector(
+              onTap: () {
+                // Eventually, go to the Messages template.
+                //Navigator.of(context).push(
+                //  MaterialPageRoute(
+                //    builder: (context) => const SettingsScreen(),
+                //  ),
+                // );
+              },
+              child: const Icon(Icons.message_outlined, color: Colors.black),
+            ),
           ),
         ],
-
       ),
       body: ListView(
         children: [
@@ -78,18 +81,26 @@ class OtherProfileScreen extends StatelessWidget {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(45.0, 0.0, 0.0, 0.0),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      45.0, 0.0, 0.0, 0.0),
                                   child: FutureBuilder(
                                       future: userGetBio(user_id),
                                       builder: (context, snapshot) {
                                         switch (snapshot.connectionState) {
                                           case ConnectionState.active:
                                           case ConnectionState.waiting:
-                                            return const Text('Loading...', style: TextStyle(color: primaryColor));
+                                            return const Text('Loading...',
+                                                style: TextStyle(
+                                                    color: primaryColor));
                                           case ConnectionState.done:
-                                            return Text(snapshot.data.toString(), style: const TextStyle(color: primaryColor));
+                                            return Text(
+                                                snapshot.data.toString(),
+                                                style: const TextStyle(
+                                                    color: primaryColor));
                                           default:
-                                            return const Text('default?', style: TextStyle(color: primaryColor));
+                                            return const Text('default?',
+                                                style: TextStyle(
+                                                    color: primaryColor));
                                         }
                                       }),
                                 ),
@@ -108,7 +119,9 @@ class OtherProfileScreen extends StatelessWidget {
                                       case ConnectionState.waiting:
                                         return buildStatColumn(0, "loading...");
                                       case ConnectionState.done:
-                                        return buildStatColumn(int.parse(snapshot.data.toString()), "followers");
+                                        return buildStatColumn(
+                                            int.parse(snapshot.data.toString()),
+                                            "followers");
                                       default:
                                         return buildStatColumn(-2, "default?");
                                     }
@@ -121,7 +134,9 @@ class OtherProfileScreen extends StatelessWidget {
                                       case ConnectionState.waiting:
                                         return buildStatColumn(0, "loading...");
                                       case ConnectionState.done:
-                                        return buildStatColumn(int.parse(snapshot.data.toString()), "following");
+                                        return buildStatColumn(
+                                            int.parse(snapshot.data.toString()),
+                                            "following");
                                       default:
                                         return buildStatColumn(-2, "default?");
                                     }
@@ -144,31 +159,11 @@ class OtherProfileScreen extends StatelessWidget {
             onTap: () async {
               userFollow(await getCurrentUser(), user_id);
             },
-              child: Container(
-              child: const Text(
-                "Follow",
-                style: TextStyle(fontWeight: FontWeight.bold, color: mobileBackgroundColor),
-              ),
-              width: double.infinity,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              decoration: const ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(4),
-                ),
-              ),
-              color: greenColor),
-              ),
-            ),
-          InkWell(
-            onTap: () {
-              // TODO: Go to the chat or make new chat
-            },
             child: Container(
               child: const Text(
-                "Send Message",
-                style: TextStyle(fontWeight: FontWeight.bold, color: mobileBackgroundColor),
+                "Follow",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: mobileBackgroundColor),
               ),
               width: double.infinity,
               alignment: Alignment.center,
@@ -182,6 +177,51 @@ class OtherProfileScreen extends StatelessWidget {
                   color: greenColor),
             ),
           ),
+          InkWell(
+            onTap: () {
+              // TODO: Go to the chat or make new chat
+            },
+            child: Container(
+              child: const Text(
+                "Send Message",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: mobileBackgroundColor),
+              ),
+              width: double.infinity,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: const ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(4),
+                    ),
+                  ),
+                  color: greenColor),
+            ),
+          ),
+          FutureBuilder<List<dynamic>?>(
+              future: userGetPostsOtherProfile(user_id),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.active:
+                  case ConnectionState.waiting:
+                    return const Text("loading...");
+                  case ConnectionState.done:
+                    if (snapshot.data?[0] == null) {
+                      return const Text("This user has no post");
+                    }
+                    return ListView.builder(
+                      //scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (ctx, index) =>
+                          PostCard(postId: snapshot.data![index].toString()),
+                    );
+                  default:
+                    return const Text('default?');
+                }
+              })
         ],
       ),
     );

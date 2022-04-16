@@ -284,6 +284,26 @@ Future<List?> userGetPostsProfile() async {
   return null;
 }
 
+Future<List?> userGetPostsOtherProfile(String user_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Posts"));
+    query.whereEqualTo("userId", user_id);
+    final ParseResponse apiResponse = await query.query();
+    List postIds = [];
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        postIds.add(obj['objectId']);
+      }
+      //debugPrint("hi");
+      return postIds;
+    }
+  } catch (e) {
+    debugPrint("Failed to get post");
+  }
+  return null;
+}
+
 Future<String?> userGetPostUsername(String post_id) async {
   try {
     var query = QueryBuilder<ParseObject>(ParseObject("Posts"));

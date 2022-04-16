@@ -19,13 +19,13 @@ class FollowingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            automaticallyImplyLeading: false,
+            //automaticallyImplyLeading: true,
+            leading: BackButton(color: Colors.black),
             backgroundColor: mobileBackgroundColor,
             centerTitle: false,
-            title: SvgPicture.asset(
-              'assets/kandidLogo.svg',
-              color: primaryColor,
-              height: 32,
+            title: Text(
+              "Following",
+              style: TextStyle(color: primaryColor),
             ),
             actions: []),
         body: FutureBuilder<List<String>?>(
@@ -36,10 +36,12 @@ class FollowingPage extends StatelessWidget {
                 case ConnectionState.waiting:
                   return const Text("loading...");
                 case ConnectionState.done:
-                  if (snapshot.data?[0] == null) {
+                  if (snapshot.data?[0] == '') {
                     return const Text("No followers");
                   }
                   return ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
                     itemCount: snapshot.data?.length,
                     itemBuilder: (ctx, index) =>
                         UserCard(user_id: snapshot.data![index].toString()),

@@ -23,15 +23,15 @@ class FollowersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: mobileBackgroundColor,
-            centerTitle: false,
-            title: SvgPicture.asset(
-              'assets/kandidLogo.svg',
-              color: primaryColor,
-              height: 32,
-            ),
-            actions: []),
+          //automaticallyImplyLeading: true,
+          leading: BackButton(color: Colors.black),
+          backgroundColor: mobileBackgroundColor,
+          centerTitle: false,
+          title: Text(
+            "Followers",
+            style: TextStyle(color: primaryColor),
+          ),
+        ),
         body: FutureBuilder<List<String>>(
             future: followersGetFollowerIds(),
             builder: (context, snapshot) {
@@ -44,6 +44,8 @@ class FollowersPage extends StatelessWidget {
                     return const Text("Follow users");
                   }
                   return ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
                     itemCount: snapshot.data?.length,
                     itemBuilder: (ctx, index) =>
                         UserCard(user_id: snapshot.data![index].toString()),
