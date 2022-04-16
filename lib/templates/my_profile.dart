@@ -5,6 +5,9 @@ import '../database/user.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:kandid/utils/colors.dart';
 
+import 'followers_screen.dart';
+import 'following_screen.dart';
+
 /// This comment blocks a warning for an undesirable naming convention
 // ignore_for_file: non_constant_identifier_names
 
@@ -16,7 +19,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   String Bio = "Humanitarian | BJJ | NJIT Alum";
 
   var followers = 14;
@@ -34,14 +36,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
                 case ConnectionState.waiting:
-                  return const Text('Loading...', style: TextStyle(color: primaryColor));
+                  return const Text('Loading...',
+                      style: TextStyle(color: primaryColor));
                 case ConnectionState.done:
-                  return Text(snapshot.data.toString(), style: const TextStyle(color: primaryColor));
+                  return Text(snapshot.data.toString(),
+                      style: const TextStyle(color: primaryColor));
                 default:
-                  return const Text('default?', style: TextStyle(color: primaryColor));
+                  return const Text('default?',
+                      style: TextStyle(color: primaryColor));
               }
             }),
-
         titleSpacing: -30.0,
         elevation: 0,
         actions: [
@@ -60,20 +64,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const SettingsScreen(),
-                ),
-              );
-            },
-            child: const Icon(Icons.settings, color: Colors.black),
-          ),
+            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsScreen(),
+                  ),
+                );
+              },
+              child: const Icon(Icons.settings, color: Colors.black),
+            ),
           ),
         ],
-
       ),
       body: ListView(
         children: [
@@ -99,18 +102,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(45.0, 0.0, 0.0, 0.0),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      45.0, 0.0, 0.0, 0.0),
                                   child: FutureBuilder(
                                       future: myProfileGetBio(),
                                       builder: (context, snapshot) {
                                         switch (snapshot.connectionState) {
                                           case ConnectionState.active:
                                           case ConnectionState.waiting:
-                                            return const Text('Loading...', style: TextStyle(color: primaryColor));
+                                            return const Text('Loading...',
+                                                style: TextStyle(
+                                                    color: primaryColor));
                                           case ConnectionState.done:
-                                            return Text(snapshot.data.toString(), style: const TextStyle(color: primaryColor));
+                                            return Text(
+                                                snapshot.data.toString(),
+                                                style: const TextStyle(
+                                                    color: primaryColor));
                                           default:
-                                            return const Text('default?', style: TextStyle(color: primaryColor));
+                                            return const Text('default?',
+                                                style: TextStyle(
+                                                    color: primaryColor));
                                         }
                                       }),
                                 ),
@@ -121,32 +132,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              FutureBuilder(
-                                  future: myProfileGetFollowerCount(),
-                                  builder: (context, snapshot) {
-                                    switch (snapshot.connectionState) {
-                                      case ConnectionState.active:
-                                      case ConnectionState.waiting:
-                                        return buildStatColumn(0, "loading...");
-                                      case ConnectionState.done:
-                                        return buildStatColumn(int.parse(snapshot.data.toString()), "followers");
-                                      default:
-                                        return buildStatColumn(-2, "default?");
-                                    }
-                                  }),
-                              FutureBuilder(
-                                  future: myProfileGetFollowingCount(),
-                                  builder: (context, snapshot) {
-                                    switch (snapshot.connectionState) {
-                                      case ConnectionState.active:
-                                      case ConnectionState.waiting:
-                                        return buildStatColumn(0, "loading...");
-                                      case ConnectionState.done:
-                                        return buildStatColumn(int.parse(snapshot.data.toString()), "following");
-                                      default:
-                                        return buildStatColumn(-2, "default?");
-                                    }
-                                  })
+                              GestureDetector(
+                                onTap: () => {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const FollowersPage()))
+                                },
+                                child: FutureBuilder(
+                                    future: myProfileGetFollowerCount(),
+                                    builder: (context, snapshot) {
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.active:
+                                        case ConnectionState.waiting:
+                                          return buildStatColumn(
+                                              0, "loading...");
+                                        case ConnectionState.done:
+                                          return buildStatColumn(
+                                              int.parse(
+                                                  snapshot.data.toString()),
+                                              "followers");
+                                        default:
+                                          return buildStatColumn(
+                                              -2, "default?");
+                                      }
+                                    }),
+                              ),
+                              GestureDetector(
+                                  onTap: () => {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const FollowingPage()))
+                                      },
+                                  child: FutureBuilder(
+                                      future: myProfileGetFollowingCount(),
+                                      builder: (context, snapshot) {
+                                        switch (snapshot.connectionState) {
+                                          case ConnectionState.active:
+                                          case ConnectionState.waiting:
+                                            return buildStatColumn(
+                                                0, "loading...");
+                                          case ConnectionState.done:
+                                            return buildStatColumn(
+                                                int.parse(
+                                                    snapshot.data.toString()),
+                                                "following");
+                                          default:
+                                            return buildStatColumn(
+                                                -2, "default?");
+                                        }
+                                      }))
                             ],
                           ),
                           Row(
@@ -194,8 +229,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-
-
 Future<String> myProfileGetUsername() async {
   String user_id = await getCurrentUser();
   dynamic ret = await userGetUsername(user_id);
@@ -205,7 +238,7 @@ Future<String> myProfileGetUsername() async {
   return "<No Username>";
 }
 
-Future<String> myProfileGetBio() async{
+Future<String> myProfileGetBio() async {
   String user_id = await getCurrentUser();
   dynamic ret = await userGetBio(user_id);
   if (ret != null) {
@@ -214,12 +247,12 @@ Future<String> myProfileGetBio() async{
   return "<No Bio Found>";
 }
 
-Future<int> myProfileGetFollowerCount() async{
+Future<int> myProfileGetFollowerCount() async {
   String user_id = await getCurrentUser();
   return await userGetFollowerCount(user_id);
 }
 
-Future<int> myProfileGetFollowingCount() async{
+Future<int> myProfileGetFollowingCount() async {
   String user_id = await getCurrentUser();
   return await userGetFollowingCount(user_id);
 }

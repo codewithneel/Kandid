@@ -348,50 +348,50 @@ Future<ParseFileBase?> userGetPostImage(String post_id) async {
 
 Future<String> userGetUsername(String user_id) async {
   String? ret = await _userQueryExecutor(user_id, "username");
-  if(ret == null) return "<No Username>";
+  if (ret == null) return "<No Username>";
   return ret;
 }
 
 Future<String> userGetPassword(String user_id) async {
   String? ret = await _userQueryExecutor(user_id, "password");
-  if(ret == null) return "<No Password>";
+  if (ret == null) return "<No Password>";
   return ret;
 }
 
 Future<String> userGetEmail(String user_id) async {
   String? ret = await _userQueryExecutor(user_id, "email");
-  if(ret == null) return "<No Email>";
+  if (ret == null) return "<No Email>";
   return ret;
 }
 
 Future<String> userGetFirstName(String user_id) async {
   String? ret = await _userQueryExecutor(user_id, "fname");
-  if(ret == null) return "<No First Name>";
+  if (ret == null) return "<No First Name>";
   return ret;
 }
 
 Future<String> userGetLastName(String user_id) async {
   String? ret = await _userQueryExecutor(user_id, "lname");
-  if(ret == null) return "<No Last Name>";
+  if (ret == null) return "<No Last Name>";
   return ret;
 }
 
 // this may be an issue because dob is a DateTime
 Future<DateTime> userGetDob(String user_id) async {
   DateTime? ret = await _userQueryExecutor(user_id, "date_of_birth");
-  if(ret == null) return DateTime(0,0,0);
+  if (ret == null) return DateTime(0, 0, 0);
   return ret;
 }
 
 Future<String> userGetBio(String user_id) async {
   String? ret = await _userQueryExecutor(user_id, "bio");
-  if(ret == null) return "<No Bio>";
+  if (ret == null) return "<No Bio>";
   return ret;
 }
 
 Future<int> userGetPrivacyStatus(String user_id) async {
   int? ret = await _userQueryExecutor(user_id, "is_private");
-  if(ret == null) return 0;
+  if (ret == null) return 0;
   return ret;
 }
 
@@ -425,12 +425,20 @@ void userUnfollow(follower_id, followed_id) {
   f.removeFollow(follower_id, followed_id);
 }
 
-Future<List<String>?> userGetFollowers(String user_id) async {
-  return await f.getFollowers(user_id);
+Future<List<String>> userGetFollowers(String user_id) async {
+  List<String>? ret = await f.getFollowers(user_id);
+  if (ret == null) {
+    return [];
+  }
+  return ret;
 }
 
 Future<List<String>?> userGetFollowing(String user_id) async {
-  return await f.getFollowing(user_id);
+  List<String>? ret = await f.getFollowing(user_id);
+  if (ret == null) {
+    return [];
+  }
+  return ret;
 }
 
 Future<int> userGetFollowerCount(String user_id) async {
