@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kandid/my_tests/tester.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/templates/feed_screen.dart';
+import '../my_tests/notification_test.dart';
+import '../templates/camera_screen.dart';
 import '../templates/message_screen.dart';
 import '../templates/my_profile.dart';
 import '../templates/other_profile.dart';
@@ -45,12 +47,12 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: const [
-          FeedScreen(),
-          MessageScreen(),
-          TestPage(),
-          OtherProfileScreen(user_id:"15MqJ3PpfP"),
-          ProfileScreen(),
+        children: [
+          const FeedScreen(),
+          const TestPage(),
+          TakePictureScreen(),
+          NotificationTestPage(),
+          const ProfileScreen(),
         ],
         physics:
             const NeverScrollableScrollPhysics(), //if removed, you can swipe between the nav bar taps like cards
