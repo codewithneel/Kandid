@@ -1,6 +1,7 @@
 // This file is responsible for rendering the template_my_user found in the Figma File
 
 import 'package:flutter/material.dart';
+import 'package:kandid/templates/message_screen.dart';
 import '../database/user.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:kandid/utils/colors.dart';
@@ -56,12 +57,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
             child: GestureDetector(
               onTap: () {
-                // Eventually, go to the Messages template.
-                //Navigator.of(context).push(
-                //  MaterialPageRoute(
-                //    builder: (context) => const SettingsScreen(),
-                //  ),
-                // );
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const MessageScreen(),
+                  ),
+                );
               },
               child: const Icon(Icons.message_outlined, color: Colors.black),
             ),
