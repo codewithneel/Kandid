@@ -20,7 +20,7 @@ class OtherProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(color: Colors.black),
-        centerTitle: false,
+        centerTitle: true,
         backgroundColor: Colors.white,
         title: FutureBuilder(
             future: userGetUsername(user_id),
@@ -41,20 +41,20 @@ class OtherProfileScreen extends StatelessWidget {
         titleSpacing: -30.0,
         elevation: 0,
         actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
-            child: GestureDetector(
-              onTap: () {
-                // Eventually, go to the Messages template.
-                //Navigator.of(context).push(
-                //  MaterialPageRoute(
-                //    builder: (context) => const SettingsScreen(),
-                //  ),
-                // );
-              },
-              child: const Icon(Icons.message_outlined, color: Colors.black),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       // Eventually, go to the Messages template.
+          //       //Navigator.of(context).push(
+          //       //  MaterialPageRoute(
+          //       //    builder: (context) => const SettingsScreen(),
+          //       //  ),
+          //       // );
+          //     },
+          //     child: const Icon(Icons.message_outlined, color: Colors.black),
+          //   ),
+          // ),
         ],
       ),
       body: ListView(
@@ -82,7 +82,7 @@ class OtherProfileScreen extends StatelessWidget {
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
-                                      45.0, 0.0, 0.0, 0.0),
+                                      10.0, 0.0, 0.0, 20.0),
                                   child: FutureBuilder(
                                       future: userGetBio(user_id),
                                       builder: (context, snapshot) {
@@ -165,7 +165,7 @@ class OtherProfileScreen extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: mobileBackgroundColor),
               ),
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width * 0.75,
               alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(vertical: 8),
               decoration: const ShapeDecoration(
@@ -177,28 +177,44 @@ class OtherProfileScreen extends StatelessWidget {
                   color: greenColor),
             ),
           ),
-          InkWell(
-            onTap: () {
-              // TODO: Go to the chat or make new chat
-            },
-            child: Container(
-              child: const Text(
-                "Send Message",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: mobileBackgroundColor),
-              ),
-              width: double.infinity,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              decoration: const ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4),
-                    ),
-                  ),
-                  color: greenColor),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            height: 25,
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Colors.grey),
+                borderRadius: BorderRadius.all(Radius.circular(3))),
+            child: FlatButton(
+              color: Colors.blue,
+              child: Text("Follow",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white)),
+              onPressed: () {},
             ),
           ),
+
+          // InkWell(
+          //   onTap: () {
+          //     // TODO: Go to the chat or make new chat
+          //   },
+          //   child: Container(
+          //     child: const Text(
+          //       "Message",
+          //       style: TextStyle(
+          //           fontWeight: FontWeight.bold, color: mobileBackgroundColor),
+          //     ),
+          //     alignment: Alignment.center,
+          //     padding: const EdgeInsets.symmetric(vertical: 8),
+          //     decoration: const ShapeDecoration(
+          //         shape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.all(
+          //             Radius.circular(4),
+          //           ),
+          //         ),
+          //         color: greenColor),
+          //   ),
+          // ),
           FutureBuilder<List<dynamic>?>(
               future: userGetPostsOtherProfile(user_id),
               builder: (context, snapshot) {

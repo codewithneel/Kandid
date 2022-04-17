@@ -1,8 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:kandid/templates/my_profile.dart';
+import 'package:kandid/templates/other_profile.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
-
 import 'my_tests/tester.dart';
 import 'package:kandid/templates/login_screen.dart';
 import 'package:kandid/utils/colors.dart';
@@ -12,7 +12,7 @@ import 'package:kandid/utils/colors.dart';
 // ignore_for_file: constant_identifier_names
 
 /// Here, set the template you want rendered (don't delete the TestTemplate) ///
-const TEMPLATE = LoginScreen();
+const TEMPLATE = OtherProfileScreen(user_id: "15MqJ3PpfP");
 //const TEMPLATE = TestTemplate();
 
 bool isLoggedIn = false;
