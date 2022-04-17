@@ -65,19 +65,19 @@ class OtherProfileScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1646112918482-2763d6e12320?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
-                      ),
-                      radius: 40,
-                    ),
                     Expanded(
                       flex: 1,
                       child: Column(
                         children: [
                           Row(
                             children: [
+                              const CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                backgroundImage: NetworkImage(
+                                  'https://images.unsplash.com/photo-1646112918482-2763d6e12320?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+                                ),
+                                radius: 40,
+                              ),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
@@ -109,8 +109,33 @@ class OtherProfileScreen extends StatelessWidget {
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              InkWell(
+                                onTap: () async {
+                                  userFollow(await getCurrentUser(), user_id);
+                                },
+                                child: Container(
+                                  child: const Text(
+                                    "Follow",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: mobileBackgroundColor),
+                                  ),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.2,
+                                  alignment: Alignment.center,
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
+                                  decoration: const ShapeDecoration(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(4),
+                                        ),
+                                      ),
+                                      color: greenColor),
+                                ),
+                              ),
                               FutureBuilder(
                                   future: userGetFollowerCount(user_id),
                                   builder: (context, snapshot) {
@@ -158,32 +183,29 @@ class OtherProfileScreen extends StatelessWidget {
           Container(
             child: Column(
               children: [
-                InkWell(
-                  onTap: () async {
-                    userFollow(await getCurrentUser(), user_id);
-                  },
-                  child: Container(
-                    child: const Text(
-                      "Follow",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: mobileBackgroundColor),
-                    ),
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: const ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(4),
-                          ),
-                        ),
-                        color: greenColor),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                //     InkWell(
+                //       onTap: () async {
+                //         userFollow(await getCurrentUser(), user_id);
+                //       },
+                //       child: Container(
+                //         child: const Text(
+                //           "Follow",
+                //           style: TextStyle(
+                //               fontWeight: FontWeight.bold,
+                //               color: mobileBackgroundColor),
+                //         ),
+                //         width: MediaQuery.of(context).size.width * 0.5,
+                //         alignment: Alignment.center,
+                //         padding: const EdgeInsets.symmetric(vertical: 8),
+                //         decoration: const ShapeDecoration(
+                //             shape: RoundedRectangleBorder(
+                //               borderRadius: BorderRadius.all(
+                //                 Radius.circular(4),
+                //               ),
+                //             ),
+                //             color: greenColor),
+                //       ),
+                //     ),
                 InkWell(
                   onTap: () {
                     // TODO: Go to the chat or make new chat
@@ -195,6 +217,7 @@ class OtherProfileScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: mobileBackgroundColor),
                     ),
+                    width: MediaQuery.of(context).size.width * 0.875,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     decoration: const ShapeDecoration(

@@ -13,7 +13,7 @@ import 'package:kandid/utils/colors.dart';
 // ignore_for_file: constant_identifier_names
 
 /// Here, set the template you want rendered (don't delete the TestTemplate) ///
-const TEMPLATE = OtherProfileScreen(user_id: "15MqJ3PpfP");
+const TEMPLATE = ProfileScreen();
 //const TEMPLATE = TestTemplate();
 
 bool isLoggedIn = false;
