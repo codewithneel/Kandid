@@ -49,7 +49,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           FeedScreen(),
           MessageScreen(),
           TestPage(),
-          OtherProfileScreen(user_id:"15MqJ3PpfP"),
+          OtherProfileScreen(user_id: "15MqJ3PpfP"),
           ProfileScreen(),
         ],
         physics:

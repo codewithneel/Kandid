@@ -155,66 +155,60 @@ class OtherProfileScreen extends StatelessWidget {
               ],
             ),
           ),
-          InkWell(
-            onTap: () async {
-              userFollow(await getCurrentUser(), user_id);
-            },
-            child: Container(
-              child: const Text(
-                "Follow",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: mobileBackgroundColor),
-              ),
-              width: MediaQuery.of(context).size.width * 0.75,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              decoration: const ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4),
-                    ),
-                  ),
-                  color: greenColor),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
           Container(
-            height: 25,
-            decoration: BoxDecoration(
-                border: Border.all(width: 1, color: Colors.grey),
-                borderRadius: BorderRadius.all(Radius.circular(3))),
-            child: FlatButton(
-              color: Colors.blue,
-              child: Text("Follow",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white)),
-              onPressed: () {},
+            child: Column(
+              children: [
+                InkWell(
+                  onTap: () async {
+                    userFollow(await getCurrentUser(), user_id);
+                  },
+                  child: Container(
+                    child: const Text(
+                      "Follow",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: mobileBackgroundColor),
+                    ),
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: const ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                        ),
+                        color: greenColor),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    // TODO: Go to the chat or make new chat
+                  },
+                  child: Container(
+                    child: const Text(
+                      "Message",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: mobileBackgroundColor),
+                    ),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: const ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(4),
+                          ),
+                        ),
+                        color: greenColor),
+                  ),
+                ),
+              ],
             ),
           ),
-
-          // InkWell(
-          //   onTap: () {
-          //     // TODO: Go to the chat or make new chat
-          //   },
-          //   child: Container(
-          //     child: const Text(
-          //       "Message",
-          //       style: TextStyle(
-          //           fontWeight: FontWeight.bold, color: mobileBackgroundColor),
-          //     ),
-          //     alignment: Alignment.center,
-          //     padding: const EdgeInsets.symmetric(vertical: 8),
-          //     decoration: const ShapeDecoration(
-          //         shape: RoundedRectangleBorder(
-          //           borderRadius: BorderRadius.all(
-          //             Radius.circular(4),
-          //           ),
-          //         ),
-          //         color: greenColor),
-          //   ),
-          // ),
           FutureBuilder<List<dynamic>?>(
               future: userGetPostsOtherProfile(user_id),
               builder: (context, snapshot) {

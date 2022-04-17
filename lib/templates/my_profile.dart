@@ -109,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(
-                                        45.0, 0.0, 0.0, 0.0),
+                                        45.0, 0.0, 0.0, 20.0),
                                     child: FutureBuilder(
                                         future: myProfileGetBio(),
                                         builder: (context, snapshot) {
