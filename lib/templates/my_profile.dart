@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         //automaticallyImplyLeading: false,
 
-        centerTitle: false,
+        centerTitle: true,
         backgroundColor: Colors.white,
         title: FutureBuilder(
             future: myProfileGetUsername(),
@@ -53,19 +53,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         titleSpacing: -30.0,
         elevation: 0,
         actions: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const MessageScreen(),
-                  ),
-                );
-              },
-              child: const Icon(Icons.message_outlined, color: Colors.black),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       Navigator.of(context).push(
+          //         MaterialPageRoute(
+          //           builder: (context) => const MessageScreen(),
+          //         ),
+          //       );
+          //     },
+          //     child: const Icon(Icons.message_outlined, color: Colors.black),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
             child: GestureDetector(

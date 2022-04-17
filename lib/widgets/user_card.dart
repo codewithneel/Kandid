@@ -55,12 +55,10 @@ class _UserCardState extends State<UserCard> {
                               return const Text('default?');
                           }
                         }),
-                    SizedBox(
-                      width: 5,
-                    ),
                   ],
                 ),
               ),
+
               // Container(
               //   height: 25,
               //   decoration: BoxDecoration(
