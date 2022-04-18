@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // ignore_for_file: non_constant_identifier_names
 
 /// Creates new Chat entity and returns its objectId
-Future<String?> chatNew(String user_id1, String user_id2) async {
+Future<String> chatNew(String user_id1, String user_id2) async {
   final chat = ParseObject('Chat')..set('listUserIds', [user_id1, user_id2]);
   await chat.save();
 
@@ -26,7 +26,7 @@ Future<String?> chatGetIdWithUsernames(
   return await chatGetIdWithIds(id1, id2);
 }
 
-Future<String?> chatGetIdWithIds(String id1, String id2) async {
+Future<String> chatGetIdWithIds(String id1, String id2) async {
   try {
     var query = QueryBuilder<ParseObject>(ParseObject('Chat'));
     query.whereArrayContainsAll("listUserIds", [id1, id2]);
@@ -39,7 +39,7 @@ Future<String?> chatGetIdWithIds(String id1, String id2) async {
   } catch (e) {
     debugPrint("Failed to get ID for Chat between $id1 and $id2\n$e");
   }
-  return chatNew(id1, id2);
+  return await chatNew(id1, id2);
 }
 
 /// Returns a String array of Message Id's from chat with chat_id
@@ -195,7 +195,7 @@ Future<String> getMessageIdUser(String message_Id) async {
     var query = QueryBuilder<ParseObject>(ParseObject("Message"));
     query.whereEqualTo("objectId", message_Id);
     final ParseResponse apiResponse = await query.query();
-    String? user;
+    String user;
 
     if (apiResponse.success && apiResponse.results != null) {
       for (ParseObject obj in apiResponse.results!) {

@@ -1,6 +1,8 @@
 // This file is responsible for rendering the template_my_user found in the Figma File
 
 import 'package:flutter/material.dart';
+import 'package:kandid/database/chat.dart';
+import 'package:kandid/templates/chat_screen.dart';
 import 'package:kandid/templates/single_post_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import '../database/user.dart';
@@ -12,6 +14,13 @@ import '../widgets/post_card.dart';
 
 /// This comment blocks a warning for an undesirable naming convention
 // ignore_for_file: non_constant_identifier_names
+
+void goToChat(String user_id, BuildContext context) async {
+  String id = await chatGetIdWithIds(await getCurrentUser(), user_id);
+  debugPrint(id);
+  Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => chatScreen(chatId: id)));
+}
 
 class OtherProfileScreen extends StatelessWidget {
   final user_id;
@@ -209,9 +218,7 @@ class OtherProfileScreen extends StatelessWidget {
                 //       ),
                 //     ),
                 InkWell(
-                  onTap: () {
-                    // TODO: Go to the chat or make new chat
-                  },
+                  onTap: () => goToChat(user_id, context),
                   child: Container(
                     child: const Text(
                       "Message",

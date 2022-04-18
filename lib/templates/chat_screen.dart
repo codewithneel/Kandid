@@ -55,7 +55,7 @@ class chatScreen extends StatelessWidget {
           ),
         ]),
       ),
-      body: FutureBuilder<List<dynamic>?>(
+      body: FutureBuilder<List<dynamic>>(
           future: getMessageId(chatId),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {

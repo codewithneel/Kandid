@@ -46,9 +46,6 @@ class _ChatBodyState extends State<ChatBody> {
                         case ConnectionState.waiting:
                           return const Text('Loading...');
                         case ConnectionState.done:
-                          if (snapshot.data?.toString() == null) {
-                            return const Text("No username");
-                          }
                           return SelectableText.rich(
                             TextSpan(
                                 text: snapshot.data.toString(),
@@ -68,6 +65,9 @@ class _ChatBodyState extends State<ChatBody> {
                         case ConnectionState.waiting:
                           return const Text('Loading...');
                         case ConnectionState.done:
+                          if (snapshot.data.toString() == '') {
+                            return Text("no messages");
+                          }
                           return Text(snapshot.data.toString());
                         default:
                           return const Text('default?');

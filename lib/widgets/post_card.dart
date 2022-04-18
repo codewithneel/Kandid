@@ -112,7 +112,7 @@ class _PostCardScreenState extends State<PostCard> {
                     switch (snapshot.connectionState) {
                       case ConnectionState.active:
                       case ConnectionState.waiting:
-                        return const Text("loading...");
+                        return const CircularProgressIndicator();
                       case ConnectionState.done:
                         if (snapshot.data == null) {
                           return const Text("No image found");
