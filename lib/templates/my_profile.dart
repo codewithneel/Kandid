@@ -34,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         //automaticallyImplyLeading: false,
 
-        centerTitle: true,
+        centerTitle: false,
         backgroundColor: Colors.white,
         title: FutureBuilder(
             future: myProfileGetUsername(),
@@ -55,19 +55,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
         titleSpacing: -30.0,
         elevation: 0,
         actions: [
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
-          //   child: GestureDetector(
-          //     onTap: () {
-          //       Navigator.of(context).push(
-          //         MaterialPageRoute(
-          //           builder: (context) => const MessageScreen(),
-          //         ),
-          //       );
-          //     },
-          //     child: const Icon(Icons.message_outlined, color: Colors.black),
-          //   ),
-          // ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const MessageScreen(),
+                  ),
+                );
+              },
+              child: const Icon(Icons.message_outlined, color: Colors.black),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 24.0, 0.0),
             child: GestureDetector(
@@ -111,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(
-                                        45.0, 0.0, 0.0, 20.0),
+                                        45.0, 0.0, 0.0, 0.0),
                                     child: FutureBuilder(
                                         future: myProfileGetBio(),
                                         builder: (context, snapshot) {
