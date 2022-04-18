@@ -6,13 +6,47 @@ import 'package:kandid/utils/colors.dart';
 import 'package:kandid/templates/comments_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final postId;
   PostCard({Key? key, required this.postId}) : super(key: key);
-  var image_file;
+  //var image_file;
+
+  @override
+  _PostCardScreenState createState() => _PostCardScreenState();
+}
+
+class _PostCardScreenState extends State<PostCard> {
+  Future<void> likePost(String post_id) async {
+    userLike(post_id);
+
+    setState(() {});
+  }
+  //   int status = await userLike(post_id);
+  //   //if (status == 1) {
+  //   //   setState(() {
+  //   //     Icon(
+  //   //       Icons.favorite,
+  //   //       color: Colors.red,
+  //   //     );
+  //   //   });
+  //   // } else if (status == 0) {
+  //   //   setState(() {
+  //   //     Icon(
+  //   //       Icons.favorite,
+  //   //       color: Colors.white,
+  //   //     );
+  //   //   });
+  //   // }
+  //   if (status == 1) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    ValueNotifier<bool> _notifier = ValueNotifier(false);
     return Container(
       color: mobileBackgroundColor,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -37,7 +71,7 @@ class PostCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         FutureBuilder(
-                            future: userGetPostUsername(postId),
+                            future: userGetPostUsername(widget.postId),
                             builder: (context, snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.active:
@@ -69,7 +103,7 @@ class PostCard extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
             child: FutureBuilder(
-                future: userGetPostImage(postId),
+                future: userGetPostImage(widget.postId),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.active:
@@ -79,7 +113,7 @@ class PostCard extends StatelessWidget {
                       if (snapshot.data == null) {
                         return const Text("No image found");
                       }
-                      image_file = snapshot.data as ParseFileBase;
+                      var image_file = snapshot.data as ParseFileBase;
                       return Image.network(image_file.url.toString());
                     default:
                       return const Text('default?');
@@ -126,15 +160,41 @@ class PostCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(24.0),
                         ),
                       ),
-                      onPressed: () => {userLike(postId)},
+                      onPressed: () => {likePost(widget.postId)},
+
                       icon: Icon(
-                        Icons.favorite,
-                        color: Colors.red,
+                        Icons.favorite_outline,
+                        color: Colors.black,
                       ),
-                      label: const Text(
-                        'Likes',
-                        style: TextStyle(color: primaryColor),
-                      ),
+                      label: FutureBuilder(
+                          future: getLikesCount(widget.postId),
+                          builder: (context, snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.active:
+                              case ConnectionState.waiting:
+                                return const Text('Loading...');
+                              case ConnectionState.done:
+                                if (snapshot.data == 1) {
+                                  return Text(
+                                    snapshot.data.toString() + " like",
+                                    style: TextStyle(color: primaryColor),
+                                  );
+                                } else {
+                                  return Text(
+                                    snapshot.data.toString() + " likes",
+                                    style: TextStyle(color: primaryColor),
+                                  );
+                                }
+
+                              default:
+                                return const Text('default?');
+                            }
+                          }),
+
+                      // label: const Text(
+                      //   'Likes',
+                      //   style: TextStyle(color: primaryColor),
+                      // ),
                     ),
                     TextButton.icon(
                       style: TextButton.styleFrom(
@@ -146,7 +206,7 @@ class PostCard extends StatelessWidget {
                       onPressed: () => {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => CommentsScreen(
-                                  post_Id: postId,
+                                  post_Id: widget.postId,
                                 ))),
                       },
                       icon: Icon(
@@ -171,14 +231,23 @@ class PostCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  '20 Likes',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
+                // FutureBuilder(
+                //     future: getLikesCount(postId),
+                //     builder: (context, snapshot) {
+                //       switch (snapshot.connectionState) {
+                //         case ConnectionState.active:
+                //         case ConnectionState.waiting:
+                //           return const Text('Loading...');
+                //         case ConnectionState.done:
+                //           return Text(snapshot.data.toString() + " likes");
+                //         default:
+                //           return const Text('default?');
+                //       }
+                //     }),
                 Row(
                   children: [
                     FutureBuilder(
-                        future: userGetPostUsername(postId),
+                        future: userGetPostUsername(widget.postId),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.active:
@@ -199,7 +268,7 @@ class PostCard extends StatelessWidget {
                     const SizedBox(width: 5),
                     FutureBuilder(
                         //future: displayCaption(),
-                        future: userGetCaption(postId),
+                        future: userGetCaption(widget.postId),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.active:
@@ -218,12 +287,17 @@ class PostCard extends StatelessWidget {
                   ],
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CommentsScreen(
+                              post_Id: widget.postId,
+                            )));
+                  },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: FutureBuilder(
                         //future: displayNumberOfComments(),
-                        future: getNumberOfComments(postId),
+                        future: getNumberOfComments(widget.postId),
                         builder: (context, snapshot) {
                           switch (snapshot.connectionState) {
                             case ConnectionState.active:

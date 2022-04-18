@@ -18,34 +18,34 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   void dispose() {
-  super.dispose();
-  _userNameController.dispose();
-  _bioController.dispose();
+    super.dispose();
+    _userNameController.dispose();
+    _bioController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: mobileBackgroundColor,
-          title: const Text('Edit Profile', style: TextStyle(color: primaryColor)),
-          elevation: 0.0,
-          leading: GestureDetector(
-              onTap: () =>
-                  Navigator.of(context).pop(
-                MaterialPageRoute(
-                  builder: (context) => const SettingsScreen(),
-                ),
-              ),
-            child: const Icon(Icons.arrow_back_ios_new, color: primaryColor),
+      appBar: AppBar(
+        backgroundColor: mobileBackgroundColor,
+        title:
+            const Text('Edit Profile', style: TextStyle(color: primaryColor)),
+        elevation: 0.0,
+        leading: GestureDetector(
+          onTap: () => Navigator.of(context).pop(
+            MaterialPageRoute(
+              builder: (context) => const SettingsScreen(),
+            ),
           ),
+          child: const Icon(Icons.arrow_back_ios_new, color: primaryColor),
         ),
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget> [
+            children: <Widget>[
               const SizedBox(height: 24),
               const CircleAvatar(
                 backgroundColor: Colors.grey,
@@ -72,19 +72,22 @@ class _EditProfileState extends State<EditProfile> {
                       case ConnectionState.waiting:
                         return TextFieldInput(
                           textEditingController: _userNameController,
-                          hintText: "loading...", // replace with stored phone from DB
+                          hintText:
+                              "loading...", // replace with stored phone from DB
                           textInputType: TextInputType.multiline,
                         );
                       case ConnectionState.done:
                         return TextFieldInput(
                           textEditingController: _userNameController,
-                          hintText: snapshot.data.toString(), // replace with stored phone from DB
+                          hintText: snapshot.data
+                              .toString(), // replace with stored phone from DB
                           textInputType: TextInputType.multiline,
                         );
                       default:
                         return TextFieldInput(
                           textEditingController: _userNameController,
-                          hintText: "Default??", // replace with stored phone from DB
+                          hintText:
+                              "Default??", // replace with stored phone from DB
                           textInputType: TextInputType.multiline,
                         );
                     }
@@ -99,7 +102,6 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
               const SizedBox(height: 10),
-
               FutureBuilder(
                   future: myProfileGetBio(),
                   builder: (context, snapshot) {
@@ -108,35 +110,39 @@ class _EditProfileState extends State<EditProfile> {
                       case ConnectionState.waiting:
                         return TextFieldInput(
                           textEditingController: _bioController,
-                          hintText: "loading...", // replace with stored phone from DB
+                          hintText:
+                              "loading...", // replace with stored phone from DB
                           textInputType: TextInputType.multiline,
                         );
                       case ConnectionState.done:
                         return TextFieldInput(
                           textEditingController: _bioController,
-                          hintText: snapshot.data.toString(), // replace with stored phone from DB
+                          hintText: snapshot.data
+                              .toString(), // replace with stored phone from DB
                           textInputType: TextInputType.multiline,
                         );
                       default:
                         return TextFieldInput(
                           textEditingController: _bioController,
-                          hintText: "Default??", // replace with stored phone from DB
+                          hintText:
+                              "Default??", // replace with stored phone from DB
                           textInputType: TextInputType.multiline,
                         );
                     }
                   }),
-
               const SizedBox(height: 24),
               InkWell(
-                  onTap: () => trySave(
-                    context,
-                    _userNameController.text,
-                    _bioController.text,
-                  ),
+                onTap: () => trySave(
+                  context,
+                  _userNameController.text,
+                  _bioController.text,
+                ),
                 child: Container(
                   child: const Text(
                     "Save Changes",
-                    style: TextStyle(fontWeight: FontWeight.bold, color: mobileBackgroundColor),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: mobileBackgroundColor),
                   ),
                   width: double.infinity,
                   alignment: Alignment.center,
@@ -150,24 +156,32 @@ class _EditProfileState extends State<EditProfile> {
                       color: greenColor),
                 ),
               ),
-          ],
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 
-  void trySave(BuildContext context, String username, String bio,) async {
+  void trySave(
+    BuildContext context,
+    String username,
+    String bio,
+  ) async {
     debugPrint('Saved and returned to Settings');
     debugPrint('Username: $username, Bio: $bio');
 
-    if(username != "") { userSetUsername(username); }
-    if(bio != "") { userSetBio(bio); }
+    if (username != "") {
+      userSetUsername(username);
+    }
+    if (bio != "") {
+      userSetBio(bio);
+    }
 
     Navigator.of(context).pop(
-        MaterialPageRoute(
-          builder: (context) => const SettingsScreen(),
-        ),
+      MaterialPageRoute(
+        builder: (context) => const SettingsScreen(),
+      ),
     );
   } // this function needs to save the entered fields into the DB.
 }
