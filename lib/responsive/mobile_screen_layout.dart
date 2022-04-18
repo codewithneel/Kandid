@@ -47,12 +47,12 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: [
-          const FeedScreen(),
-          const TestPage(),
-          TakePictureScreen(),
-          NotificationTestPage(),
-          const ProfileScreen(),
+        children: const [
+          FeedScreen(),
+          MessageScreen(),
+          TestPage(),
+          OtherProfileScreen(user_id: "15MqJ3PpfP"),
+          ProfileScreen(),
         ],
         physics:
             const NeverScrollableScrollPhysics(), //if removed, you can swipe between the nav bar taps like cards
