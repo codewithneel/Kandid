@@ -16,9 +16,15 @@ const TEMPLATE = LoginScreen();
 bool isLoggedIn = false;
 
 // format: [ <keyApplicationId> , <keyClientId> ]
+/*
 final _DB_KEYS = [
   'zV6NcYkI8BZQ6KPHDGvNPQvdnNvfjZ3JUnmIwNJr',
   'Us8Z0sIW27BlGAwBVoAWuiXJzKbYBj0AWXxVA0DJ'
+];
+*/
+final _DB_KEYS = [
+  '8BERSWT6YsdarEQoPCDhIDhhtLa9hEwn5llr6Rok',
+  '4gqv9yxWpIu6Z5ev505Qg8jj8fhkuKEUQYaPv7nI'
 ];
 
 List<CameraDescription> cameras = [];
