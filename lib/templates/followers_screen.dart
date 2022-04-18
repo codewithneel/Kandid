@@ -53,8 +53,6 @@ class FollowersPage extends StatelessWidget {
                 default:
                   return const Text('default?');
               }
-            })
-        //body: PostCard(),
-        );
+            }));
   }
 }
