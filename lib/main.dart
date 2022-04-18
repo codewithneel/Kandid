@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:kandid/templates/feed_screen.dart';
 import 'package:kandid/templates/signup_screen.dart';
 import 'package:kandid/templates/my_profile.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';

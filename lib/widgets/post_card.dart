@@ -49,11 +49,11 @@ class _PostCardScreenState extends State<PostCard> {
     ValueNotifier<bool> _notifier = ValueNotifier(false);
     return Container(
       color: mobileBackgroundColor,
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16)
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16)
                 .copyWith(right: 0),
             child: Row(
               children: [
@@ -98,27 +98,32 @@ class _PostCardScreenState extends State<PostCard> {
           ),
 
           //image section
-
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.35,
+          Container(
+            height: MediaQuery.of(context).size.height * 0.45,
             width: double.infinity,
-            child: FutureBuilder(
-                future: userGetPostImage(widget.postId),
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.active:
-                    case ConnectionState.waiting:
-                      return const Text("loading...");
-                    case ConnectionState.done:
-                      if (snapshot.data == null) {
-                        return const Text("No image found");
-                      }
-                      var image_file = snapshot.data as ParseFileBase;
-                      return Image.network(image_file.url.toString());
-                    default:
-                      return const Text('default?');
-                  }
-                }),
+            child: FittedBox(
+              fit: BoxFit.fill,
+              //height: MediaQuery.of(context).size.height * 0.45,
+              //width: double.infinity,
+              //width: MediaQuery.of(context).size.width,
+              child: FutureBuilder(
+                  future: userGetPostImage(postId),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.active:
+                      case ConnectionState.waiting:
+                        return const Text("loading...");
+                      case ConnectionState.done:
+                        if (snapshot.data == null) {
+                          return const Text("No image found");
+                        }
+                        image_file = snapshot.data as ParseFileBase;
+                        return Image.network(image_file.url.toString());
+                      default:
+                        return const Text('default?');
+                    }
+                  }),
+            ),
           ),
 
           //Like and comments section
