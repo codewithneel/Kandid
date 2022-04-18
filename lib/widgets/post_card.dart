@@ -9,7 +9,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 class PostCard extends StatefulWidget {
   final postId;
   PostCard({Key? key, required this.postId}) : super(key: key);
-  //var image_file;
+  var image_file;
 
   @override
   _PostCardScreenState createState() => _PostCardScreenState();
@@ -107,7 +107,7 @@ class _PostCardScreenState extends State<PostCard> {
               //width: double.infinity,
               //width: MediaQuery.of(context).size.width,
               child: FutureBuilder(
-                  future: userGetPostImage(postId),
+                  future: userGetPostImage(widget.postId),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.active:
@@ -117,8 +117,8 @@ class _PostCardScreenState extends State<PostCard> {
                         if (snapshot.data == null) {
                           return const Text("No image found");
                         }
-                        image_file = snapshot.data as ParseFileBase;
-                        return Image.network(image_file.url.toString());
+                        widget.image_file = snapshot.data as ParseFileBase;
+                        return Image.network(widget.image_file.url.toString());
                       default:
                         return const Text('default?');
                     }
