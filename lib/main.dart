@@ -1,10 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:kandid/templates/followers_screen.dart';
-import 'package:kandid/templates/feed_screen.dart';
-import 'package:kandid/templates/signup_screen.dart';
-import 'package:kandid/templates/my_profile.dart';
-import 'package:kandid/templates/other_profile.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'my_tests/tester.dart';
 import 'package:kandid/templates/login_screen.dart';
@@ -15,16 +10,21 @@ import 'package:kandid/utils/colors.dart';
 // ignore_for_file: constant_identifier_names
 
 /// Here, set the template you want rendered (don't delete the TestTemplate) ///
-
-const TEMPLATE = SignupScreen();
+const TEMPLATE = LoginScreen();
 //const TEMPLATE = TestTemplate();
 
 bool isLoggedIn = false;
 
 // format: [ <keyApplicationId> , <keyClientId> ]
+/*
 final _DB_KEYS = [
   'zV6NcYkI8BZQ6KPHDGvNPQvdnNvfjZ3JUnmIwNJr',
   'Us8Z0sIW27BlGAwBVoAWuiXJzKbYBj0AWXxVA0DJ'
+];
+*/
+final _DB_KEYS = [
+  '8BERSWT6YsdarEQoPCDhIDhhtLa9hEwn5llr6Rok',
+  '4gqv9yxWpIu6Z5ev505Qg8jj8fhkuKEUQYaPv7nI'
 ];
 
 List<CameraDescription> cameras = [];
