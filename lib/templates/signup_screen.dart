@@ -169,9 +169,10 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 }
 
-void tryRegister(BuildContext context,
-    String username, String email, String password, String bio) async {
-  if (await userNew(username, email, password, "", "", DateTime.now(), false, bio)) {
+void tryRegister(BuildContext context, String username, String email,
+    String password, String bio) async {
+  if (await userNew(
+      username, email, password, "", "", DateTime.now(), false, bio)) {
     emailLogin(email, password);
     Navigator.of(context).push(
       MaterialPageRoute(
