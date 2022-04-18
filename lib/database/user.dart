@@ -183,7 +183,16 @@ Future<void> userLike(String post_id) async {
         ..set('userId', user_id)
         ..set('postId', post_id);
       await todo.save();
-    }
+    } //else {
+    //   if (apiResponse.success) {
+    //     String? id;
+    //     for (ParseObject obj in apiResponse.results!) {
+    //       id = obj['objectId'];
+    //     }
+    //     final todo = ParseObject('Likes')..objectId = id;
+    //     await todo.delete();
+    //   }
+    // }
   } catch (e) {
     debugPrint("Failed to like post");
   }
@@ -267,7 +276,10 @@ Future<List?> userGetPostsProfile() async {
   dynamic user = await ParseUser.currentUser();
   try {
     var query = QueryBuilder<ParseObject>(ParseObject("Posts"));
-    query.whereEqualTo("userId", user['objectId']);
+    query
+      ..whereEqualTo("userId", user['objectId'])
+      ..orderByDescending('createdAt');
+
     final ParseResponse apiResponse = await query.query();
     List postIds = [];
 
@@ -555,6 +567,23 @@ Future<String?> userGetCommentUsername(String comment_id) async {
     debugPrint("Failed to get username");
   }
   return null;
+}
+
+Future<int> getLikesCount(String post_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Likes"));
+    query.whereEqualTo("postId", post_id);
+    final ParseResponse apiResponse = await query.query();
+    int count;
+
+    if (apiResponse.success && apiResponse.results != null) {
+      count = apiResponse.count;
+      return count;
+    }
+  } catch (e) {
+    debugPrint("Failed to get comments");
+  }
+  return 0;
 }
 
 void userGetImage() {}

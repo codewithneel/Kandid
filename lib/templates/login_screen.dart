@@ -29,28 +29,31 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+            children: <Widget>[
               const SizedBox(
-                height: 80,
+                height: 40,
               ),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Welcome!",
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
+              Container(
+                child: const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Welcome!",
+                    style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
               const SizedBox(
-                height: 100,
+                height: 75,
               ),
               SvgPicture.asset(
                 'assets/kandidLogo.svg',
@@ -80,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 24,
               ),
-              InkWell(
+              GestureDetector(
                 onTap: () => {
                   tryLogin(
                       context, _emailController.text, _passwordController.text),
@@ -155,6 +158,6 @@ void tryLogin(BuildContext context, String email, String password) async {
         context,
         "Something went wrong.\n"
         "Please fill in all the fields\n"
-            "and check for typos.");
+        "and check for typos.");
   }
 }

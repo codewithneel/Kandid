@@ -1,6 +1,8 @@
 // This file is responsible for rendering the template_my_user found in the Figma File
 
 import 'package:flutter/material.dart';
+import 'package:kandid/templates/single_post_screen.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import '../database/user.dart';
 import '../widgets/follow_button.dart';
 import 'package:kandid/templates/settings_screen.dart';
@@ -241,16 +243,59 @@ class OtherProfileScreen extends StatelessWidget {
                     return const Text("loading...");
                   case ConnectionState.done:
                     if (snapshot.data?[0] == null) {
-                      return const Text("This user has no post");
+                      return const Text("Follow users for posts");
                     }
-                    return ListView.builder(
-                      //scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (ctx, index) =>
-                          PostCard(postId: snapshot.data![index].toString()),
-                    );
+
+                    return GridView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data?.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 1.5,
+                          childAspectRatio: 1,
+                        ),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: InkWell(
+                                child: Container(
+                                  child: FutureBuilder(
+                                      future: userGetPostImage(
+                                          snapshot.data![index].toString()),
+                                      builder: (context, snap) {
+                                        switch (snap.connectionState) {
+                                          case ConnectionState.active:
+                                          case ConnectionState.waiting:
+                                            return const Text("loading...");
+                                          case ConnectionState.done:
+                                            if (snap.data == null) {
+                                              return const Text(
+                                                  "No image found");
+                                            }
+                                            var image_file =
+                                                snap.data as ParseFileBase;
+                                            return Image.network(
+                                                image_file.url.toString(),
+                                                fit: BoxFit.cover);
+                                          default:
+                                            return const Text('default?');
+                                        }
+                                      }),
+                                ),
+                                onTap: () => {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SinglePostScreen(
+                                                    post_Id: snapshot
+                                                        .data![index]
+                                                        .toString(),
+                                                  )))
+                                    }),
+                          );
+                        });
+
                   default:
                     return const Text('default?');
                 }

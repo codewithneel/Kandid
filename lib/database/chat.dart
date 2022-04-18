@@ -195,11 +195,11 @@ Future<String> getMessageIdUser(String message_Id) async {
     var query = QueryBuilder<ParseObject>(ParseObject("Message"));
     query.whereEqualTo("objectId", message_Id);
     final ParseResponse apiResponse = await query.query();
-    String user;
+    String? user;
 
     if (apiResponse.success && apiResponse.results != null) {
       for (ParseObject obj in apiResponse.results!) {
-        user = (await userGetUsername(obj['senderId']))!;
+        user = await userGetUsername(obj['senderId']);
         return user;
       }
     }
@@ -214,7 +214,6 @@ Future<String> getMessage(String message_Id) async {
     var query = QueryBuilder<ParseObject>(ParseObject("Message"));
     query.whereEqualTo("objectId", message_Id);
     final ParseResponse apiResponse = await query.query();
-    String user;
 
     if (apiResponse.success && apiResponse.results != null) {
       for (ParseObject obj in apiResponse.results!) {

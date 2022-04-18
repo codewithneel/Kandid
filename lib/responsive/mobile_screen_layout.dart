@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kandid/my_tests/tester.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/templates/feed_screen.dart';
+import '../my_tests/notification_test.dart';
+import '../templates/camera_screen.dart';
 import '../templates/message_screen.dart';
 import '../templates/my_profile.dart';
 import '../templates/other_profile.dart';
