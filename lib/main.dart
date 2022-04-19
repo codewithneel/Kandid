@@ -1,7 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:kandid/my_tests/notification_test.dart';
 import 'package:kandid/templates/followers_screen.dart';
 import 'package:kandid/templates/feed_screen.dart';
+import 'package:kandid/templates/notification_screen.dart';
 import 'package:kandid/templates/signup_screen.dart';
 import 'package:kandid/templates/my_profile.dart';
 import 'package:kandid/templates/other_profile.dart';
@@ -16,7 +18,7 @@ import 'package:kandid/utils/colors.dart';
 
 /// Here, set the template you want rendered (don't delete the TestTemplate) ///
 
-const TEMPLATE = ProfileScreen();
+const TEMPLATE = LoginScreen();
 //const TEMPLATE = TestTemplate();
 
 bool isLoggedIn = false;

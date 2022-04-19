@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kandid/templates/settings_screen.dart';
+import 'package:kandid/utils/colors.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 import '../database/user.dart';
@@ -20,9 +21,8 @@ class NotificationTestPage extends StatefulWidget {
 }
 
 class _NotificationTest extends State<NotificationTestPage> {
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     NotificationApi.init();
@@ -32,38 +32,41 @@ class _NotificationTest extends State<NotificationTestPage> {
   void listenNotifications() =>
       NotificationApi.onNotifications.stream.listen(onClickedNotification);
 
-  void onClickedNotification(String? payload) =>
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
-          TakePictureScreen()));
-  
+  void onClickedNotification(String? payload) => Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => TakePictureScreen()));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Notification Tester'),
+          backgroundColor: mobileBackgroundColor,
+          title: const Text(
+            'Notification Tester',
+            style: TextStyle(color: primaryColor),
+          ),
         ),
         body: Center(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 8,
-                ),
-                SizedBox(
-                  height: 50,
-                  child: TextButton(
-                    child: const Text('Send Push Notification'),
-                    onPressed: () =>
-                    {
-                      NotificationApi.showNotification(
-                        title: "Make a New Post",
-                        body: "You have 30 minutes to create a new post.",
-                        payload: "my payload",
-                      ),
-
-                      debugPrint("Tried Sending Notification")
-                    }
-                  ),
-            ),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 8,
+              ),
+              SizedBox(
+                height: 50,
+                child: TextButton(
+                    child: const Text(
+                      'Send Push Notification',
+                      style: TextStyle(color: greenColor),
+                    ),
+                    onPressed: () => {
+                          NotificationApi.showNotification(
+                            title: "Make a New Post",
+                            body: "You have 30 minutes to create a new post.",
+                            payload: "my payload",
+                          ),
+                          debugPrint("Tried Sending Notification")
+                        }),
+              ),
             ],
           ),
         ));

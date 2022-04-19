@@ -13,7 +13,7 @@ class FeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            automaticallyImplyLeading: true,
+            automaticallyImplyLeading: false,
             backgroundColor: mobileBackgroundColor,
             centerTitle: false,
             title: SvgPicture.asset(
@@ -45,13 +45,14 @@ class FeedScreen extends StatelessWidget {
                   }
                   return ListView.builder(
                     itemCount: snapshot.data?.length,
-                    itemBuilder: (ctx, index) => PostCard(postId: snapshot.data![index].toString()),
+                    itemBuilder: (ctx, index) =>
+                        PostCard(postId: snapshot.data![index].toString()),
                   );
                 default:
                   return const Text('default?');
               }
             })
-      //body: PostCard(),
-    );
+        //body: PostCard(),
+        );
   }
 }
