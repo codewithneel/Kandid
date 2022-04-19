@@ -52,7 +52,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           const TestPage(),
           TakePictureScreen(),
           NotificationTestPage(),
-          const ProfileScreen(),
+          ProfileScreen(),
         ],
         physics:
             const NeverScrollableScrollPhysics(), //if removed, you can swipe between the nav bar taps like cards

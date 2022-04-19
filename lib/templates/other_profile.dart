@@ -1,6 +1,8 @@
 // This file is responsible for rendering the template_my_user found in the Figma File
 
 import 'package:flutter/material.dart';
+import 'package:kandid/database/chat.dart';
+import 'package:kandid/templates/chat_screen.dart';
 import 'package:kandid/templates/single_post_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import '../database/user.dart';
@@ -13,9 +15,21 @@ import '../widgets/post_card.dart';
 /// This comment blocks a warning for an undesirable naming convention
 // ignore_for_file: non_constant_identifier_names
 
+void goToChat(String user_id, BuildContext context) async {
+  String id = await chatGetIdWithIds(await getCurrentUser(), user_id);
+  debugPrint(id);
+  Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => chatScreen(chatId: id)));
+}
+
 class OtherProfileScreen extends StatelessWidget {
   final user_id;
-  const OtherProfileScreen({Key? key, required this.user_id}) : super(key: key);
+  var image_file;
+  OtherProfileScreen({Key? key, required this.user_id}) : super(key: key);
+
+  Future<ParseFileBase?> getImage() async {
+    return await userGetImage(user_id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +44,7 @@ class OtherProfileScreen extends StatelessWidget {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
                 case ConnectionState.waiting:
-                  return const Text('Loading...',
-                      style: TextStyle(color: primaryColor));
+                  return const Text('', style: TextStyle(color: primaryColor));
                 case ConnectionState.done:
                   return Text(snapshot.data.toString(),
                       style: const TextStyle(color: primaryColor));
@@ -73,13 +86,27 @@ class OtherProfileScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              const CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1646112918482-2763d6e12320?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
-                                ),
-                                radius: 40,
-                              ),
+                              FutureBuilder(
+                                  future: getImage(),
+                                  builder: (context, snapshot) {
+                                    switch (snapshot.connectionState) {
+                                      case ConnectionState.active:
+                                      case ConnectionState.waiting:
+                                        return const Text('');
+                                      case ConnectionState.done:
+                                        if (snapshot.data == null) {
+                                          return const Text("hi");
+                                        }
+                                        image_file =
+                                            snapshot.data as ParseFileBase;
+                                        return CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                image_file.url.toString()),
+                                            radius: 40);
+                                      default:
+                                        return const Text('default?');
+                                    }
+                                  }),
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
@@ -91,7 +118,7 @@ class OtherProfileScreen extends StatelessWidget {
                                         switch (snapshot.connectionState) {
                                           case ConnectionState.active:
                                           case ConnectionState.waiting:
-                                            return const Text('Loading...',
+                                            return const Text('',
                                                 style: TextStyle(
                                                     color: primaryColor));
                                           case ConnectionState.done:
@@ -144,7 +171,7 @@ class OtherProfileScreen extends StatelessWidget {
                                     switch (snapshot.connectionState) {
                                       case ConnectionState.active:
                                       case ConnectionState.waiting:
-                                        return buildStatColumn(0, "loading...");
+                                        return buildStatColumn(0, "");
                                       case ConnectionState.done:
                                         return buildStatColumn(
                                             int.parse(snapshot.data.toString()),
@@ -159,7 +186,7 @@ class OtherProfileScreen extends StatelessWidget {
                                     switch (snapshot.connectionState) {
                                       case ConnectionState.active:
                                       case ConnectionState.waiting:
-                                        return buildStatColumn(0, "loading...");
+                                        return buildStatColumn(0, "");
                                       case ConnectionState.done:
                                         return buildStatColumn(
                                             int.parse(snapshot.data.toString()),
@@ -210,9 +237,7 @@ class OtherProfileScreen extends StatelessWidget {
                 //     ),
 
                 InkWell(
-                  onTap: () {
-                    // TODO: Go to the chat or make new chat
-                  },
+                  onTap: () => goToChat(user_id, context),
                   child: Container(
                     child: const Text(
                       "Message",
@@ -244,7 +269,7 @@ class OtherProfileScreen extends StatelessWidget {
                 switch (snapshot.connectionState) {
                   case ConnectionState.active:
                   case ConnectionState.waiting:
-                    return const Text("loading...");
+                    return const Text("");
                   case ConnectionState.done:
                     if (snapshot.data?[0] == null) {
                       return const Text("Follow users for posts");
@@ -271,7 +296,7 @@ class OtherProfileScreen extends StatelessWidget {
                                         switch (snap.connectionState) {
                                           case ConnectionState.active:
                                           case ConnectionState.waiting:
-                                            return const Text("loading...");
+                                            return const Text("");
                                           case ConnectionState.done:
                                             if (snap.data == null) {
                                               return const Text(

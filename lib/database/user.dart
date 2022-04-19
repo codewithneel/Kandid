@@ -2,6 +2,9 @@
 // This file contains all user related functions using the back4app database
 // Examples of functions include: user data creation/editing/retrieval
 
+import 'dart:typed_data';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import 'follow.dart' as f;
@@ -146,7 +149,13 @@ void userSetDob(DateTime new_dob) {
   _userSetter("date_of_birth", new_dob);
 } // date of birth
 
-void userSetImage() {}
+Future<void> userSetImage(ParseFileBase image) async {
+  String user_id = await getCurrentUser();
+  final todo = ParseObject('Profile')
+    ..set('userID', user_id)
+    ..set('profilePic', image);
+  await todo.save();
+}
 
 Future<void> userSetPost(ParseFileBase image, String caption) async {
   String user_id = await getCurrentUser();
@@ -296,6 +305,28 @@ Future<List?> userGetPostsProfile() async {
   return null;
 }
 
+Future<List?> userGetPosts() async {
+  dynamic user = await ParseUser.currentUser();
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Posts"));
+    query.whereNotEqualTo('objectId', '');
+
+    final ParseResponse apiResponse = await query.query();
+    List postIds = [];
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        postIds.add(obj['objectId']);
+      }
+      //debugPrint("hi");
+      return postIds;
+    }
+  } catch (e) {
+    debugPrint("Failed to get post");
+  }
+  return null;
+}
+
 Future<List?> userGetPostsOtherProfile(String user_id) async {
   try {
     var query = QueryBuilder<ParseObject>(ParseObject("Posts"));
@@ -326,6 +357,25 @@ Future<String?> userGetPostUsername(String post_id) async {
     if (apiResponse.success && apiResponse.results != null) {
       for (ParseObject obj in apiResponse.results!) {
         username = obj['username'];
+      }
+      return username;
+    }
+  } catch (e) {
+    debugPrint("Failed to get username");
+  }
+  return null;
+}
+
+Future<String?> userGetPostUserId(String post_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Posts"));
+    query.whereEqualTo("objectId", post_id);
+    final ParseResponse apiResponse = await query.query();
+    String? username;
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        username = obj['userId'];
       }
       return username;
     }
@@ -569,6 +619,26 @@ Future<String?> userGetCommentUsername(String comment_id) async {
   return null;
 }
 
+Future<String?> userGetCommentUserId(String comment_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Comments"));
+    query.whereEqualTo("objectId", comment_id);
+    final ParseResponse apiResponse = await query.query();
+    String? userId;
+    String username;
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        userId = obj['userId'];
+        return userId;
+      }
+    }
+  } catch (e) {
+    debugPrint("Failed to get username");
+  }
+  return null;
+}
+
 Future<int> getLikesCount(String post_id) async {
   try {
     var query = QueryBuilder<ParseObject>(ParseObject("Likes"));
@@ -586,4 +656,24 @@ Future<int> getLikesCount(String post_id) async {
   return 0;
 }
 
-void userGetImage() {}
+Future<ParseFileBase?> userGetImage(String user_id) async {
+  try {
+    var query = QueryBuilder<ParseObject>(ParseObject("Profile"));
+    query
+      ..whereEqualTo("userID", user_id)
+      ..orderByDescending('createdAt');
+
+    final ParseResponse apiResponse = await query.query();
+    ParseFileBase? file;
+
+    if (apiResponse.success && apiResponse.results != null) {
+      for (ParseObject obj in apiResponse.results!) {
+        file = obj['profilePic'];
+      }
+      return file;
+    }
+  } catch (e) {
+    debugPrint("Failed to get post image");
+  }
+  return null;
+}

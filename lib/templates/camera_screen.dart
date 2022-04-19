@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/services.dart';
+import 'package:kandid/responsive/mobile_screen_layout.dart';
+import 'package:kandid/templates/feed_screen.dart';
+import 'package:kandid/templates/my_profile.dart';
 
 import '../main.dart';
 import 'package:camera/camera.dart';
@@ -259,8 +261,11 @@ class DisplayPictureScreen extends StatelessWidget {
         appBar: AppBar(
           actions: [
             FlatButton(
-              onPressed: () =>
-                  {userSetPost(parseFile, _captionController.text)},
+              onPressed: () => {
+                userSetPost(parseFile, _captionController.text),
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MobileScreenLayout()))
+              },
               child: const Text('Done'),
             ),
           ],

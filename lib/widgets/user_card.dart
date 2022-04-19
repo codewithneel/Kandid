@@ -9,13 +9,18 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 class UserCard extends StatefulWidget {
   final user_id;
-  const UserCard({Key? key, required this.user_id}) : super(key: key);
+  var image_file;
+  UserCard({Key? key, required this.user_id}) : super(key: key);
 
   @override
   _UserCardState createState() => _UserCardState();
 }
 
 class _UserCardState extends State<UserCard> {
+  Future<ParseFileBase?> getImage() async {
+    return await userGetImage(widget.user_id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -27,12 +32,27 @@ class _UserCardState extends State<UserCard> {
               Container(
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1648405679817-325c7da58074?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-                      ),
-                      radius: 18,
-                    ),
+                    FutureBuilder(
+                        future: getImage(),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.active:
+                            case ConnectionState.waiting:
+                              return const Text('');
+                            case ConnectionState.done:
+                              if (snapshot.data == null) {
+                                return const Text("hi");
+                              }
+                              widget.image_file =
+                                  snapshot.data as ParseFileBase;
+                              return CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      widget.image_file.url.toString()),
+                                  radius: 16);
+                            default:
+                              return const Text('default?');
+                          }
+                        }),
                     SizedBox(
                       width: 5,
                     ),

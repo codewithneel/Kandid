@@ -26,13 +26,13 @@ class _MessageScreenState extends State<MessageScreen> {
           style: TextStyle(color: primaryColor),
         ),
         centerTitle: true,
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.search),
-        //     onPressed: () => Navigator.of(context).push(
-        //         MaterialPageRoute(builder: (context) => const chatScreen())),
-        //   )
-        // ],
+        actions: [
+          IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () => {} //Navigator.of(context).push(
+              //MaterialPageRoute(builder: (context) => const chatScreen(chatId: '',))),
+              )
+        ],
       ),
       //body: const MessageCard(),
       body: FutureBuilder<List<dynamic>?>(

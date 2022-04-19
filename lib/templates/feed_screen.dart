@@ -33,12 +33,12 @@ class FeedScreen extends StatelessWidget {
               ),
             ]),
         body: FutureBuilder<List<dynamic>?>(
-            future: userGetPostsFeed(),
+            future: userGetPosts(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
                 case ConnectionState.waiting:
-                  return const Text("loading...");
+                  return const Text("");
                 case ConnectionState.done:
                   if (snapshot.data?[0] == null) {
                     return const Text("Follow users for posts");

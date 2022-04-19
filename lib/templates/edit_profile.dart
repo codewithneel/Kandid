@@ -1,12 +1,19 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kandid/templates/settings_screen.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/text_field_input.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 import '../database/user.dart';
 import '../templates/my_profile.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key}) : super(key: key);
+  var image_file;
+
+  EditProfile({Key? key}) : super(key: key);
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -15,6 +22,31 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
+
+  Future<ParseFileBase?> getImage() async {
+    String user = await getCurrentUser();
+    return await userGetImage(user);
+  }
+
+  Future<String> pickImage(ImageSource source) async {
+    final ImagePicker _imagePicker = ImagePicker();
+    XFile? _file = await _imagePicker.pickImage(source: source);
+    if (_file != null) {
+      //debugPrint('image selected');
+      return _file.path;
+    }
+
+    return '';
+    //debugPrint('No Image Selected');
+  }
+
+  selectImage() async {
+    String im = await pickImage(ImageSource.gallery);
+    ParseFileBase? parseFile = ParseFile(File(im));
+    userSetImage(parseFile);
+
+    // set state because we need to display the image we selected on the circle avatar
+  }
 
   @override
   void dispose() {
@@ -47,13 +79,34 @@ class _EditProfileState extends State<EditProfile> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               const SizedBox(height: 24),
-              const CircleAvatar(
-                backgroundColor: Colors.grey,
-                backgroundImage: NetworkImage(
-                  'https://images.unsplash.com/photo-1646112918482-2763d6e12320?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
-                ),
-                radius: 40,
-              ),
+              InkWell(
+                  child: FutureBuilder(
+                      future: getImage(),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.active:
+                          case ConnectionState.waiting:
+                            return const Text('');
+                          case ConnectionState.done:
+                            if (snapshot.data == null) {
+                              return const Text("hi");
+                            }
+                            widget.image_file = snapshot.data as ParseFileBase;
+                            return CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    widget.image_file.url.toString()),
+                                radius: 40);
+                          default:
+                            return const Text('default?');
+                        }
+                      }),
+                  //backgroundColor: Colors.grey,
+                  //backgroundImage: NetworkImage(
+                  //'https://images.unsplash.com/photo-1646112918482-2763d6e12320?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
+                  //),
+                  //radius: 40,
+                  //),
+                  onTap: () => selectImage()),
               const SizedBox(height: 24),
               const Align(
                 alignment: Alignment.centerLeft,

@@ -11,6 +11,7 @@ import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
 
 Future<void> newFollow(String follower_id, String followed_id) async {
 
+  removeFollow(follower_id, followed_id);
   //TODO: CHECK IF FOLLOW IS ALREADY IN DATABASE (we don't want duplicate follows)
 
   final follow = ParseObject('Follow')

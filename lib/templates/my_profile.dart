@@ -16,13 +16,19 @@ import 'following_screen.dart';
 // ignore_for_file: non_constant_identifier_names
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  ProfileScreen({Key? key}) : super(key: key);
+  var image_file;
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Future<ParseFileBase?> getImage() async {
+    String user = await getCurrentUser();
+    return await userGetImage(user);
+  }
+
   String Bio = "Humanitarian | BJJ | NJIT Alum";
 
   var followers = 14;
@@ -42,8 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
                 case ConnectionState.waiting:
-                  return const Text('Loading...',
-                      style: TextStyle(color: primaryColor));
+                  return const Text('', style: TextStyle(color: primaryColor));
                 case ConnectionState.done:
                   return Text(snapshot.data.toString(),
                       style: const TextStyle(color: primaryColor));
@@ -94,13 +99,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Row(
                     children: [
-                      const CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        backgroundImage: NetworkImage(
-                          'https://images.unsplash.com/photo-1646112918482-2763d6e12320?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80',
-                        ),
-                        radius: 40,
-                      ),
+                      FutureBuilder(
+                          future: getImage(),
+                          builder: (context, snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.active:
+                              case ConnectionState.waiting:
+                                return const Text('');
+                              case ConnectionState.done:
+                                if (snapshot.data == null) {
+                                  return const Text("hi");
+                                }
+                                widget.image_file =
+                                    snapshot.data as ParseFileBase;
+                                return CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        widget.image_file.url.toString()),
+                                    radius: 40);
+                              default:
+                                return const Text('default?');
+                            }
+                          }),
                       Expanded(
                         flex: 1,
                         child: Column(
@@ -118,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           switch (snapshot.connectionState) {
                                             case ConnectionState.active:
                                             case ConnectionState.waiting:
-                                              return const Text('Loading...',
+                                              return const Text('',
                                                   style: TextStyle(
                                                       color: primaryColor));
                                             case ConnectionState.done:
@@ -153,8 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         switch (snapshot.connectionState) {
                                           case ConnectionState.active:
                                           case ConnectionState.waiting:
-                                            return buildStatColumn(
-                                                0, "loading...");
+                                            return buildStatColumn(0, "");
                                           case ConnectionState.done:
                                             return buildStatColumn(
                                                 int.parse(
@@ -179,8 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           switch (snapshot.connectionState) {
                                             case ConnectionState.active:
                                             case ConnectionState.waiting:
-                                              return buildStatColumn(
-                                                  0, "loading...");
+                                              return buildStatColumn(0, "");
                                             case ConnectionState.done:
                                               return buildStatColumn(
                                                   int.parse(
@@ -212,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 switch (snapshot.connectionState) {
                   case ConnectionState.active:
                   case ConnectionState.waiting:
-                    return const Text("loading...");
+                    return const Text("");
                   case ConnectionState.done:
                     if (snapshot.data?[0] == null) {
                       return const Text("Follow users for posts");
@@ -239,7 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         switch (snap.connectionState) {
                                           case ConnectionState.active:
                                           case ConnectionState.waiting:
-                                            return const Text("loading...");
+                                            return const Text("");
                                           case ConnectionState.done:
                                             if (snap.data == null) {
                                               return const Text(
