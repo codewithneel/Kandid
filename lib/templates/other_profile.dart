@@ -208,6 +208,7 @@ class OtherProfileScreen extends StatelessWidget {
                 //             color: greenColor),
                 //       ),
                 //     ),
+
                 InkWell(
                   onTap: () {
                     // TODO: Go to the chat or make new chat
@@ -230,6 +231,9 @@ class OtherProfileScreen extends StatelessWidget {
                         ),
                         color: greenColor),
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
               ],
             ),
