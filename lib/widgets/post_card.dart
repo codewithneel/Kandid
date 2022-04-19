@@ -2,9 +2,18 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:flutter/material.dart';
 import 'package:kandid/database/user.dart';
+import 'package:kandid/templates/other_profile.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/templates/comments_screen.dart';
 import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+
+void goToOtherProfile(String post_id, BuildContext context) async {
+  String? id = await userGetPostUserId(post_id);
+  if (id != null) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => OtherProfileScreen(user_id: id)));
+  }
+}
 
 class PostCard extends StatefulWidget {
   final postId;
@@ -16,6 +25,11 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardScreenState extends State<PostCard> {
+  Future<ParseFileBase?> getImage() async {
+    String? user = await userGetPostUserId(widget.postId);
+    return await userGetImage(user!);
+  }
+
   Future<void> likePost(String post_id) async {
     userLike(post_id);
 
@@ -52,54 +66,74 @@ class _PostCardScreenState extends State<PostCard> {
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16)
-                .copyWith(right: 0),
-            child: Row(
-              children: [
-                const CircleAvatar(
-                  radius: 16,
-                  backgroundImage: NetworkImage(
-                    'https://images.unsplash.com/photo-1648405679817-325c7da58074?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FutureBuilder(
-                            future: userGetPostUsername(widget.postId),
-                            builder: (context, snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.active:
-                                case ConnectionState.waiting:
-                                  return const Text('Loading...');
-                                case ConnectionState.done:
-                                  return SelectableText.rich(
-                                    TextSpan(
-                                        text: snapshot.data.toString(),
-                                        style: const TextStyle(
-                                            color: primaryColor,
-                                            fontWeight: FontWeight.bold)),
-                                  );
-                                default:
-                                  return const Text('default?');
+          InkWell(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 16)
+                        .copyWith(right: 0),
+                child: Row(
+                  children: [
+                    FutureBuilder(
+                        future: getImage(),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.active:
+                            case ConnectionState.waiting:
+                              return const Text('');
+                            case ConnectionState.done:
+                              if (snapshot.data == null) {
+                                return const Text("hi");
                               }
-                            }),
-                      ],
+                              widget.image_file =
+                                  snapshot.data as ParseFileBase;
+                              return CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      widget.image_file.url.toString()),
+                                  radius: 16);
+                            default:
+                              return const Text('default?');
+                          }
+                        }),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FutureBuilder(
+                                future: userGetPostUsername(widget.postId),
+                                builder: (context, snapshot) {
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.active:
+                                    case ConnectionState.waiting:
+                                      return const Text('');
+                                    case ConnectionState.done:
+                                      return SelectableText.rich(
+                                        TextSpan(
+                                            text: snapshot.data.toString(),
+                                            style: const TextStyle(
+                                                color: primaryColor,
+                                                fontWeight: FontWeight.bold)),
+                                      );
+                                    default:
+                                      return const Text('default?');
+                                  }
+                                }),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+              onTap: () => goToOtherProfile(widget.postId, context)),
 
           //image section
+          //AspectRatio(
+          //aspectRatio: 21 / 9,
           Container(
-            height: MediaQuery.of(context).size.height * 0.45,
+            height: MediaQuery.of(context).size.height * .65,
             width: double.infinity,
             child: FittedBox(
               fit: BoxFit.fill,
@@ -112,10 +146,10 @@ class _PostCardScreenState extends State<PostCard> {
                     switch (snapshot.connectionState) {
                       case ConnectionState.active:
                       case ConnectionState.waiting:
-                        return const CircularProgressIndicator();
+                      //return const CircularProgressIndicator();
                       case ConnectionState.done:
                         if (snapshot.data == null) {
-                          return const Text("No image found");
+                          return const Text("");
                         }
                         widget.image_file = snapshot.data as ParseFileBase;
                         return Image.network(widget.image_file.url.toString());
@@ -177,7 +211,7 @@ class _PostCardScreenState extends State<PostCard> {
                             switch (snapshot.connectionState) {
                               case ConnectionState.active:
                               case ConnectionState.waiting:
-                                return const Text('Loading...');
+                                return const Text('');
                               case ConnectionState.done:
                                 if (snapshot.data == 1) {
                                   return Text(
@@ -257,7 +291,7 @@ class _PostCardScreenState extends State<PostCard> {
                           switch (snapshot.connectionState) {
                             case ConnectionState.active:
                             case ConnectionState.waiting:
-                              return const Text('Loading...');
+                              return const Text('');
                             case ConnectionState.done:
                               return SelectableText.rich(
                                 TextSpan(
@@ -278,7 +312,7 @@ class _PostCardScreenState extends State<PostCard> {
                           switch (snapshot.connectionState) {
                             case ConnectionState.active:
                             case ConnectionState.waiting:
-                              return const Text('Loading...');
+                              return const Text('');
                             case ConnectionState.done:
                               return SelectableText.rich(
                                 TextSpan(
@@ -307,7 +341,7 @@ class _PostCardScreenState extends State<PostCard> {
                           switch (snapshot.connectionState) {
                             case ConnectionState.active:
                             case ConnectionState.waiting:
-                              return const Text('Loading...');
+                              return const Text('');
                             case ConnectionState.done:
                               if (snapshot.data == null) {
                                 return const Text('');

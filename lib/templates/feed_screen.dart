@@ -33,25 +33,26 @@ class FeedScreen extends StatelessWidget {
               ),
             ]),
         body: FutureBuilder<List<dynamic>?>(
-            future: userGetPostsFeed(),
+            future: userGetPosts(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
                 case ConnectionState.waiting:
-                  return const Text("loading...");
+                  return const Text("");
                 case ConnectionState.done:
                   if (snapshot.data?[0] == null) {
                     return const Text("Follow users for posts");
                   }
                   return ListView.builder(
                     itemCount: snapshot.data?.length,
-                    itemBuilder: (ctx, index) => PostCard(postId: snapshot.data![index].toString()),
+                    itemBuilder: (ctx, index) =>
+                        PostCard(postId: snapshot.data![index].toString()),
                   );
                 default:
                   return const Text('default?');
               }
             })
-      //body: PostCard(),
-    );
+        //body: PostCard(),
+        );
   }
 }

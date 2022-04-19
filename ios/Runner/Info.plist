@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Access camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access photogallery</string>
 	<key>Privacy - Camera Usage Description</key>
 	<string>Kandid requires access to your phone’s camera.</string>
 	<key>UILaunchStoryboardName</key>

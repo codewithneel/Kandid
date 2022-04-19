@@ -263,7 +263,8 @@ class DisplayPictureScreen extends StatelessWidget {
             FlatButton(
               onPressed: () => {
                 userSetPost(parseFile, _captionController.text),
-                MaterialApp(home: FeedScreen())
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MobileScreenLayout()))
               },
               child: const Text('Done'),
             ),

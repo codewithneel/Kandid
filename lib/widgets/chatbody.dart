@@ -5,10 +5,13 @@ import 'package:kandid/templates/chat_screen.dart';
 import 'package:kandid/utils/colors.dart';
 import 'package:kandid/widgets/message_card.dart';
 import 'package:kandid/templates/chat_screen.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk.dart';
+import '../database/user.dart';
 import '../main.dart';
 
 class ChatBody extends StatefulWidget {
   String messageId;
+  var image_file;
   ChatBody({Key? key, required this.messageId}) : super(key: key);
 
   @override
@@ -16,6 +19,12 @@ class ChatBody extends StatefulWidget {
 }
 
 class _ChatBodyState extends State<ChatBody> {
+  Future<ParseFileBase?> getImage() async {
+    String? user = await getMessageUserId(widget.messageId);
+    debugPrint(user);
+    return await userGetImage(user);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,12 +35,26 @@ class _ChatBodyState extends State<ChatBody> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(
-              'https://images.unsplash.com/photo-1648405679817-325c7da58074?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-            ),
-            radius: 18,
-          ),
+          FutureBuilder(
+              future: getImage(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.active:
+                  case ConnectionState.waiting:
+                    return const Text('');
+                  case ConnectionState.done:
+                    if (snapshot.data == null) {
+                      return const Text("hi");
+                    }
+                    widget.image_file = snapshot.data as ParseFileBase;
+                    return CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(widget.image_file.url.toString()),
+                        radius: 16);
+                  default:
+                    return const Text('default?');
+                }
+              }),
           Padding(
             padding: const EdgeInsets.only(left: 16),
             child: Column(
@@ -44,7 +67,7 @@ class _ChatBodyState extends State<ChatBody> {
                       switch (snapshot.connectionState) {
                         case ConnectionState.active:
                         case ConnectionState.waiting:
-                          return const Text('Loading...');
+                          return const Text('');
                         case ConnectionState.done:
                           return SelectableText.rich(
                             TextSpan(
@@ -63,7 +86,7 @@ class _ChatBodyState extends State<ChatBody> {
                       switch (snapshot.connectionState) {
                         case ConnectionState.active:
                         case ConnectionState.waiting:
-                          return const Text('Loading...');
+                          return const Text('');
                         case ConnectionState.done:
                           if (snapshot.data.toString() == '') {
                             return Text("no messages");
@@ -76,7 +99,20 @@ class _ChatBodyState extends State<ChatBody> {
               ],
             ),
           ),
-          Text('12:30am', style: TextStyle(color: Colors.grey)),
+          // FutureBuilder(
+          //     future: getMessageCreatedAt(widget.messageId),
+          //     builder: (context, snapshot) {
+          //       switch (snapshot.connectionState) {
+          //         case ConnectionState.active:
+          //         case ConnectionState.waiting:
+          //           return const Text('Loading...');
+          //         case ConnectionState.done:
+          //           returnDate(TimeOfDay.fromDateTime(snapshot),
+          //               style: TextStyle(color: Colors.grey));
+          //         default:
+          //           return const Text('default?');
+          //       }
+          //     })
         ],
       ),
     );

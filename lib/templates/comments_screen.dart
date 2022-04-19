@@ -32,14 +32,23 @@ class _CommentsScreenState extends State<CommentsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: mobileBackgroundColor,
-        title: const Text(
-          'Comments',
-          style: TextStyle(color: primaryColor),
-        ),
-        centerTitle: false,
-      ),
+          iconTheme: IconThemeData(color: Colors.black),
+          backgroundColor: mobileBackgroundColor,
+          title: const Text(
+            'Comments',
+            style: TextStyle(color: primaryColor),
+          ),
+          centerTitle: false,
+          actions: [
+            IconButton(
+              onPressed: () => setState(() {}),
+              icon: const Icon(
+                //messenger icon in homepage
+                Icons.refresh,
+                color: Colors.transparent,
+              ),
+            ),
+          ]),
       //body: CommentCard(),
       body: FutureBuilder<List<dynamic>?>(
           future: userGetCommentIds(widget.post_Id),
@@ -47,7 +56,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
             switch (snapshot.connectionState) {
               case ConnectionState.active:
               case ConnectionState.waiting:
-                return const Text("loading...");
+                return const Text("");
               case ConnectionState.done:
                 if (snapshot.data?[0] == null) {
                   return Text("No Comments");
