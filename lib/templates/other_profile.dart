@@ -235,6 +235,7 @@ class OtherProfileScreen extends StatelessWidget {
                 //             color: greenColor),
                 //       ),
                 //     ),
+
                 InkWell(
                   onTap: () => goToChat(user_id, context),
                   child: Container(
@@ -255,6 +256,9 @@ class OtherProfileScreen extends StatelessWidget {
                         ),
                         color: greenColor),
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
               ],
             ),
